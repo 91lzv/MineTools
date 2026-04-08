@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineTools - Minecraft Utilities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root{--bg:#08080a;--sf:#0f0f13;--sf2:#16161b;--sf3:#1c1c22;--bd:rgba(255,255,255,.07);--bdh:rgba(255,255,255,.12);--bdf:rgba(0,230,118,.4);--gr:#00E676;--grs:#00c853;--grm:rgba(0,230,118,.12);--grf:rgba(0,230,118,.05);--grg:rgba(0,230,118,.12);--tx:#e4e4e8;--tx2:#a0a0ac;--tx3:#5c5c68;--rd:#ff5555;--am:#ffaa00;--dc:#5865F2}
+        *{margin:0;padding:0;box-sizing:border-box}
+        ::selection{background:rgba(0,230,118,.2);color:#fff}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a32;border-radius:3px}
+        html{scroll-behavior:smooth}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+        .fp{font-family:'Press Start 2P',cursive}
+        body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+        #bgp{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+        .fb{position:absolute;bottom:-40px;border-radius:3px;animation:fu linear infinite}
+        @keyframes fu{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateY(-110vh) rotate(120deg);opacity:0}}
+
+        /* Nav */
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,10,.82);backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--bd)}
+        .ni{max-width:1280px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .li{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--gr),var(--grs));display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
+        .lt{font-size:11px;color:var(--tx);font-weight:600;letter-spacing:.5px}
+        .nl{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:var(--tx3);padding:6px 12px;border-radius:8px;transition:all .2s;cursor:pointer;border:none;background:none}
+        .nl:hover{color:var(--tx2);background:var(--grf)}.nl.active{color:var(--gr);background:var(--grm)}
+        .hb{display:none;color:var(--tx2);background:none;border:none;font-size:20px;cursor:pointer;padding:8px}
+        .mm{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(8,8,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:12px 16px;z-index:99;flex-direction:column;gap:2px}
+        .mm.open{display:flex}
+
+        /* User button */
+        .ub{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;cursor:pointer;border:none;background:none;transition:all .2s;position:relative}
+        .ub:hover{background:var(--grf)}
+        .ua{width:30px;height:30px;border-radius:50%;background:var(--grm);display:flex;align-items:center;justify-content:center;color:var(--gr);font-weight:700;font-size:11px;flex-shrink:0}
+        .un{font-size:13px;font-weight:500;color:var(--tx2)}
+        .ud{position:absolute;top:calc(100% + 8px);right:0;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:8px;min-width:220px;box-shadow:0 16px 48px rgba(0,0,0,.4);display:none;z-index:101}
+        .ud.open{display:block;animation:vi .2s ease}
+        .udi{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px}
+        .udia{width:40px;height:40px;border-radius:50%;background:var(--grm);display:flex;align-items:center;justify-content:center;color:var(--gr);font-weight:700;font-size:14px;flex-shrink:0}
+        .udn{font-weight:600;font-size:14px;color:var(--tx)}.uds{font-size:12px;color:var(--tx3)}
+        .udsep{height:1px;background:var(--bd);margin:4px 0}
+        .udbtn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;border:none;background:none;width:100%;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--tx3);transition:all .15s}
+        .udbtn:hover{background:var(--grf);color:var(--tx2)}
+        .udbtn.danger:hover{background:rgba(255,85,85,.08);color:var(--rd)}
+        .login-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:#fff;background:var(--dc);padding:7px 16px;border-radius:8px;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;gap:6px}
+        .login-btn:hover{background:#4752C4}
+
+        /* Discord Modal */
+        .dm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+        .dm-overlay.open{display:flex}
+        .dm{background:#313338;border-radius:12px;width:100%;max-width:440px;overflow:hidden;animation:vi .25s ease}
+        .dm-head{padding:20px 24px;background:#2b2d31;border-bottom:1px solid rgba(255,255,255,.06)}
+        .dm-body{padding:24px}
+        .dm-foot{padding:16px 24px;background:#2b2d31;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:flex-end;gap:8px}
+        .dm-scope{display:flex;align-items:center;gap:10px;padding:8px 0}
+        .dm-scope i{color:var(--dc);font-size:16px;width:20px;text-align:center}
+        .dm-input{width:100%;background:#1e1f22;border:1px solid rgba(255,255,255,.08);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:10px 14px;border-radius:6px;outline:none;transition:border .2s}
+        .dm-input:focus{border-color:var(--dc)}
+        .dm-input::placeholder{color:#6d6f78}
+        .dm-cancel{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:#b5bac1;padding:9px 20px;border-radius:6px;cursor:pointer;border:none;background:transparent;transition:all .15s}
+        .dm-cancel:hover{text-decoration:underline}
+        .dm-auth{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:#fff;padding:9px 24px;border-radius:6px;cursor:pointer;border:none;background:var(--dc);transition:all .15s}
+        .dm-auth:hover{background:#4752C4}
+
+        /* Views */
+        .view{display:none}.view.active{display:block;animation:vi .35s ease}
+        @keyframes vi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+        /* Form */
+        .si{background:var(--sf);border:1px solid var(--bd);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:13px 18px;border-radius:10px;outline:none;transition:all .25s;width:100%}
+        .si:focus{border-color:var(--bdf);box-shadow:0 0 0 3px var(--grf),0 0 20px rgba(0,230,118,.06)}
+        .si::placeholder{color:var(--tx3)}
+        select.si{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235c5c68' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+        .sb{background:var(--gr);color:#000;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 24px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;white-space:nowrap}
+        .sb:hover{background:var(--grs);box-shadow:0 4px 20px rgba(0,230,118,.2)}
+        .cb{background:transparent;border:1px solid var(--bd);color:var(--tx2);padding:7px 14px;border-radius:8px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap}
+        .cb:hover{border-color:var(--gr);color:var(--gr);background:var(--grf)}
+
+        /* Cards */
+        .rc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:28px}
+        .rc.ai{animation:vi .4s ease}
+        .tc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px;cursor:pointer;transition:all .3s}
+        .tc:hover{border-color:var(--bdh);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+        .tc .iw{width:42px;height:42px;border-radius:10px;background:var(--grf);border:1px solid rgba(0,230,118,.08);display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:16px;margin-bottom:16px;transition:all .3s}
+        .tc:hover .iw{background:var(--grm);border-color:rgba(0,230,118,.15)}
+
+        /* Loading */
+        .lb{height:3px;background:var(--sf2);overflow:hidden;border-radius:2px;margin:16px 0}
+        .lb::after{content:'';display:block;width:60%;height:100%;background:linear-gradient(90deg,transparent,var(--gr),transparent);border-radius:2px;animation:shm 1.2s ease-in-out infinite}
+        @keyframes shm{0%{transform:translateX(-150%)}100%{transform:translateX(250%)}}
+        .pbb{height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
+        .pbf{height:100%;background:var(--gr);border-radius:3px;transition:width 1s ease}
+        .sd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+        .sd.on{background:var(--gr);box-shadow:0 0 8px var(--grg)}.sd.off{background:var(--tx3)}
+        .uo{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--gr);word-break:break-all;display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+        /* Skin */
+        .skc{position:relative;background:repeating-conic-gradient(var(--sf2) 0% 25%,var(--sf) 0% 50%) 0 0/16px 16px;border-radius:8px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+        .skc img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+        .skc .sf{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3);font-size:12px;gap:4px}
+        .skc .sf i{font-size:20px;color:var(--tx3)}
+        .ne{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)}.ne:last-child{border-bottom:none}
+
+        /* Colors */
+        .cs{width:100%;aspect-ratio:1;border-radius:6px;cursor:pointer;transition:all .2s;border:2px solid transparent}
+        .cs:hover{transform:scale(1.12);border-color:rgba(255,255,255,.3)}
+        .fs{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer;transition:all .2s;text-align:center}
+        .fs:hover{border-color:var(--gr);background:var(--grf)}
+        .cp{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:16px;min-height:56px;font-size:18px;word-break:break-all}
+
+        /* Potion */
+        .pcard{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center}
+        .pcard:hover{border-color:var(--bdh);background:var(--sf2)}
+        .pcard.sel{border-color:rgba(0,230,118,.3);background:var(--grf)}
+        .pcard .pi{width:36px;height:36px;border-radius:8px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .mtog{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--bd);background:var(--sf);font-size:13px;font-weight:500;transition:all .2s;user-select:none}
+        .mtog:hover{border-color:var(--bdh);background:var(--sf2)}
+        .mtog.on{border-color:rgba(0,230,118,.3);background:var(--grf);color:var(--gr)}
+        .mtog.dis{opacity:.35;cursor:not-allowed;pointer-events:none}
+
+        /* Blocks */
+        .bc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:18px;transition:all .2s}
+        .bc:hover{border-color:var(--bdh);background:var(--sf2)}
+
+        /* Discord CTA */
+        .dca{background:linear-gradient(135deg,var(--sf),rgba(88,101,242,.04));border:1px solid rgba(88,101,242,.15);border-radius:16px;padding:48px;position:relative;overflow:hidden}
+        .dca::before{content:'';position:absolute;top:-60%;right:-30%;width:80%;height:120%;background:radial-gradient(circle,rgba(88,101,242,.06),transparent 60%);pointer-events:none}
+        .dbtn{background:var(--dc);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 28px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+        .dbtn:hover{background:#4752C4;box-shadow:0 8px 28px rgba(88,101,242,.25);transform:translateY(-2px)}
+
+        /* Coords */
+        .cob{width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#5D8C3E,#3d6e28);display:inline-block}
+        .cbn{width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#8B2500,#5C1A00);display:inline-block}
+
+        /* Toast */
+        .toast{position:fixed;top:76px;right:20px;background:var(--sf2);color:var(--gr);font-size:14px;font-weight:500;padding:12px 20px;border-radius:10px;z-index:300;border:1px solid rgba(0,230,118,.15);transform:translateX(calc(100% + 40px));transition:transform .35s cubic-bezier(.22,1,.36,1);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+        .toast.show{transform:translateX(0)}
+
+        .bb{color:var(--tx3);font-size:14px;font-weight:500;cursor:pointer;background:none;border:none;transition:color .2s;display:inline-flex;align-items:center;gap:8px}
+        .bb:hover{color:var(--tx)}
+        .hg{position:absolute;width:600px;height:600px;background:radial-gradient(circle,var(--grg),transparent 65%);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pg 5s ease-in-out infinite}
+        @keyframes pg{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:.8;transform:translate(-50%,-50%) scale(1.1)}}
+        .sl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gr);font-weight:600}
+        .sn{font-family:'Press Start 2P',cursive;font-size:20px;color:var(--gr)}
+        .sqb{background:var(--sf);border:1px solid var(--bd);color:var(--tx2);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
+        .sqb:hover{border-color:var(--gr);color:var(--gr);background:var(--grf)}
+        .tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600}
+        .cmd-box{background:#0a0a0e;border:1px solid var(--bd);border-radius:8px;padding:14px 16px;font-family:'Plus Jakarta Sans',monospace;font-size:14px;color:var(--gr);word-break:break-all;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;line-height:1.6}
+
+        @media(max-width:1024px){.nav-links{display:none}.hb{display:block}}
+        @media(max-width:768px){.sn{font-size:16px}.dca{padding:32px 20px}}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+</head>
+<body>
+<div id="bgp" aria-hidden="true"></div>
+<div id="toast" class="toast" role="alert"></div>
+
+<!-- Discord Modal -->
+<div class="dm-overlay" id="dmodal">
+    <div class="dm">
+        <div class="dm-head">
+            <div class="flex items-center gap-3">
+                <i class="fab fa-discord text-2xl" style="color:var(--dc);"></i>
+                <div>
+                    <div class="text-sm font-semibold text-white">Authorize MineTools</div>
+                    <div class="text-xs" style="color:#b5bac1;">Connect your Discord account</div>
+                </div>
+            </div>
+        </div>
+        <div class="dm-body">
+            <p class="text-sm mb-4" style="color:#b5bac1;">MineTools will access:</p>
+            <div class="dm-scope"><i class="fas fa-user"></i><span class="text-sm text-white">Your username and avatar</span></div>
+            <div class="dm-scope"><i class="fas fa-chart-bar"></i><span class="text-sm text-white">Track your tool usage statistics</span></div>
+            <div class="mt-5">
+                <label class="block text-xs font-medium mb-2" style="color:#b5bac1;">Discord Username</label>
+                <input type="text" id="dname" class="dm-input" placeholder="e.g. Notch" maxlength="32">
+                <p class="text-xs mt-2" style="color:#6d6f78;">This is stored locally in your browser only. No data is sent to any server.</p>
+            </div>
+        </div>
+        <div class="dm-foot">
+            <button class="dm-cancel" onclick="closeDM()">Cancel</button>
+            <button class="dm-auth" onclick="authDiscord()"><i class="fab fa-discord" style="margin-right:4px;"></i> Authorize</button>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Main navigation">
+    <div class="ni">
+        <a href="#" onclick="showView('home');return false" class="logo" aria-label="Home"><div class="li">M</div><span class="lt">MineTools</span></a>
+        <div class="nav-links" id="navlinks">
+            <button class="nl" data-view="player" onclick="showView('player')">Player</button>
+            <button class="nl" data-view="server" onclick="showView('server')">Server</button>
+            <button class="nl" data-view="skin" onclick="showView('skin')">Skins</button>
+            <button class="nl" data-view="colors" onclick="showView('colors')">Colors</button>
+            <button class="nl" data-view="uuid" onclick="showView('uuid')">UUID</button>
+            <button class="nl" data-view="coords" onclick="showView('coords')">Coords</button>
+            <button class="nl" data-view="potions" onclick="showView('potions')">Potions</button>
+            <button class="nl" data-view="blocks" onclick="showView('blocks')">Blocks</button>
+        </div>
+        <div class="flex items-center gap-2">
+            <div id="userarea"></div>
+            <button class="hb" onclick="document.getElementById('mm').classList.toggle('open')" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </div>
+</nav>
+<div id="mm" class="mm">
+    <button class="nl" onclick="showView('player');document.getElementById('mm').classList.remove('open')">Player Lookup</button>
+    <button class="nl" onclick="showView('server');document.getElementById('mm').classList.remove('open')">Server Lookup</button>
+    <button class="nl" onclick="showView('skin');document.getElementById('mm').classList.remove('open')">Skin Viewer</button>
+    <button class="nl" onclick="showView('colors');document.getElementById('mm').classList.remove('open')">Color Codes</button>
+    <button class="nl" onclick="showView('uuid');document.getElementById('mm').classList.remove('open')">UUID Tool</button>
+    <button class="nl" onclick="showView('coords');document.getElementById('mm').classList.remove('open')">Coords</button>
+    <button class="nl" onclick="showView('potions');document.getElementById('mm').classList.remove('open')">Potions</button>
+    <button class="nl" onclick="showView('blocks');document.getElementById('mm').classList.remove('open')">Blocks</button>
+</div>
+
+<main class="relative z-10 pt-[60px]">
+
+<!-- HOME -->
+<div id="view-home" class="view active">
+    <section class="relative min-h-[78vh] flex flex-col items-center justify-center px-6 text-center">
+        <div class="hg" aria-hidden="true"></div>
+        <div class="relative z-10 max-w-2xl">
+            <div class="sl mb-6">Minecraft Utilities</div>
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-5 leading-tight" style="letter-spacing:-1.5px;">Everything you need,<br><span style="color:var(--gr);">in one place.</span></h1>
+            <p class="text-lg mb-10" style="color:var(--tx2);max-width:460px;margin:0 auto;">Player profiles, server status, skin viewers, potion brewing, and more — free and instant.</p>
+            <div class="flex gap-3 mb-5 max-w-lg mx-auto"><input type="text" id="hs" class="si" placeholder="Search a player or server..." aria-label="Search" onkeydown="if(event.key==='Enter')homeSearch()"><button class="sb" onclick="homeSearch()"><i class="fas fa-arrow-right" style="font-size:14px;"></i></button></div>
+            <p class="text-sm" style="color:var(--tx3);">Try "Hypixel", "Technoblade", or "2b2t"</p>
+        </div>
+    </section>
+    <section class="max-w-4xl mx-auto px-6 pb-16" id="stats-section">
+        <div class="sl mb-3">Your Activity</div>
+        <div class="rc" style="padding:32px;">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center" id="stats-grid"></div>
+            <div class="mt-5 pt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style="border-top:1px solid var(--bd);" id="stats-meta"></div>
+        </div>
+    </section>
+    <section class="max-w-5xl mx-auto px-6 pb-20">
+        <div class="sl mb-3">All Tools</div>
+        <h2 class="text-3xl font-bold mb-8" style="letter-spacing:-.5px;">Built for players</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="tg"></div>
+    </section>
+    <section class="max-w-4xl mx-auto px-6 pb-24" id="discord-cta">
+        <div class="dca text-center"><div class="relative z-10"><i class="fab fa-discord text-4xl mb-5" style="color:var(--dc);"></i><h2 class="text-2xl font-bold mb-3" style="letter-spacing:-.5px;">Join the community</h2><p class="text-base mb-8" style="color:var(--tx2);max-width:420px;margin:0 auto;">Get help, suggest features, share builds, and hang out with other players.</p><div class="flex items-center justify-center gap-2 mb-8"><span class="sd on" style="background:var(--dc);box-shadow:0 0 8px rgba(88,101,242,.3);"></span><span class="text-sm" style="color:var(--tx3);">2,847 members online</span></div><a href="#" class="dbtn" onclick="toast('Discord link clicked!');return false;"><i class="fab fa-discord"></i> Join Discord</a><div class="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-8 text-sm" style="color:var(--tx3);"><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Feature Requests</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Help & Support</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Build Showcases</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Giveaways</span></div></div></div>
+    </section>
+</div>
+
+<!-- PLAYER -->
+<div id="view-player" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Player Lookup</div><h1 class="text-2xl font-bold mb-2">Look up any player</h1><p class="mb-8" style="color:var(--tx2);">Skin, UUID, name history.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="pi" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')lookupPlayer()"><button class="sb" onclick="lookupPlayer()">Lookup</button></div><div id="pl" class="lb" style="display:none;"></div><div id="pr"></div><div id="pe" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-user text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username above</p></div></section></div>
+
+<!-- SERVER -->
+<div id="view-server" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Server Lookup</div><h1 class="text-2xl font-bold mb-2">Check any server</h1><p class="mb-8" style="color:var(--tx2);">Real-time status from any IP or domain.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="svi" class="si" placeholder="mc.hypixel.net..." onkeydown="if(event.key==='Enter')lookupServer()"><button class="sb" onclick="lookupServer()">Lookup</button></div><div id="svl" class="lb" style="display:none;"></div><div id="svr"></div><div id="svs"><div class="sl mb-3 mt-10">Quick Links</div><div class="flex flex-wrap gap-2" id="svq"></div></div></section></div>
+
+<!-- SKIN -->
+<div id="view-skin" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Skin Viewer</div><h1 class="text-2xl font-bold mb-2">View any skin</h1><p class="mb-8" style="color:var(--tx2);">Front, back, and head preview.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="ski" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')viewSkin()"><button class="sb" onclick="viewSkin()">View</button></div><div id="skr"></div><div id="ske" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-tshirt text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username</p></div></section></div>
+
+<!-- COLORS -->
+<div id="view-colors" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Color Codes</div><h1 class="text-2xl font-bold mb-2">Minecraft formatting</h1><p class="mb-8" style="color:var(--tx2);">Click any code to add it.</p><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Colors</h3><div class="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-8" id="csw"></div><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Formatting</h3><div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-8" id="fsw"></div><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Code Builder</h3><div class="rc mb-4"><textarea id="ci" class="si mb-4" style="height:72px;resize:vertical;" placeholder="Type formatted text here..."></textarea><div class="flex items-center justify-between mb-4"><span class="text-sm" style="color:var(--tx3);">Preview</span><div class="flex gap-2"><button class="cb" onclick="ct()"><i class="fas fa-copy" style="font-size:11px;"></i> Copy</button><button class="cb" onclick="document.getElementById('ci').value='';ucp()"><i class="fas fa-trash" style="font-size:11px;"></i></button></div></div><div id="cpv" class="cp"></div></div></section></div>
+
+<!-- UUID -->
+<div id="view-uuid" class="view"><section class="max-w-3xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">UUID Converter</div><h1 class="text-2xl font-bold mb-2">Username to UUID</h1><p class="mb-8" style="color:var(--tx2);">Online and offline formats.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="ui" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')convUUID()"><button class="sb" onclick="convUUID()">Convert</button></div><div id="ul" class="lb" style="display:none;"></div><div id="ur"></div><div id="ue" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-fingerprint text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username</p></div></section></div>
+
+<!-- COORDS -->
+<div id="view-coords" class="view"><section class="max-w-3xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Coordinate Calculator</div><h1 class="text-2xl font-bold mb-2">Overworld and Nether</h1><p class="mb-8" style="color:var(--tx2);">Convert coordinates between dimensions.</p><div class="rc mb-6"><div class="flex gap-3 mb-6"><button id="cmo" class="sb" onclick="scm('ow')" style="flex:1;">Overworld to Nether</button><button id="cmn" class="sb" onclick="scm('ne')" style="flex:1;background:var(--sf);color:var(--tx3);border:1px solid var(--bd);">Nether to Overworld</button></div><div class="grid grid-cols-3 gap-3 mb-6"><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">X</label><input type="number" id="cx" class="si" placeholder="0"></div><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">Y</label><input type="number" id="cy" class="si" placeholder="0"></div><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">Z</label><input type="number" id="cz" class="si" placeholder="0"></div></div><button class="sb w-full" onclick="cc()">Convert</button></div><div id="cr" style="display:none;"><div class="rc ai mb-6"><div class="flex items-center gap-3 mb-5"><span id="cfi" class="cob"></span><span id="cfl" class="text-sm font-semibold" style="color:var(--tx2);">OVERWORLD</span><i class="fas fa-arrow-right" style="color:var(--tx3);font-size:12px;"></i><span id="cti" class="cbn"></span><span id="ctl" class="text-sm font-semibold" style="color:var(--tx2);">NETHER</span></div><div class="grid grid-cols-3 gap-4 text-center"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">X</div><div id="cox" class="fp text-base" style="color:var(--gr);">—</div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Y</div><div id="coy" class="fp text-base" style="color:var(--gr);">—</div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Z</div><div id="coz" class="fp text-base" style="color:var(--gr);">—</div></div></div><button class="cb w-full mt-5" onclick="ccp()"><i class="fas fa-copy" style="font-size:11px;"></i> Copy</button></div></div><div class="rc"><h3 class="text-sm font-semibold mb-4">Distance Calculator</h3><div class="grid grid-cols-2 gap-4 mb-4"><div><div class="text-xs font-medium mb-2" style="color:var(--gr);">Point A</div><div class="grid grid-cols-3 gap-2"><input type="number" id="dax" class="si" placeholder="X" style="font-size:14px;padding:10px;"><input type="number" id="day" class="si" placeholder="Y" style="font-size:14px;padding:10px;"><input type="number" id="daz" class="si" placeholder="Z" style="font-size:14px;padding:10px;"></div></div><div><div class="text-xs font-medium mb-2" style="color:var(--gr);">Point B</div><div class="grid grid-cols-3 gap-2"><input type="number" id="dbx" class="si" placeholder="X" style="font-size:14px;padding:10px;"><input type="number" id="dby" class="si" placeholder="Y" style="font-size:14px;padding:10px;"><input type="number" id="dbz" class="si" placeholder="Z" style="font-size:14px;padding:10px;"></div></div></div><button class="sb w-full mb-4" onclick="cd()">Calculate</button><div id="dr"></div></div></section></div>
+
+<!-- POTIONS -->
+<div id="view-potions" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Potion Builder</div><h1 class="text-2xl font-bold mb-2">Build any potion</h1><p class="mb-8" style="color:var(--tx2);">Select a base potion, add modifiers, copy the command.</p><div id="pot-step1"><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Base Potion</h3><div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="pot-grid"></div></div><div id="pot-step2" style="display:none;"><button class="cb mb-5" onclick="potReset()"><i class="fas fa-arrow-left" style="font-size:11px;"></i> Back</button><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Modifiers</h3><div class="flex flex-wrap gap-2 mb-6" id="pot-mods"></div><div id="pot-result"></div></div></section></div>
+
+<!-- BLOCKS -->
+<div id="view-blocks" class="view"><section class="max-w-5xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Block Encyclopedia</div><h1 class="text-2xl font-bold mb-2">Browse blocks</h1><p class="mb-8" style="color:var(--tx2);">Hardness, blast resistance, tools, drops.</p><div class="mb-6 max-w-sm"><input type="text" id="blk" class="si" placeholder="Search blocks..." oninput="filterBlocks()"></div><div id="blg" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div></section></div>
+
+</main>
+
+<footer class="relative z-10" style="border-top:1px solid var(--bd);"><div class="max-w-5xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><div class="li" style="width:22px;height:22px;font-size:10px;border-radius:5px;">M</div><span class="text-sm font-semibold" style="color:var(--tx3);">MineTools</span></div><p class="text-sm" style="color:var(--sf3);">Not affiliated with Mojang Studios or Microsoft</p><div class="flex gap-3"><a href="#" style="color:var(--tx3);transition:.2s;" onmouseover="this.style.color='var(--tx)'" onmouseout="this.style.color='var(--tx3)'" aria-label="GitHub"><i class="fab fa-github"></i></a><a href="#" style="color:var(--tx3);transition:.2s;" onmouseover="this.style.color='var(--dc)'" onmouseout="this.style.color='var(--tx3)'" aria-label="Discord"><i class="fab fa-discord"></i></a></div></div></footer>
+
+<script>
+/* ===== STATS SYSTEM ===== */
+function getStats(){try{return JSON.parse(localStorage.getItem('mt_stats'))||{}}catch(e){return {}}}
+function saveStats(s){localStorage.setItem('mt_stats',JSON.stringify(s))}
+function trackStat(key){
+    var s=getStats();s[key]=(s[key]||0)+1;s.totalTools=(s.totalTools||0)+1;saveStats(s);
+    if(currentView==='home')renderHomeStats();
+}
+// Init session on load
+(function(){var s=getStats();if(!s.firstVisit)s.firstVisit=new Date().toISOString();s.sessions=(s.sessions||0)+1;s.lastVisit=new Date().toISOString();saveStats(s);})();
+
+/* ===== DISCORD AUTH ===== */
+function getDCUser(){try{return JSON.parse(localStorage.getItem('mt_dc'))}catch(e){return null}}
+function setDCUser(u){localStorage.setItem('mt_dc',JSON.stringify(u));renderUserArea();}
+function rmDCUser(){localStorage.removeItem('mt_dc');renderUserArea();closeUD();toast('Disconnected');}
+function getInitials(n){return n.split(/\s+/).map(function(w){return w[0]}).join('').toUpperCase().slice(0,2)}
+function openDM(){document.getElementById('dmodal').classList.add('open');document.getElementById('dname').value='';setTimeout(function(){document.getElementById('dname').focus()},100)}
+function closeDM(){document.getElementById('dmodal').classList.remove('open')}
+function authDiscord(){
+    var name=document.getElementById('dname').value.trim();
+    if(!name){document.getElementById('dname').style.borderColor='var(--rd)';setTimeout(function(){document.getElementById('dname').style.borderColor=''},1500);return;}
+    setDCUser({id:Math.random().toString(36).slice(2,18),username:name,since:new Date().toISOString()});
+    closeDM();toast('Connected as '+name);
+}
+function renderUserArea(){
+    var u=getDCUser(),el=document.getElementById('userarea');
+    if(u){
+        var ini=getInitials(u.username);
+        el.innerHTML='<button class="ub" id="ubtn" onclick="toggleUD()"><div class="ua">'+esc(ini)+'</div><span class="un hidden md:inline">'+esc(u.username)+'</span><i class="fas fa-chevron-down hidden md:inline" style="font-size:10px;color:var(--tx3);margin-left:2px;"></i></button><div class="ud" id="udd"><div class="udi"><div class="udia">'+esc(ini)+'</div><div><div class="udn">'+esc(u.username)+'</div><div class="uds">Since '+new Date(u.since).toLocaleDateString()+'</div></div></div><div class="udsep"></div><button class="udbtn" onclick="showView(\'home\');closeUD()"><i class="fas fa-chart-bar" style="width:16px;"></i> My Stats</button><button class="udbtn" onclick="showView(\'home\');closeUD()"><i class="fas fa-cog" style="width:16px;"></i> Settings</button><div class="udsep"></div><button class="udbtn danger" onclick="rmDCUser()"><i class="fas fa-sign-out-alt" style="width:16px;"></i> Disconnect</button></div>';
+    }else{
+        el.innerHTML='<button class="login-btn" onclick="openDM()"><i class="fab fa-discord"></i><span class="hidden sm:inline">Log in</span></button>';
+    }
+}
+function toggleUD(){document.getElementById('udd').classList.toggle('open')}
+function closeUD(){var d=document.getElementById('udd');if(d)d.classList.remove('open')}
+document.addEventListener('click',function(e){var ub=document.getElementById('ubtn'),ud=document.getElementById('udd');if(ub&&ud&&!ub.contains(e.target)&&!ud.contains(e.target)){ud.classList.remove('open')}});
+document.getElementById('dmodal').addEventListener('click',function(e){if(e.target===this)closeDM()});
+document.getElementById('dname').addEventListener('keydown',function(e){if(e.key==='Enter')authDiscord()});
+
+/* ===== DATA ===== */
+var KP={technoblade:{name:'Technoblade',first:'2013-08-29',last:'2022-06-30',hist:[{n:'Technoblade',t:'Aug 29, 2013'}],cape:'Minecon 2016'},dream:{name:'Dream',first:'2019-02-14',last:'2024-01-15',hist:[{n:'Dream',t:'Feb 14, 2019'}],cape:null},philza:{name:'philza',first:'2013-08-28',last:'2024-03-20',hist:[{n:'Ph1LzA',t:'Aug 28, 2013'},{n:'philza',t:'Aug 15, 2019'}],cape:'Minecon 2019'},tommyinnit:{name:'TommyInnit',first:'2019-05-01',last:'2024-03-15',hist:[{n:'TommyInnit',t:'May 1, 2019'}],cape:null},tubbo:{name:'Tubbo',first:'2019-09-12',last:'2024-02-28',hist:[{n:'Tubbo_',t:'Sep 12, 2019'},{n:'Tubbo',t:'Nov 1, 2020'}],cape:null},sapnap:{name:'Sapnap',first:'2019-03-01',last:'2024-02-10',hist:[{n:'PandasCanPvP',t:'Mar 1, 2017'},{n:'Sapnap',t:'Mar 1, 2019'}],cape:null},georgenotfound:{name:'GeorgeNotFound',first:'2019-08-15',last:'2024-01-20',hist:[{n:'GeorgeNotFound',t:'Aug 15, 2019'}],cape:null},skeppy:{name:'Skeppy',first:'2015-01-20',last:'2024-01-05',hist:[{n:'Skeppy',t:'Jan 20, 2015'}],cape:null},badboyhalo:{name:'BadBoyHalo',first:'2016-06-10',last:'2024-02-14',hist:[{n:'TheSoulOfHalo',t:'Jun 10, 2016'},{n:'BadBoyHalo',t:'Mar 15, 2018'}],cape:null},wilbursoot:{name:'WilburSoot',first:'2014-03-10',last:'2024-03-10',hist:[{n:'WilburSoot',t:'Mar 10, 2014'}],cape:null}};
+var QS=['mc.hypixel.net','2b2t.org','play.cubecraft.net','play.wynncraft.com','play.earthmc.net','lunar.gg','purpleprison.org','snapcraft.net'];
+var TD=[{v:'player',i:'fa-user',t:'Player Lookup',d:'Skin, UUID, history.'},{v:'server',i:'fa-server',t:'Server Lookup',d:'Real-time status.'},{v:'skin',i:'fa-tshirt',t:'Skin Viewer',d:'Multi-angle preview.'},{v:'colors',i:'fa-palette',t:'Color Codes',d:'Formatting reference.'},{v:'uuid',i:'fa-fingerprint',t:'UUID Converter',d:'UUID formats.'},{v:'coords',i:'fa-location-crosshairs',t:'Coords Calculator',d:'Dimension convert.'},{v:'potions',i:'fa-flask',t:'Potion Builder',d:'Brew, get commands.'},{v:'blocks',i:'fa-cube',t:'Block Encyclopedia',d:'Block data.'}];
+var MC=[{c:'\u00a70',ch:'0',n:'Black',h:'#000000'},{c:'\u00a71',ch:'1',n:'Dark Blue',h:'#0000AA'},{c:'\u00a72',ch:'2',n:'Dark Green',h:'#00AA00'},{c:'\u00a73',ch:'3',n:'Dark Aqua',h:'#00AAAA'},{c:'\u00a74',ch:'4',n:'Dark Red',h:'#AA0000'},{c:'\u00a75',ch:'5',n:'Dark Purple',h:'#AA00AA'},{c:'\u00a76',ch:'6',n:'Gold',h:'#FFAA00'},{c:'\u00a77',ch:'7',n:'Gray',h:'#AAAAAA'},{c:'\u00a78',ch:'8',n:'Dark Gray',h:'#555555'},{c:'\u00a79',ch:'9',n:'Blue',h:'#5555FF'},{c:'\u00a7a',ch:'a',n:'Green',h:'#55FF55'},{c:'\u00a7b',ch:'b',n:'Aqua',h:'#55FFFF'},{c:'\u00a7c',ch:'c',n:'Red',h:'#FF5555'},{c:'\u00a7d',ch:'d',n:'Light Purple',h:'#FF55FF'},{c:'\u00a7e',ch:'e',n:'Yellow',h:'#FFFF55'},{c:'\u00a7f',ch:'f',n:'White',h:'#FFFFFF'}];
+var MF=[{c:'\u00a7k',ch:'k',n:'Obfuscated',s:'filter:blur(2px);'},{c:'\u00a7l',ch:'l',n:'Bold',s:'font-weight:bold;'},{c:'\u00a7m',ch:'m',n:'Strikethrough',s:'text-decoration:line-through;'},{c:'\u00a7n',ch:'n',n:'Underline',s:'text-decoration:underline;'},{c:'\u00a7o',ch:'o',n:'Italic',s:'font-style:italic;'},{c:'\u00a7r',ch:'r',n:'Reset',s:''}];
+var POTS=[
+    {name:'Night Vision',key:'night_vision',dur:180,ext:true,str:false,color:'#1a1a8a',id:16,icon:'fa-eye'},
+    {name:'Invisibility',key:'invisibility',dur:180,ext:true,str:false,color:'#b0b0d0',id:14,icon:'fa-ghost'},
+    {name:'Leaping',key:'leaping',dur:180,ext:true,str:true,color:'#33dd33',id:8,icon:'fa-arrow-up'},
+    {name:'Fire Resistance',key:'fire_resistance',dur:180,ext:true,str:false,color:'#ff7722',id:12,icon:'fa-fire'},
+    {name:'Swiftness',key:'swiftness',dur:180,ext:true,str:true,color:'#3399ff',id:1,icon:'fa-bolt'},
+    {name:'Slowness',key:'slowness',dur:60,ext:true,str:false,color:'#7777bb',id:2,icon:'fa-hourglass-half'},
+    {name:'Water Breathing',key:'water_breathing',dur:180,ext:true,str:false,color:'#4499dd',id:13,icon:'fa-water'},
+    {name:'Instant Health',key:'healing',dur:0,ext:false,str:true,color:'#ff4444',id:6,icon:'fa-heart'},
+    {name:'Instant Damage',key:'harming',dur:0,ext:false,str:true,color:'#882222',id:7,icon:'fa-skull'},
+    {name:'Poison',key:'poison',dur:45,ext:true,str:true,color:'#559933',id:19,icon:'fa-biohazard'},
+    {name:'Regeneration',key:'regeneration',dur:45,ext:true,str:true,color:'#ff66aa',id:10,icon:'fa-sync'},
+    {name:'Strength',key:'strength',dur:180,ext:true,str:true,color:'#993333',id:5,icon:'fa-fist-raised'},
+    {name:'Weakness',key:'weakness',dur:60,ext:true,str:false,color:'#999999',id:18,icon:'fa-feather'},
+    {name:'Luck',key:'luck',dur:300,ext:false,str:false,color:'#33cc99',id:26,icon:'fa-clover'},
+    {name:'Turtle Master',key:'turtle_master',dur:20,ext:true,str:true,color:'#2a6666',id:11,icon:'fa-shield-alt'},
+    {name:'Slow Falling',key:'slow_falling',dur:90,ext:true,str:false,color:'#dde0ff',id:27,icon:'fa-feather-alt'}
+];
+var BLK=[{n:'Stone',id:'minecraft:stone',h:1.5,b:6,t:'Pickaxe',d:'Cobblestone'},{n:'Granite',id:'minecraft:granite',h:1.5,b:6,t:'Pickaxe',d:'Granite'},{n:'Dirt',id:'minecraft:dirt',h:.5,b:.5,t:'Shovel',d:'Dirt'},{n:'Grass Block',id:'minecraft:grass_block',h:.6,b:.6,t:'Shovel',d:'Dirt'},{n:'Cobblestone',id:'minecraft:cobblestone',h:2,b:6,t:'Pickaxe',d:'Cobblestone'},{n:'Oak Planks',id:'minecraft:oak_planks',h:2,b:3,t:'Axe',d:'Oak Planks'},{n:'Oak Log',id:'minecraft:oak_log',h:2,b:2,t:'Axe',d:'Oak Log'},{n:'Sand',id:'minecraft:sand',h:.5,b:.5,t:'Shovel',d:'Sand'},{n:'Iron Ore',id:'minecraft:iron_ore',h:3,b:6,t:'Pickaxe',d:'Raw Iron'},{n:'Gold Ore',id:'minecraft:gold_ore',h:3,b:6,t:'Pickaxe',d:'Raw Gold'},{n:'Diamond Ore',id:'minecraft:diamond_ore',h:3,b:6,t:'Pickaxe',d:'Diamond'},{n:'Obsidian',id:'minecraft:obsidian',h:50,b:1200,t:'Pickaxe',d:'Obsidian'},{n:'Glass',id:'minecraft:glass',h:.3,b:.3,t:'\u2014',d:'\u2014'},{n:'TNT',id:'minecraft:tnt',h:0,b:0,t:'\u2014',d:'TNT'},{n:'Crafting Table',id:'minecraft:crafting_table',h:2.5,b:2.5,t:'Axe',d:'Crafting Table'},{n:'Furnace',id:'minecraft:furnace',h:3.5,b:3.5,t:'Pickaxe',d:'Furnace'},{n:'Chest',id:'minecraft:chest',h:2.5,b:2.5,t:'Axe',d:'Chest'},{n:'Ice',id:'minecraft:ice',h:.5,b:.5,t:'Pickaxe',d:'\u2014'},{n:'Glowstone',id:'minecraft:glowstone',h:.3,b:.3,t:'\u2014',d:'Glowstone Dust'},{n:'Netherrack',id:'minecraft:netherrack',h:.4,b:.4,t:'Pickaxe',d:'Netherrack'},{n:'End Stone',id:'minecraft:end_stone',h:9,b:9,t:'Pickaxe',d:'End Stone'},{n:'Bedrock',id:'minecraft:bedrock',h:-1,b:36e5,t:'\u2014',d:'\u2014'},{n:'Ancient Debris',id:'minecraft:ancient_debris',h:30,b:1200,t:'Pickaxe',d:'Ancient Debris'},{n:'Soul Sand',id:'minecraft:soul_sand',h:.5,b:.5,t:'Shovel',d:'Soul Sand'},{n:'Mycelium',id:'minecraft:mycelium',h:.6,b:.6,t:'Shovel',d:'Dirt'},{n:'Crying Obsidian',id:'minecraft:crying_obsidian',h:50,b:1200,t:'Pickaxe',d:'Crying Obsidian'},{n:'Ladder',id:'minecraft:ladder',h:.4,b:.4,t:'Axe',d:'Ladder'},{n:'Redstone Ore',id:'minecraft:redstone_ore',h:3,b:6,t:'Pickaxe',d:'Redstone'},{n:'Lapis Ore',id:'minecraft:lapis_ore',h:3,b:6,t:'Pickaxe',d:'Lapis Lazuli'},{n:'Gravel',id:'minecraft:gravel',h:.6,b:.6,t:'Shovel',d:'Gravel'},{n:'Snow Block',id:'minecraft:snow_block',h:.2,b:.2,t:'Shovel',d:'Snowball'},{n:'Clay',id:'minecraft:clay',h:.6,b:.6,t:'Shovel',d:'Clay Ball'},{n:'Sandstone',id:'minecraft:sandstone',h:.8,b:.8,t:'Pickaxe',d:'Sandstone'},{n:'Bookshelf',id:'minecraft:bookshelf',h:1.5,b:1.5,t:'Axe',d:'Book'},{n:'White Wool',id:'minecraft:white_wool',h:.8,b:.8,t:'Shears',d:'White Wool'}];
+
+/* ===== UTILS ===== */
+var cMode='ow',currentView='home',selPot=null,potMods={ext:false,str:false,splash:false,lingering:false,arrow:false};
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200);}
+function cpy(t){navigator.clipboard.writeText(t).then(function(){toast('Copied!')}).catch(function(){toast('Copy failed')});}
+function hS(s){var h=0;for(var i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h;}
+function tH(n,l){return(n>>>0).toString(16).padStart(l,'0');}
+function n2u(n){var s=n.toLowerCase(),a=hS(s+'_a'),b=hS(s+'_b'),c=hS(s+'_c'),d=hS(s+'_d');return tH(a,8)+tH(b,4)+'4'+tH(c,3)+tH(d&0x0FFF|0x3000,4)+tH(a^b^c^d,12);}
+function fU(u){return u.slice(0,8)+'-'+u.slice(8,12)+'-'+u.slice(12,16)+'-'+u.slice(16,20)+'-'+u.slice(20);}
+function oU(n){var s='OfflinePlayer:'+n,a=hS(s+'x1'),b=hS(s+'x2'),c=hS(s+'x3'),d=hS(s+'x4');return tH(a,8)+tH(b,4)+'3'+tH(c,3)+tH(d&0x3FFF|0x8000,4)+tH(a^b^c^d,12);}
+function rD(a,b){var y=+a+Math.floor(Math.random()*(+b-+a+1)),m=String(Math.floor(Math.random()*12)+1).padStart(2,'0'),d=String(Math.floor(Math.random()*28)+1).padStart(2,'0');return y+'-'+m+'-'+d;}
+function bI(n){return'https://mc-heads.net/body/'+encodeURIComponent(n);}
+function hI(n){return'https://mc-heads.net/head/'+encodeURIComponent(n);}
+function aI(n){return'https://mc-heads.net/avatar/'+encodeURIComponent(n);}
+function sD(n){return'https://mc-heads.net/skin/'+encodeURIComponent(n);}
+function sE(img){if(!img.dataset._s){img.dataset._s='1';var n=img.dataset.n||'';if(n){var k=img.dataset.k;if(k==='body')img.src='https://minotar.net/body/'+encodeURIComponent(n)+'/256';else if(k==='head')img.src='https://minotar.net/head/'+encodeURIComponent(n)+'/128';else img.src='https://minotar.net/avatar/'+encodeURIComponent(n)+'/64';return;}}img.style.display='none';var p=img.parentElement.querySelector('.sf');if(p)p.style.display='flex';}
+function skC(inner,w,h){return '<div class="skc" style="width:'+w+'px;height:'+h+'px;">'+inner+'<div class="sf"><i class="fas fa-user-slash"></i><span>Unavailable</span></div></div>';}
+
+/* ===== NAV ===== */
+function showView(v){document.querySelectorAll('.view').forEach(function(el){el.classList.remove('active')});document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nl[data-view]').forEach(function(l){l.classList.toggle('active',l.dataset.view===v)});currentView=v;window.scrollTo({top:0,behavior:'smooth'});closeUD();setTimeout(function(){var inp=document.querySelector('#view-'+v+' input[type="text"],#view-'+v+' input[type="number"],#view-'+v+' select');if(inp&&v!=='home')inp.focus()},150);}
+function homeSearch(){var q=document.getElementById('hs').value.trim();if(!q)return;if(q.includes('.')||q.includes(':')){showView('server');document.getElementById('svi').value=q;lookupServer();}else{showView('player');document.getElementById('pi').value=q;lookupPlayer();}}
+
+/* ===== HOME STATS ===== */
+function renderHomeStats(){
+    var s=getStats(),total=s.totalTools||0,players=s.players||0,servers=s.servers||0,skins=s.skins||0;
+    var first=s.firstVisit?new Date(s.firstVisit):null,now=new Date();
+    var days=first?Math.max(1,Math.floor((now-first)/(1e3*60*60*24))):0;
+    var sess=s.sessions||0;
+    document.getElementById('stats-grid').innerHTML=
+        '<div><div class="sn" data-count="'+total+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Tools Used</div></div>'+
+        '<div><div class="sn" data-count="'+players+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Players Looked Up</div></div>'+
+        '<div><div class="sn" data-count="'+servers+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Servers Checked</div></div>'+
+        '<div><div class="sn" data-count="'+skins+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Skins Viewed</div></div>';
+    var u=getDCUser(),label=u?'Signed in as '+esc(u.username):'Not signed in';
+    document.getElementById('stats-meta').innerHTML=
+        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-calendar" style="margin-right:4px;font-size:11px;"></i>'+days+' day'+(days!==1?'s':'')+' active</span>'+
+        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-redo" style="margin-right:4px;font-size:11px;"></i>Session #'+sess+'</span>'+
+        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-user' +(u?'':'-slash')+'" style="margin-right:4px;font-size:11px;"></i>'+label+'</span>';
+    aSt();
+}
+
+/* ===== PLAYER ===== */
+function lookupPlayer(){
+    var raw=document.getElementById('pi').value.trim();if(!raw)return;var name=raw,key=name.toLowerCase();
+    document.getElementById('pe').style.display='none';document.getElementById('pr').innerHTML='';document.getElementById('pl').style.display='block';
+    trackStat('players');
+    setTimeout(function(){
+        document.getElementById('pl').style.display='none';
+        var kn=KP[key],dn=kn?kn.name:name,uuid=n2u(name),fs=kn?kn.first:rD('2012','2024'),ls=kn?kn.last:rD('2023','2024'),hist=kn?kn.hist:[{n:dn,t:fs}],cape=kn?kn.cape:null;
+        var bH='<img src="'+bI(dn)+'" alt="'+esc(dn)+'" data-n="'+esc(dn)+'" data-k="body" onerror="sE(this)">';
+        var hH='<img src="'+hI(dn)+'" alt="" data-n="'+esc(dn)+'" data-k="head" onerror="sE(this)" style="width:44px;height:44px;">';
+        var hst='';for(var i=0;i<hist.length;i++){var nh=hist[i],av='<img src="'+aI(nh.n)+'" alt="" data-n="'+esc(nh.n)+'" data-k="avatar" onerror="sE(this)" style="width:26px;height:26px;">';hst+='<div class="ne">'+av+'<span style="color:'+(i===hist.length-1?'var(--gr)':'var(--tx)')+';flex:1;font-weight:'+(i===hist.length-1?'600':'400')+';">'+esc(nh.n)+'</span><span style="color:var(--tx3);font-size:13px;">'+nh.t+'</span></div>';}
+        var c=document.createElement('div');c.className='rc ai';
+        c.innerHTML='<div class="flex flex-col md:flex-row gap-8"><div class="flex flex-col items-center gap-4 flex-shrink-0">'+skC(bH,160,320)+'<a href="'+sD(dn)+'" target="_blank" rel="noopener" class="cb" style="text-decoration:none;"><i class="fas fa-download" style="font-size:11px;"></i> Download Skin</a></div><div class="flex-1 min-w-0"><div class="flex items-center gap-3 mb-5 flex-wrap">'+skC(hH,44,44)+'<div><h2 class="text-xl font-bold" style="color:var(--gr);">'+esc(dn)+'</h2>'+(cape?'<span class="tag mt-1" style="background:var(--grf);color:var(--gr);border:1px solid rgba(0,230,118,.1);"><i class="fas fa-vest" style="font-size:10px;"></i> '+cape+'</span>':'')+'</div></div><div class="grid sm:grid-cols-2 gap-3 mb-6"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">UUID</div><div class="uo"><span>'+fU(uuid)+'</span><button class="cb" onclick="cpy(\''+fU(uuid)+'\')" style="padding:4px 10px;font-size:12px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">UUID (undashed)</div><div class="uo"><span>'+uuid+'</span><button class="cb" onclick="cpy(\''+uuid+'\')" style="padding:4px 10px;font-size:12px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div></div><div class="grid grid-cols-2 gap-3 mb-6"><div class="rc" style="padding:14px;"><div class="text-xs font-medium" style="color:var(--tx3);">First Seen</div><div class="text-sm font-medium mt-1">'+fs+'</div></div><div class="rc" style="padding:14px;"><div class="text-xs font-medium" style="color:var(--tx3);">Last Seen</div><div class="text-sm font-medium mt-1">'+ls+'</div></div></div><div><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Name History</div>'+hst+'</div></div></div>';
+        document.getElementById('pr').appendChild(c);
+    },500+Math.random()*400);
+}
+
+/* ===== SERVER ===== */
+var svRun=false;
+function lookupServer(){
+    var q=document.getElementById('svi').value.trim();if(!q||svRun)return;svRun=true;
+    document.getElementById('svr').innerHTML='';document.getElementById('svl').style.display='block';
+    trackStat('servers');
+    var ac=new AbortController(),to=setTimeout(function(){ac.abort()},8e3);
+    fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(q),{signal:ac.signal}).then(function(r){clearTimeout(to);return r.json();}).then(function(d){document.getElementById('svl').style.display='none';svRun=false;if(d.online)renderSvOn(d,q);else renderSvOff(d,q);}).catch(function(e){clearTimeout(to);document.getElementById('svl').style.display='none';svRun=false;var msg=e.name==='AbortError'?'Request timed out.':'Could not reach the lookup service.';document.getElementById('svr').innerHTML='<div class="rc ai text-center py-16"><i class="fas fa-exclamation-triangle text-3xl mb-4" style="color:var(--am);"></i><p style="color:var(--tx2);">'+msg+'</p></div>';});
+}
+function renderSvOn(d,q){var icon=d.icon?'<img src="'+d.icon+'" alt="" style="width:44px;height:44px;border-radius:8px;image-rendering:pixelated;" class="flex-shrink-0">':'<div style="width:44px;height:44px;border-radius:8px;background:var(--sf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-server" style="color:var(--tx3);font-size:16px;"></i></div>';var ver=d.version||'Unknown',pon=d.players.online||0,pmax=d.players.max||0,motd=d.motd&&d.motd.clean?d.motd.clean.filter(function(l){return l}).join(' '):(d.hostname||q),sw=d.software?d.software.name:'',pct=pmax>0?(pon/pmax*100):0,ip=d.ip||q,port=d.port||25565,host=d.hostname||q,addr=port===25565?host:host+':'+port;var plH='';if(d.players.list&&d.players.list.length)plH='<div class="mt-6"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Online Players ('+d.players.list.length+')</div><div class="flex flex-wrap gap-2">'+d.players.list.slice(0,30).map(function(p){return '<span style="background:var(--sf2);border:1px solid var(--bd);padding:4px 10px;border-radius:6px;font-size:13px;">'+esc(p.name||p)+'</span>';}).join('')+(d.players.list.length>30?'<span style="color:var(--tx3);font-size:13px;padding:4px;">+ '+(d.players.list.length-30)+' more</span>':'')+'</div></div>';document.getElementById('svr').innerHTML='<div class="rc ai"><div class="flex items-center gap-4 mb-6 flex-wrap">'+icon+'<div class="flex-1 min-w-0"><div class="flex items-center gap-3 mb-1"><h2 class="text-xl font-bold">'+esc(host)+'</h2><span class="tag" style="background:var(--grf);color:var(--gr);border:1px solid rgba(0,230,118,.15);"><span class="sd on" style="width:6px;height:6px;margin-right:2px;"></span> Online</span></div><div class="text-sm" style="color:var(--tx3);">'+esc(addr)+'</div></div></div><div class="rc mb-5" style="padding:18px;background:var(--sf2);"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">MOTD</div><div class="text-sm font-medium" style="word-break:break-word;">'+esc(motd)+'</div></div><div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">IP</div><div class="flex items-center gap-2"><span class="text-sm">'+esc(addr)+'</span><button class="cb" onclick="cpy(\''+esc(addr).replace(/'/g,"\\'")+'\')" style="padding:3px 8px;font-size:11px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Version</div><div class="text-sm">'+esc(ver)+'</div></div>'+(sw?'<div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Software</div><div class="text-sm">'+esc(sw)+'</div></div>':'')+'</div><div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium" style="color:var(--tx3);">Players</span><span class="text-sm font-medium">'+pon.toLocaleString()+' / '+(pmax?pmax.toLocaleString():'?')+'</span></div><div class="pbb" style="height:5px;"><div class="pbf" style="width:0%;" id="svbf"></div></div><div class="flex justify-between mt-1"><span class="text-xs" style="color:var(--tx3);">0%</span><span class="text-xs" style="color:var(--tx3);">'+pct.toFixed(1)+'%</span></div>'+plH+'</div>';requestAnimationFrame(function(){requestAnimationFrame(function(){var b=document.getElementById('svbf');if(b)b.style.width=Math.min(pct,100)+'%';});});}
+function renderSvOff(d,q){var host=d.hostname||q,ip=d.ip||q,port=d.port||25565,addr=port===25565?host:host+':'+port;document.getElementById('svr').innerHTML='<div class="rc ai text-center py-16"><span class="sd off" style="width:12px;height:12px;margin-bottom:14px;display:inline-block;"></span><h2 class="text-lg font-bold mb-2" style="color:var(--rd);">Server Offline</h2><p style="color:var(--tx2);">'+esc(host)+' is not responding</p><div class="mt-4 text-sm" style="color:var(--tx3);">Address: '+esc(addr)+'</div></div>';}
+
+/* ===== SKIN ===== */
+function viewSkin(){var name=document.getElementById('ski').value.trim();if(!name)return;document.getElementById('ske').style.display='none';document.getElementById('skr').innerHTML='<div class="lb"></div>';trackStat('skins');setTimeout(function(){var f='<img src="'+bI(name)+'" data-n="'+esc(name)+'" data-k="body" onerror="sE(this)">',bk='<img src="'+bI(name)+'" style="transform:scaleX(-1);" data-n="'+esc(name)+'" data-k="body" onerror="sE(this)">',hd='<img src="'+hI(name)+'" data-n="'+esc(name)+'" data-k="head" onerror="sE(this)">';document.getElementById('skr').innerHTML='<div class="rc ai"><div class="flex items-center gap-3 mb-6">'+skC(hd,56,56)+'<h2 class="text-lg font-bold" style="color:var(--gr);">'+esc(name)+'</h2></div><div class="grid grid-cols-2 md:grid-cols-3 gap-6"><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Front</div>'+skC(f,180,360)+'</div><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Back</div>'+skC(bk,180,360)+'</div><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Head</div>'+skC(hd,128,128)+'</div></div><div class="mt-6"><a href="'+sD(name)+'" target="_blank" rel="noopener" class="cb" style="text-decoration:none;"><i class="fas fa-download" style="font-size:11px;"></i> Download Skin</a></div></div>';},350);}
+
+/* ===== COLORS ===== */
+function initC(){var ch='';for(var i=0;i<MC.length;i++){var c=MC[i];ch+='<div class="text-center"><div class="cs" style="background:'+c.h+';'+(c.h==='#000000'?'border:1px solid rgba(255,255,255,.1);':'')+'" onclick="acc(\''+c.c+'\')" title="'+c.n+'"></div><div style="font-size:11px;color:var(--tx3);margin-top:4px;">'+c.ch+'</div><div style="font-size:11px;color:var(--sf3);">'+c.n+'</div></div>';}document.getElementById('csw').innerHTML=ch;var fh='';for(var j=0;j<MF.length;j++){var f=MF[j];fh+='<div class="fs" onclick="acc(\''+f.c+'\')" title="'+f.n+'"><div style="'+f.s+'color:var(--tx);font-size:16px;font-weight:600;">Aa</div><div style="font-size:11px;color:var(--tx3);margin-top:4px;">'+f.n+'</div></div>';}document.getElementById('fsw').innerHTML=fh;document.getElementById('ci').addEventListener('input',ucp);}
+function acc(code){var inp=document.getElementById('ci'),p=inp.selectionStart;inp.value=inp.value.slice(0,p)+code+inp.value.slice(p);inp.focus();inp.setSelectionRange(p+code.length,p+code.length);ucp();}
+function ucp(){var raw=document.getElementById('ci').value,pv=document.getElementById('cpv');if(!raw){pv.innerHTML='<span style="color:var(--tx3);">Preview will appear here...</span>';return;}var h='',cc='#AAAAAA',cs='';for(var i=0;i<raw.length;i++){if(raw[i]==='\u00a7'&&i+1<raw.length){var c=raw[i+1],cm=MC.find(function(x){return x.ch===c}),fm=MF.find(function(x){return x.ch===c});if(cm){cc=cm.h;cs='';}else if(fm){if(c==='r'){cc='#AAAAAA';cs='';}else cs+=fm.s;}i++;}else h+='<span style="color:'+cc+';'+cs+'">'+(raw[i]===' '?'&nbsp;':esc(raw[i]))+'</span>';}pv.innerHTML=h;}
+function ct(){var v=document.getElementById('ci').value;if(v)cpy(v);}
+
+/* ===== UUID ===== */
+function convUUID(){var name=document.getElementById('ui').value.trim();if(!name)return;document.getElementById('ue').style.display='none';document.getElementById('ur').innerHTML='';document.getElementById('ul').style.display='block';trackStat('uuids');setTimeout(function(){document.getElementById('ul').style.display='none';var ou=n2u(name),of=oU(name);document.getElementById('ur').innerHTML='<div class="rc ai" style="display:flex;flex-direction:column;gap:14px;"><div class="text-xs font-semibold" style="color:var(--gr);letter-spacing:1px;">ONLINE UUID</div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Dashed</div><div class="uo"><span>'+fU(ou)+'</span><button class="cb" onclick="cpy(\''+fU(ou)+'\')"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Undashed</div><div class="uo"><span>'+ou+'</span><button class="cb" onclick="cpy(\''+ou+'\')"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div style="border-top:1px solid var(--bd);padding-top:14px;"><div class="text-xs font-semibold mb-4" style="color:var(--am);letter-spacing:1px;">OFFLINE UUID</div><div class="mb-3"><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Dashed</div><div class="uo" style="color:var(--am);"><span>'+fU(of)+'</span><button class="cb" onclick="cpy(\''+fU(of)+'\')" style="border-color:rgba(255,170,0,.2);color:var(--am);"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Undashed</div><div class="uo" style="color:var(--am);"><span>'+of+'</span><button class="cb" onclick="cpy(\''+of+'\')" style="border-color:rgba(255,170,0,.2);color:var(--am);"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div></div></div>';},350);}
+
+/* ===== COORDS ===== */
+function scm(m){cMode=m;var o=document.getElementById('cmo'),n=document.getElementById('cmn');if(m==='ow'){o.className='sb';o.style.flex='1';n.className='sb';n.style.cssText='flex:1;background:var(--sf);color:var(--tx3);border:1px solid var(--bd);font-family:Plus Jakarta Sans,sans-serif;font-size:15px;font-weight:500;cursor:pointer;white-space:nowrap;padding:13px 24px;border-radius:10px;';}else{n.className='sb';n.style.flex='1';o.className='sb';o.style.cssText=n.style.cssText;}}
+function cc(){var x=parseFloat(document.getElementById('cx').value)||0,y=parseFloat(document.getElementById('cy').value)||0,z=parseFloat(document.getElementById('cz').value)||0,f=cMode==='ow'?1/8:8,ox=Math.floor(x*f),oz=Math.floor(z*f);document.getElementById('cr').style.display='block';document.getElementById('cfl').textContent=cMode==='ow'?'OVERWORLD':'NETHER';document.getElementById('ctl').textContent=cMode==='ow'?'NETHER':'OVERWORLD';document.getElementById('cfi').className=cMode==='ow'?'cob':'cbn';document.getElementById('cti').className=cMode==='ow'?'cbn':'cob';document.getElementById('cox').textContent=ox;document.getElementById('coy').textContent=y;document.getElementById('coz').textContent=oz;document.getElementById('cr').dataset.c=ox+', '+y+', '+oz;}
+function ccp(){var c=document.getElementById('cr').dataset.c;if(c)cpy(c);}
+function cd(){var ax=parseFloat(document.getElementById('dax').value)||0,ay=parseFloat(document.getElementById('day').value)||0,az=parseFloat(document.getElementById('daz').value)||0,bx=parseFloat(document.getElementById('dbx').value)||0,by=parseFloat(document.getElementById('dby').value)||0,bz=parseFloat(document.getElementById('dbz').value)||0,dx=bx-ax,dy=by-ay,dz=bz-az,d3=Math.sqrt(dx*dx+dy*dy+dz*dz),d2=Math.sqrt(dx*dx+dz*dz);document.getElementById('dr').innerHTML='<div class="rc ai"><div class="grid grid-cols-2 gap-4"><div><div class="text-xs font-medium" style="color:var(--tx3);">3D Distance</div><div class="fp text-base" style="color:var(--gr);">'+d3.toFixed(2)+'</div><div class="text-xs" style="color:var(--tx3);">blocks</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Flat (XZ)</div><div class="fp text-base" style="color:var(--am);">'+d2.toFixed(2)+'</div><div class="text-xs" style="color:var(--tx3);">blocks</div></div></div><div class="mt-4 text-sm" style="color:var(--tx3);">Delta: <span style="color:var(--tx2);">X:'+dx.toFixed(1)+' Y:'+dy.toFixed(1)+' Z:'+dz.toFixed(1)+'</span></div></div>';}
+
+/* ===== POTIONS ===== */
+function initPots(){var h='';for(var i=0;i<POTS.length;i++){var p=POTS[i];h+='<div class="pcard" data-idx="'+i+'" onclick="selPot('+i+')"><div class="pi" style="background:'+p.color+'20;color:'+p.color+';"><i class="fas '+p.icon+'"></i></div><div class="text-sm font-semibold">'+p.name+'</div><div class="text-xs" style="color:var(--tx3);">'+(p.dur?p.dur+'s':'Instant')+'</div></div>';}document.getElementById('pot-grid').innerHTML=h;}
+function selPot(idx){selPot=idx;potMods={ext:false,str:false,splash:false,lingering:false,arrow:false};document.getElementById('pot-step1').style.display='none';document.getElementById('pot-step2').style.display='block';trackStat('potions');renderPotMods();renderPotResult();}
+function potReset(){selPot=null;document.getElementById('pot-step1').style.display='block';document.getElementById('pot-step2').style.display='none';}
+function renderPotMods(){var p=POTS[selPot];var html='<div class="mtog '+(p.ext?'':'dis')+'" id="pm-ext" onclick="togPotMod(\'ext\')"><i class="fas fa-clock" style="font-size:12px;"></i> Extended</div><div class="mtog '+(p.str?'':'dis')+'" id="pm-str" onclick="togPotMod(\'str\')"><i class="fas fa-arrow-up" style="font-size:12px;"></i> Level II</div><div class="mtog" id="pm-splash" onclick="togPotMod(\'splash\')"><i class="fas fa-tint" style="font-size:12px;"></i> Splash</div><div class="mtog" id="pm-lingering" onclick="togPotMod(\'lingering\')"><i class="fas fa-cloud" style="font-size:12px;"></i> Lingering</div><div class="mtog" id="pm-arrow" onclick="togPotMod(\'arrow\')"><i class="fas fa-long-arrow-alt" style="font-size:12px;"></i> Arrow</div>';document.getElementById('pot-mods').innerHTML=html;}
+function togPotMod(key){
+    if(key==='ext'&&potMods.str){potMods.str=false;var el=document.getElementById('pm-str');if(el)el.classList.remove('on');}
+    if(key==='str'&&potMods.ext){potMods.ext=false;var el2=document.getElementById('pm-ext');if(el2)el2.classList.remove('on');}
+    if(key==='splash'){potMods.lingering=false;potMods.arrow=false;var el3=document.getElementById('pm-lingering');var el4=document.getElementById('pm-arrow');if(el3)el3.classList.remove('on');if(el4)el4.classList.remove('on');}
+    if(key==='lingering'){potMods.splash=true;potMods.arrow=false;var el5=document.getElementById('pm-arrow');if(el5)el5.classList.remove('on');}
+    if(key==='arrow'){potMods.splash=true;potMods.lingering=false;var el6=document.getElementById('pm-lingering');if(el6)el6.classList.remove('on');}
+    potMods[key]=!potMods[key];
+    var el7=document.getElementById('pm-'+key);if(el7)el7.classList.toggle('on',potMods[key]);
+    renderPotResult();
+}
+function renderPotResult(){
+    var p=POTS[selPot],dur=p.dur,amp=0,name=p.name;
+    // Extended: 8/3x duration
+    if(potMods.ext&&p.dur>0)dur=p.key==='turtle_master'?Math.floor(dur*4/3):Math.floor(dur*8/3);
+    // Strong: half duration, amp+1
+    if(potMods.str){if(p.dur>0)dur=Math.max(1,Math.floor(dur/2));amp=1;}
+    // Duration in ticks (*20)
+    var ticks=dur>0?dur*20:0;
+    // Build potion name
+    var prefix='';
+    if(potMods.ext)prefix='Extended ';
+    if(potMods.str)prefix='Strong ';
+    if(potMods.str&&potMods.ext)prefix=''; // mutual exclusion
+    var type='Potion';if(potMods.splash)type='Splash Potion';if(potMods.lingering)type='Lingering Potion';if(potMods.arrow)type='Arrow of '+p.name;
+    var fullName=prefix+type;
+    if(potMods.arrow)fullName=prefix+'Arrow of '+p.name;
+    else fullName=prefix+type+' of '+p.name;
+    // Build command
+    var potKey='minecraft:'+p.key;
+    if(potMods.ext)potKey='minecraft:long_'+p.key;
+    if(potMods.str)potKey='minecraft:strong_'+p.key;
+    var itemType='potion';if(potMods.splash)itemType='splash_potion';if(potMods.lingering)itemType='lingering_potion';if(potMods.arrow)itemType='arrow';
+    var cmd='/give @p '+itemType+'{Potion:"'+potKey+'"}';
+    // Amplifier display
+    var ampDisp=amp>0?' II':'';
+    // Render
+    var html='<div class="rc ai"><div class="flex items-start gap-5 mb-6"><div style="width:56px;height:56px;border-radius:12px;background:'+p.color+'20;border:1px solid '+p.color+'30;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas '+p.icon+' text-xl" style="color:'+p.color+';"></i></div><div><div class="text-lg font-bold mb-1">'+esc(fullName)+'</div><div class="text-sm" style="color:var(--tx3);">Effect: '+esc(p.name)+ampDisp+'</div></div></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"><div><div class="text-xs font-medium" style="color:var(--tx3);">Amplifier</div><div class="text-sm font-semibold mt-1">'+amp+(amp>0?' (Level II)':' (Level I)')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Duration</div><div class="text-sm font-semibold mt-1">'+(dur>0?dur+'s':'Instant')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Ticks</div><div class="text-sm font-semibold mt-1">'+(ticks>0?ticks:'N/A')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Type</div><div class="text-sm font-semibold mt-1">'+type+'</div></div></div><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Command</div><div class="cmd-box"><span>'+esc(cmd)+'</span><button class="cb" onclick="cpy(\''+cmd.replace(/'/g,"\\'")+'\')" style="padding:5px 10px;font-size:12px;flex-shrink:0;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div>';
+    document.getElementById('pot-result').innerHTML=html;
+}
+
+/* ===== BLOCKS ===== */
+function rBL(list){var h='';for(var i=0;i<list.length;i++){var b=list[i];h+='<div class="bc"><div class="flex items-center justify-between mb-3"><h3 class="text-sm font-semibold">'+esc(b.n)+'</h3><span class="text-xs" style="color:var(--sf3);font-family:monospace;">'+esc(b.id)+'</span></div><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm"><div><span style="color:var(--tx3);font-size:12px;">Hardness</span><div class="font-medium">'+(b.h<0?'\u221E':b.h)+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Blast Res.</span><div class="font-medium">'+b.b.toLocaleString()+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Tool</span><div class="font-medium">'+(b.t==='\u2014'?'<span style="color:var(--tx3);">None</span>':esc(b.t))+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Drop</span><div class="font-medium">'+(b.d==='\u2014'?'<span style="color:var(--tx3);">Nothing</span>':esc(b.d))+'</div></div></div></div>';}document.getElementById('blg').innerHTML=h||'<div class="rc text-center py-16" style="color:var(--tx3);"><p>No blocks found</p></div>';}
+function filterBlocks(){var q=document.getElementById('blk').value.trim().toLowerCase();if(!q){rBL(BLK);return;}rBL(BLK.filter(function(b){return b.n.toLowerCase().includes(q)||b.id.toLowerCase().includes(q);}));}
+
+/* ===== HOME ===== */
+function initHome(){var h='';for(var i=0;i<TD.length;i++){var t=TD[i];h+='<div class="tc" onclick="showView(\''+t.v+'\')" tabindex="0" role="button"><div class="iw"><i class="fas '+t.i+'"></i></div><h3 class="text-sm font-semibold mb-1">'+t.t+'</h3><p class="text-sm" style="color:var(--tx3);">'+t.d+'</p></div>';}document.getElementById('tg').innerHTML=h;var qh='';for(var j=0;j<QS.length;j++){qh+='<button class="sqb" onclick="showView(\'server\');document.getElementById(\'svi\').value=\''+QS[j]+'\';lookupServer();">'+esc(QS[j])+'</button>';}document.getElementById('svq').innerHTML=qh;renderHomeStats();}
+
+/* ===== BG ===== */
+function initBg(){var c=document.getElementById('bgp'),n=window.innerWidth<768?8:14;for(var i=0;i<n;i++){var b=document.createElement('div');b.className='fb';var s=10+Math.random()*18;b.style.width=s+'px';b.style.height=s+'px';b.style.left=Math.random()*100+'%';b.style.animationDuration=(25+Math.random()*35)+'s';b.style.animationDelay=-(Math.random()*50)+'s';if(Math.random()>.5){var o=.02+Math.random()*.03;b.style.background='rgba(0,230,118,'+o+')';b.style.borderColor='rgba(0,230,118,'+(o*.6)+')';}else{var o2=.015+Math.random()*.025;b.style.background='rgba(139,105,20,'+o2+')';b.style.borderColor='rgba(139,105,20,'+(o2*.6)+')';}c.appendChild(b);}}
+
+/* ===== STAT ANIM ===== */
+function aSt(){document.querySelectorAll('.sn[data-count]').forEach(function(el){var t=parseInt(el.dataset.count),dur=1400,st=performance.now();(function tick(now){var p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.floor(e*t).toLocaleString();if(p<1)requestAnimationFrame(tick);else el.textContent=t.toLocaleString();})(st);});}
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){aSt();obs.disconnect();}});},{threshold:.3});
+
+/* ===== KEYBOARD ===== */
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList.contains('tc'))e.target.click();});
+
+/* ===== INIT ===== */
+initBg();initHome();initC();initPots();rBL(BLK);ucp();renderUserArea();
+var stEl=document.querySelector('.sn');if(stEl)obs.observe(stEl.closest('section'));
+</script>
+</body>
+</html>
