@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="title" content="MineTools — The Ultimate Minecraft Toolkit">
-    <meta name="description" content="Look up players, check servers, and calculate XP. The ultimate Minecraft utility suite for players.">
+    <meta name="title" content="MineTools — Minecraft Utilities">
+    <meta name="description" content="The ultimate Minecraft toolkit. Look up players, check servers, and explore real-time stats.">
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mctool.netlify.app/">
-    <meta property="og:title" content="MineTools — The Ultimate Minecraft Toolkit">
-    <meta property="og:description" content="Look up players, check servers, and calculate XP. The ultimate Minecraft utility suite for players.">
-    <meta property="og:image" content="https://mctool.netlify.app/og-image.png">
+    <meta property="og:url" content="https://mctool.netlify.app/"> <meta property="og:title" content="MineTools — Minecraft Utilities">
+    <meta property="og:description" content="Free, fast Minecraft utilities. Lookup players, servers, and skins instantly.">
+    <meta property="og:image" content="./og-image.png"> 
+    <meta property="og:color" content="#facc15">
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://mctool.netlify.app/">
-    <meta property="twitter:title" content="MineTools — The Ultimate Minecraft Toolkit">
-    <meta property="twitter:description" content="Look up players, check servers, and calculate XP. The ultimate Minecraft utility suite for players.">
-    <meta property="twitter:image" content="https://mctool.netlify.app/og-image.png">
-    
+    <meta property="twitter:title" content="MineTools — Minecraft Utilities">
+    <meta property="twitter:description" content="The ultimate Minecraft toolkit for players and server owners.">
+    <meta property="twitter:image" content="./og-image.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MineTools — Minecraft Utilities</title>
@@ -53,17 +51,16 @@
         .tool-panel{display:none}.tool-panel.active{display:block}
         .tool-tab{cursor:pointer;transition:all .3s ease}.tool-tab.active{background:rgba(250,204,21,.15);border-color:rgba(250,204,21,.4)!important;color:#facc15}
         .tool-tab:hover:not(.active){background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1)!important}
-        .cc-list-item{transition:all .2s ease;cursor:pointer;border:1px solid transparent}
-        .cc-list-item:hover{border-color:rgba(250,204,21,.3);transform:translateX(4px)}
-        .cc-list-item.active{border-color:rgba(250,204,21,.5);background:rgba(250,204,21,.05)}
-        .cc-copy-row{transition:background .15s ease}.cc-copy-row:hover{background:rgba(255,255,255,.03)}
-        .cc-input{background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;transition:border-color .2s;width:100%}.cc-input:focus{outline:none;border-color:rgba(250,204,21,.4)}
-        input[type="color"]{-webkit-appearance:none;border:none;width:40px;height:40px;border-radius:8px;cursor:pointer;padding:0;background:transparent}
-        input[type="color"]::-webkit-color-swatch-wrapper{padding:2px}
-        input[type="color"]::-webkit-color-swatch{border:1px solid rgba(255,255,255,.15);border-radius:6px}
     </style>
 </head>
 <body class="grid-bg">
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+    </script>
+</body>
 
 <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3"></div>
 
@@ -71,7 +68,7 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="flex items-center gap-3 group cursor-pointer">
             <div class="w-9 h-9 bg-brand rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314A12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg>
+                <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314a12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg>
             </div>
             <span class="font-heading text-xl font-bold tracking-tight">MineTools</span>
         </a>
@@ -99,6 +96,7 @@
 </nav>
 
 <main>
+    <!-- HERO -->
     <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20">
         <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-brand/5 rounded-full blur-[120px] spin-slow pointer-events-none"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand/5 rounded-full blur-[120px] spin-slow pointer-events-none" style="animation-direction:reverse"></div>
@@ -138,6 +136,7 @@
         </div>
     </section>
 
+    <!-- FEATURES -->
     <section id="features" class="py-24 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 scroll-anim">
@@ -149,6 +148,7 @@
         </div>
     </section>
 
+    <!-- TOOLS -->
     <section id="tools" class="py-24 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 scroll-anim">
@@ -163,6 +163,7 @@
         </div>
     </section>
 
+    <!-- STATS -->
     <section id="stats" class="py-24 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 scroll-anim">
@@ -205,6 +206,7 @@
         </div>
     </section>
 
+    <!-- DISCORD -->
     <section class="py-24 px-6">
         <div class="max-w-4xl mx-auto scroll-anim">
             <a href="https://discord.com/invite/S8MXWRuuSf" target="_blank" class="block group">
@@ -232,6 +234,7 @@
         </div>
     </section>
 
+    <!-- POPULAR SERVERS -->
     <section class="py-24 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 scroll-anim">
@@ -248,12 +251,17 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div class="md:col-span-2">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314A12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg></div>
+                    <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314a12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg>
+                    </div>
                     <span class="font-heading text-lg font-bold">MineTools</span>
                 </div>
                 <p class="text-sm text-gray-500 max-w-sm leading-relaxed">The ultimate Minecraft utility suite. Free, fast, and built with love for the community.</p>
             </div>
-            <div><h4 class="font-heading text-sm font-bold uppercase tracking-wider text-gray-300 mb-4">Tools</h4><ul class="space-y-2" id="footer-tools"></ul></div>
+            <div>
+                <h4 class="font-heading text-sm font-bold uppercase tracking-wider text-gray-300 mb-4">Tools</h4>
+                <ul class="space-y-2" id="footer-tools"></ul>
+            </div>
             <div>
                 <h4 class="font-heading text-sm font-bold uppercase tracking-wider text-gray-300 mb-4">Community</h4>
                 <ul class="space-y-2">
@@ -281,40 +289,26 @@ const TOOLS=[
     {id:'colorcreator',name:'Color Creator',desc:'Gradient presets & color formats',icon:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22V12"/><path d="M2 12h10"/>'},
     {id:'seed',name:'Seed Viewer',desc:'Get info from a world seed',icon:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>'}
 ];
-let activeTool='player',sessionLookups=new Array(24).fill(0),sessionTools=new Array(24).fill(0),searchTab='player';
-function getStats(){
-    try {
-        const s=localStorage.getItem('minetools_stats');
-        return s?JSON.parse(s):{visits:0,players:0,servers:0,skins:0};
-    } catch (e) {
-        console.warn("Storage access denied:", e);
-        return {visits:0,players:0,servers:0,skins:0};
-    }
-}
-function saveStats(s){
-    try {
-        localStorage.setItem('minetools_stats',JSON.stringify(s));
-    } catch (e) {
-        // Silent fail
-    }
-}
+
+let activeTool='player';
+let sessionLookups=new Array(24).fill(0);
+let sessionTools=new Array(24).fill(0);
+let currentSkinUrl='';
+let searchTab='player';
+
+function getStats(){const s=localStorage.getItem('minetools_stats');if(s)return JSON.parse(s);return{visits:0,players:0,servers:0,skins:0};}
+function saveStats(s){localStorage.setItem('minetools_stats',JSON.stringify(s));}
 function incStat(k){const s=getStats();s[k]=(s[k]||0)+1;saveStats(s);}
+
 document.addEventListener('DOMContentLoaded',()=>{
-    const st=getStats();st.visits++;saveStats(st);
+    const stats=getStats();stats.visits++;saveStats(stats);
     buildFeaturesGrid();buildToolTabs();buildToolPanels();buildPopularServers();buildFooterTools();
     initScrollAnimations();updateStatsDisplay();setInterval(updateStatsDisplay,1000);
     fetchDiscord();initActivityChart();setInterval(updateActivityChart,3000);
-    // Initialize specific tools after DOM is ready
-    setTimeout(initColorCodes,300);
-    setTimeout(calcXP,300);
-    // Initialize Color Creator after panels are built
-    setTimeout(function(){
-        buildCCList();
-        setCCDir('to right');
-        updateCC();
-    }, 100);
+    setTimeout(initColorCodes,300);setTimeout(calcXP,300);
 });
 
+// ========== FEATURES ==========
 function buildFeaturesGrid(){
     document.getElementById('features-grid').innerHTML=TOOLS.map((t,i)=>`
         <div class="scroll-anim card-glow result-card rounded-2xl p-8 group cursor-pointer" onclick="switchTool('${t.id}');document.getElementById('tools').scrollIntoView({behavior:'smooth'})" style="transition-delay:${i*60}ms">
@@ -324,6 +318,8 @@ function buildFeaturesGrid(){
             <div class="mt-4 text-xs text-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300">Use tool →</div>
         </div>`).join('');
 }
+
+// ========== TOOL TABS ==========
 function buildToolTabs(){
     document.getElementById('tool-tabs').innerHTML=TOOLS.map(t=>`
         <button onclick="switchTool('${t.id}')" id="ttab-${t.id}" class="tool-tab px-4 py-2.5 rounded-xl border border-white/10 text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-2">
@@ -338,9 +334,12 @@ function switchTool(id){
     document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active'));
     document.getElementById('tpanel-'+id)?.classList.add('active');
 }
+
+// ========== TOOL PANELS ==========
 function buildToolPanels(){
     document.getElementById('tool-panels').innerHTML=TOOLS.map(t=>`<div id="tpanel-${t.id}" class="tool-panel ${t.id==='player'?'active':''}"><div class="result-card rounded-2xl p-8 border-glow">${getToolHTML(t.id)}</div></div>`).join('');
 }
+
 function sv(icon){return `<svg class="w-5 h-5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>`;}
 
 function getToolHTML(id){
@@ -349,26 +348,31 @@ function getToolHTML(id){
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>')}</div><div><h3 class="font-heading text-lg font-bold">Player Lookup</h3><p class="text-xs text-gray-500">Powered by PlayerDB + mc-heads.net</p></div></div>
         <div class="flex gap-3 mb-6"><input type="text" id="inp-player" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doPlayerLookup()"><button onclick="doPlayerLookup()" class="btn-primary px-5 py-3 rounded-xl text-sm">Lookup</button></div>
         <div id="res-player"><div class="text-center py-8 text-gray-700 text-sm">Results will appear here</div></div>`;
+
     case 'server':return `
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/>')}</div><div><h3 class="font-heading text-lg font-bold">Server Lookup</h3><p class="text-xs text-gray-500">Powered by mcsrvstat.us</p></div></div>
-        <div class="flex gap-3 mb-6"><input type="text" id="inp-server" placeholder="Server address..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doServerLookup()"><button onclick="doServerLookup()" class="btn-primary px-5 py-3 rounded-xl text-sm">Lookup</button></div>
+        <div class="flex gap-3 mb-6"><input type="text" id="inp-server" placeholder="Server address (e.g. hypixel.net)..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doServerLookup()"><button onclick="doServerLookup()" class="btn-primary px-5 py-3 rounded-xl text-sm">Lookup</button></div>
         <div id="res-server"><div class="text-center py-8 text-gray-700 text-sm">Results will appear here</div></div>`;
+
     case 'skin':return `
-        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Skin Stealer</h3><p class="text-xs text-gray-500">View & download any player's skin</p></div></div>
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Skin Stealer</h3><p class="text-xs text-gray-500">View & download any player's skin via mc-heads.net</p></div></div>
         <div class="flex gap-3 mb-8 max-w-md mx-auto"><input type="text" id="inp-skin" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doSkinSteal()"><button onclick="doSkinSteal()" class="btn-primary px-5 py-3 rounded-xl text-sm">Get Skin</button></div>
         <div id="res-skin"><div class="text-center py-6 text-gray-700 text-sm">Skin preview will appear here</div></div>`;
+
     case 'uuid':return `
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>')}</div><div><h3 class="font-heading text-lg font-bold">UUID Converter</h3><p class="text-xs text-gray-500">Convert between UUID formats</p></div></div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Username → UUID</label><div class="flex gap-2"><input type="text" id="inp-uuid-name" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600" onkeydown="if(event.key==='Enter')doUUIDFromName()"><button onclick="doUUIDFromName()" class="btn-primary px-4 py-3 rounded-xl text-sm">Get</button></div><div id="res-uuid-name" class="mt-3"></div></div>
-            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">UUID Format Convert</label><input type="text" id="inp-uuid-convert" placeholder="Paste UUID..." class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 mb-2" oninput="doUUIDConvert()"><div id="res-uuid-convert" class="space-y-2"></div></div>
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Username → UUID</label><div class="flex gap-2"><input type="text" id="inp-uuid-name" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doUUIDFromName()"><button onclick="doUUIDFromName()" class="btn-primary px-4 py-3 rounded-xl text-sm">Get</button></div><div id="res-uuid-name" class="mt-3"></div></div>
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">UUID Format Convert</label><input type="text" id="inp-uuid-convert" placeholder="Paste UUID..." class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all mb-2" oninput="doUUIDConvert()"><div id="res-uuid-convert" class="space-y-2"></div></div>
         </div>`;
+
     case 'coords':return `
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>')}</div><div><h3 class="font-heading text-lg font-bold">Coordinate Converter</h3><p class="text-xs text-gray-500">Overworld ↔ Nether (÷8 / ×8)</p></div></div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-dark-500/50 rounded-xl p-5"><div class="text-xs text-brand font-semibold mb-3 uppercase tracking-wider">Overworld → Nether</div><div class="flex gap-2 mb-2"><input type="number" id="coord-ow-x" placeholder="X" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"><input type="number" id="coord-ow-z" placeholder="Z" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"></div><button onclick="convertCoords('ow2nether')" class="btn-primary w-full py-2.5 rounded-lg text-sm mb-3">Convert</button><div id="res-ow2nether" class="text-sm text-gray-400"></div></div>
             <div class="bg-dark-500/50 rounded-xl p-5"><div class="text-xs text-brand font-semibold mb-3 uppercase tracking-wider">Nether → Overworld</div><div class="flex gap-2 mb-2"><input type="number" id="coord-n-x" placeholder="X" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"><input type="number" id="coord-n-z" placeholder="Z" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"></div><button onclick="convertCoords('nether2ow')" class="btn-primary w-full py-2.5 rounded-lg text-sm mb-3">Convert</button><div id="res-nether2ow" class="text-sm text-gray-400"></div></div>
         </div>`;
+
     case 'xp':return `
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>')}</div><div><h3 class="font-heading text-lg font-bold">XP Calculator</h3><p class="text-xs text-gray-500">Calculate XP between levels</p></div></div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -376,39 +380,43 @@ function getToolHTML(id){
             <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">To Level</label><input type="number" id="xp-to" value="30" min="0" max="21863" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white" oninput="calcXP()"></div>
             <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Current XP</label><input type="number" id="xp-current" value="0" min="0" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white" oninput="calcXP()"></div>
         </div><div id="res-xp"></div>`;
+
     case 'mccolor':return `
-        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Minecraft Color Codes</h3><p class="text-xs text-gray-500">§ code reference</p></div></div>
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Minecraft Color Codes</h3><p class="text-xs text-gray-500">§ code reference for chat, MOTD, signs</p></div></div>
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2" id="color-codes-grid"></div>
-        <div class="mt-6"><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Live Preview</label><div class="bg-dark-500/50 rounded-xl p-4 font-mono text-lg leading-relaxed min-h-[60px]" id="color-preview" style="white-space:pre-wrap"><span style="color:#555">Type something with § codes...</span></div><input type="text" id="inp-mccolor" placeholder="e.g. §aHello §bWorld" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 mt-3 font-mono" oninput="updateColorPreview()"></div>`;
+        <div class="mt-6"><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Live Preview</label><div class="bg-dark-500/50 rounded-xl p-4 font-mono text-lg leading-relaxed min-h-[60px]" id="color-preview" style="white-space:pre-wrap"><span style="color:#555">Type something with § codes...</span></div><input type="text" id="inp-mccolor" placeholder="Type with § codes (e.g. §aHello §bWorld)" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 mt-3 font-mono" oninput="updateColorPreview()"></div>`;
+
     case 'colorcreator':return `
-        <div class="flex items-center gap-4 mb-8"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22V12"/><path d="M2 12h10"/>')}</div><div><h3 class="font-heading text-lg font-bold">Color Creator</h3><p class="text-xs text-gray-500">Gradients & color format outputs</p></div></div>
-        <div class="max-w-2xl mx-auto space-y-6">
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2"><span class="text-[10px] uppercase tracking-wider text-gray-500 w-6">C1</span><input type="color" id="cc-c1" value="#facc15" oninput="updateCC()"></div>
-                <div class="flex-1 h-8 rounded-lg" id="cc-mini-bar" style="background:linear-gradient(to right,#facc15,#eab308)"></div>
-                <div class="flex items-center gap-2"><span class="text-[10px] uppercase tracking-wider text-gray-500 w-6">C2</span><input type="color" id="cc-c2" value="#eab308" oninput="updateCC()"></div>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-[10px] uppercase tracking-wider text-gray-500">Dir</span>
-                <div class="flex gap-1">
-                    <button onclick="setCCDir('to right')" data-dir="to right" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30" style="border-color:rgba(250,204,21,.4);color:#facc15;background:rgba(250,204,21,.1)">→</button>
-                    <button onclick="setCCDir('to bottom')" data-dir="to bottom" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↓</button>
-                    <button onclick="setCCDir('to bottom right')" data-dir="to bottom right" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↘</button>
-                    <button onclick="setCCDir('to top')" data-dir="to top" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↑</button>
-                    <button onclick="setCCDir('135deg')" data-dir="135deg" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">135°</button>
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22V12"/><path d="M2 12h10"/>')}</div><div><h3 class="font-heading text-lg font-bold">Color Creator</h3><p class="text-xs text-gray-500">Create colors & gradients with format outputs</p></div></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Color 1</label><input type="color" id="cc-c1" value="#facc15" class="w-full h-10 rounded-lg cursor-pointer bg-transparent border border-white/10" oninput="updateCC()"></div>
+                    <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Color 2</label><input type="color" id="cc-c2" value="#eab308" class="w-full h-10 rounded-lg cursor-pointer bg-transparent border border-white/10" oninput="updateCC()"></div>
                 </div>
+                <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Gradient Direction</label>
+                    <div class="grid grid-cols-4 gap-2" id="cc-dir-btns">
+                        <button onclick="setCCDir('to right')" class="cc-dir-btn active text-[10px] py-2 rounded-lg border border-white/10 text-gray-500 hover:text-brand hover:border-brand/30 transition-all cursor-pointer" data-dir="to right">→</button>
+                        <button onclick="setCCDir('to bottom')" class="cc-dir-btn text-[10px] py-2 rounded-lg border border-white/10 text-gray-500 hover:text-brand hover:border-brand/30 transition-all cursor-pointer" data-dir="to bottom">↓</button>
+                        <button onclick="setCCDir('to bottom right')" class="cc-dir-btn text-[10px] py-2 rounded-lg border border-white/10 text-gray-500 hover:text-brand hover:border-brand/30 transition-all cursor-pointer" data-dir="to bottom right">↘</button>
+                        <button onclick="setCCDir('135deg')" class="cc-dir-btn text-[10px] py-2 rounded-lg border border-white/10 text-gray-500 hover:text-brand hover:border-brand/30 transition-all cursor-pointer" data-dir="135deg">135°</button>
+                    </div>
+                </div>
+                <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Gradient Presets</label>
+                    <div class="grid grid-cols-5 gap-2" id="cc-presets"></div>
+                </div>
+                <div id="cc-outputs" class="space-y-2"></div>
             </div>
-            <div><input type="text" id="cc-text" value="MineTools" placeholder="Preview text..." class="cc-input text-center text-base" oninput="updateCC()"></div>
-            <div id="cc-text-preview" class="py-10 text-center font-heading text-4xl font-bold rounded-xl" style="background:linear-gradient(to right,#facc15,#eab308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">MineTools</div>
-            <div class="space-y-1" id="cc-outputs"></div>
             <div>
-                <p class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-3">Gradients</p>
-                <div class="space-y-1 max-h-[340px] overflow-y-auto pr-1" id="cc-list"></div>
+                <label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Live Preview</label>
+                <div id="cc-preview" class="w-full h-48 rounded-2xl border border-white/10 mb-3" style="background:linear-gradient(to right,#facc15,#eab308)"></div>
+                <div id="cc-text-preview" class="w-full rounded-2xl border border-white/10 p-6 text-center font-heading text-2xl font-bold" style="background:linear-gradient(to right,#facc15,#eab308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Sample Text</div>
             </div>
         </div>`;
+
     case 'seed':return `
         <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Seed Info</h3><p class="text-xs text-gray-500">Generate info from a world seed</p></div></div>
-        <div class="flex gap-3 mb-6"><input type="text" id="inp-seed" placeholder="Enter seed..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600" onkeydown="if(event.key==='Enter')doSeedInfo()"><button onclick="doSeedInfo()" class="btn-primary px-5 py-3 rounded-xl text-sm">Analyze</button></div>
+        <div class="flex gap-3 mb-6"><input type="text" id="inp-seed" placeholder="Enter seed (number or text)..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doSeedInfo()"><button onclick="doSeedInfo()" class="btn-primary px-5 py-3 rounded-xl text-sm">Analyze</button></div>
         <div id="res-seed"><div class="text-center py-8 text-gray-700 text-sm">Seed info will appear here</div></div>`;
     }
     return '';
@@ -420,12 +428,37 @@ async function doPlayerLookup(){
     if(!username){showToast('Please enter a username','warning');return;}
     res.innerHTML='<div class="flex items-center justify-center py-8"><div class="w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-3 text-sm text-gray-400">Looking up '+esc(username)+'...</span></div>';
     try{
-        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username)),d=await r.json();
-        if(!d.success)throw 0;const p=d.data.player;incStat('players');sessionLookups[23]++;
-        let hh='';try{const hr=await fetch('https://api.mojang.com/user/profiles/'+p.id.replace(/-/g,'')+'/names');if(hr.ok){const n=await hr.json();if(n.length>1)hh=`<div class="mt-3"><p class="text-[10px] uppercase tracking-wider text-gray-600 mb-1.5 font-semibold">Name History</p><div class="flex flex-wrap gap-1.5">${n.map(x=>'<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-dark-500 text-xs '+(x.name.toLowerCase()===p.username.toLowerCase()?'text-brand border border-brand/20':'text-gray-400')+'">'+esc(x.name)+'</span>').join('')}</div></div>`;}}catch(e){}
-        res.innerHTML=`<div class="flex flex-col sm:flex-row gap-5 items-start"><img src="https://mc-heads.net/avatar/${p.id}/128" alt="${esc(p.username)}" class="w-24 h-24 rounded-xl border-2 border-brand/30 skin-preview flex-shrink-0" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/128'"><div class="flex-1 min-w-0"><h4 class="font-heading text-xl font-bold mb-1">${esc(p.username)}</h4><p class="text-xs text-gray-500 font-mono mb-3 break-all">${p.id}</p><div class="flex flex-wrap gap-2 mb-2"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-green-400 text-xs font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>Valid</span></div>${hh}<div class="flex gap-2 mt-3 flex-wrap"><a href="https://mc-heads.net/skin/${p.id}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">View Skin</a><a href="https://mc-heads.net/download/${p.id}" target="_blank" class="btn-primary px-3 py-1.5 rounded-lg text-[10px]">Download Skin</a><a href="https://namemc.com/profile/${p.username}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">NameMC</a><button onclick="navigator.clipboard.writeText('${p.id}');showToast('UUID copied!','success')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Copy UUID</button></div></div></div>`;
+        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username));
+        const d=await r.json();
+        if(!d.success)throw new Error('Not found');
+        const p=d.data.player;
+        incStat('players');sessionLookups[23]++;
+        let historyHtml='';
+        try{
+            const hr=await fetch('https://api.mojang.com/user/profiles/'+p.id.replace(/-/g,'')+'/names');
+            if(hr.ok){const names=await hr.json();if(names.length>1)historyHtml=`<div class="mt-3"><p class="text-[10px] uppercase tracking-wider text-gray-600 mb-1.5 font-semibold">Name History</p><div class="flex flex-wrap gap-1.5">${names.map(n=>'<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-dark-500 text-xs '+(n.name.toLowerCase()===p.username.toLowerCase()?'text-brand border border-brand/20':'text-gray-400')+'">'+esc(n.name)+'</span>').join('')}</div></div>`;}
+        }catch(e){}
+        res.innerHTML=`
+            <div class="flex flex-col sm:flex-row gap-5 items-start">
+                <img src="https://mc-heads.net/avatar/${p.id}/128" alt="${esc(p.username)}" class="w-24 h-24 rounded-xl border-2 border-brand/30 skin-preview flex-shrink-0" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/128'">
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-heading text-xl font-bold mb-1">${esc(p.username)}</h4>
+                    <p class="text-xs text-gray-500 font-mono mb-3 break-all">${p.id}</p>
+                    <div class="flex flex-wrap gap-2 mb-2"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-green-400 text-xs font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>Valid Account</span></div>
+                    ${historyHtml}
+                    <div class="flex gap-2 mt-3 flex-wrap">
+                        <a href="https://mc-heads.net/skin/${p.id}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">View Skin</a>
+                        <a href="https://mc-heads.net/download/${p.id}" target="_blank" class="btn-primary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">Download Skin</a>
+                        <a href="https://namemc.com/profile/${p.username}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">NameMC</a>
+                        <button onclick="navigator.clipboard.writeText('${p.id}');showToast('UUID copied!','success')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">Copy UUID</button>
+                    </div>
+                </div>
+            </div>`;
         showToast('Found: '+p.username,'success');
-    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">Player not found</div><div class="text-xs text-gray-600">Check spelling and try again</div></div>';showToast('Player not found','error');}
+    }catch(e){
+        res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">Player not found</div><div class="text-xs text-gray-600">Check the spelling and try again</div></div>';
+        showToast('Player not found','error');
+    }
 }
 
 // ========== SERVER LOOKUP ==========
@@ -434,22 +467,44 @@ async function doServerLookup(){
     if(!address){showToast('Please enter a server address','warning');return;}
     res.innerHTML='<div class="flex items-center justify-center py-8"><div class="w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-3 text-sm text-gray-400">Pinging '+esc(address)+'...</span></div>';
     try{
-        const r=await fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(address)),d=await r.json();
-        if(!d.online)throw new Error('Server appears to be offline');incStat('servers');sessionLookups[23]++;
-        const pl=d.players||{},info=d.info||{},ver=d.version||'',pct=pl.max>0?Math.round((pl.online/pl.max)*100):0;
+        const r=await fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(address));
+        const d=await r.json();
+        if(!d.online)throw new Error('Server appears to be offline');
+        incStat('servers');sessionLookups[23]++;
+        const pl=d.players||{},info=d.info||{},ver=d.version||'';
+        const pct=pl.max>0?Math.round((pl.online/pl.max)*100):0;
         const icon=d.icon?'<img src="'+d.icon+'" class="w-12 h-12 rounded-lg skin-preview">':'<div class="w-12 h-12 rounded-lg bg-dark-400 flex items-center justify-center"><svg class="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div>';
-        const motdLines=(info.motd_clean||info.motd||[]).join('\n')||'No MOTD set';const motdHtml=motdLines.split('\n').map(l=>esc(l)).join('<br>');
-        const motdRaw=(info.motd||[]).join('');const hasCC=/§./.test(motdRaw);
-        const uptimeBars=Array.from({length:30},()=>Math.random()>0.08).map(u=>'<div class="flex-1 h-2 rounded-sm '+(u?'bg-green-500/60':'bg-red-500/40')+'"></div>').join('');
-        res.innerHTML=`<div class="space-y-5"><div class="flex items-start gap-4">${icon}<div class="flex-1 min-w-0"><div class="flex items-center gap-2 flex-wrap"><h4 class="font-heading text-lg font-bold">${esc(d.hostname||address)}</h4><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px] font-semibold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div><p class="text-xs text-gray-500 font-mono mt-0.5">${esc(d.ip||address)}${d.port&&d.port!==25565?':'+d.port:''}</p></div></div>
-        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><span class="text-xs text-gray-400">Players</span><span class="text-xs text-gray-500">${pct}% full</span></div><div class="font-heading text-2xl font-bold mb-2">${pl.online.toLocaleString()} <span class="text-sm text-gray-500 font-normal">/ ${pl.max.toLocaleString()}</span></div><div class="w-full h-2 bg-dark-300 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${pct}%"></div></div></div>
-        <div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Version</div><div class="text-sm font-semibold">${esc(ver.replace(/§./g,'').substring(0,30))||'Unknown'}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Software</div><div class="text-sm font-semibold">${esc(d.software||'Unknown')}</div></div></div>
-        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">MOTD</div>${hasCC?'<span class="text-[10px] text-gray-600">Has color codes</span>':''}</div><div class="text-sm leading-relaxed text-white font-mono bg-dark-400/50 rounded-lg p-3">${motdHtml}</div>${hasCC?'<div class="mt-2 text-[10px] text-gray-600">Raw: <span class="font-mono text-gray-500">'+esc(motdRaw.substring(0,120))+'</span></div>':''}</div>
-        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">30-Day Uptime (est.)</div><div class="text-xs text-green-400 font-semibold">~92%</div></div><div class="flex gap-0.5">${uptimeBars}</div></div>
-        ${pl.sample&&pl.sample.length>0?'<div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Online Players</div><div class="flex flex-wrap gap-1.5">'+pl.sample.slice(0,12).map(p=>'<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-dark-400 text-xs text-gray-300"><img src="https://mc-heads.net/avatar/'+p.uuid+'/16" class="w-3.5 h-3.5 rounded skin-preview"> '+esc(p.name)+'</span>').join('')+(pl.sample.length>12?'<span class="px-2 py-0.5 text-xs text-gray-600">+'+(pl.sample.length-12)+'</span>':'')+'</div></div>':''}
-        <div class="flex gap-2"><a href="https://mcsrvstat.us/server/${address}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Full Stats</a><button onclick="navigator.clipboard.writeText(\''+esc(d.ip||address)+'\');showToast(\'IP copied!\',\'success\')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Copy IP</button></div></div>`;
-        showToast('Server online','success');
-    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">'+esc(e.message||'Lookup failed')+'</div><div class="text-xs text-gray-600">Make sure the address is correct</div></div>';showToast('Server lookup failed','error');}
+
+        // Use motd_clean for actual readable MOTD text
+        const motdLines=(info.motd_clean||info.motd||[]).join('\n')||'No MOTD set';
+        const motdHtml=motdLines.split('\n').map(l=>esc(l)).join('<br>');
+        const motdRawLines=(info.motd||[]).join('\n')||'';
+        const hasColorCodes=/§./.test(motdRawLines);
+
+        const uptimeBars=Array.from({length:30},()=>Math.random()>0.08).map(u=>'<div class="flex-1 h-2 rounded-sm '+(u?'bg-green-500/60':'bg-red-500/40')+'" title="'+(u?'Online':'Offline')+'"></div>').join('');
+
+        res.innerHTML=`
+            <div class="space-y-5">
+                <div class="flex items-start gap-4">${icon}<div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap"><h4 class="font-heading text-lg font-bold">${esc(d.hostname||address)}</h4><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px] font-semibold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div>
+                    <p class="text-xs text-gray-500 font-mono mt-0.5">${esc(d.ip||address)}${d.port&&d.port!==25565?':'+d.port:''}</p>
+                </div></div>
+                <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><span class="text-xs text-gray-400">Players</span><span class="text-xs text-gray-500">${pct}% full</span></div><div class="font-heading text-2xl font-bold mb-2">${pl.online.toLocaleString()} <span class="text-sm text-gray-500 font-normal">/ ${pl.max.toLocaleString()}</span></div><div class="w-full h-2 bg-dark-300 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${pct}%"></div></div></div>
+                <div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Version</div><div class="text-sm font-semibold">${esc(ver.replace(/§./g,'').substring(0,30))||'Unknown'}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Software</div><div class="text-sm font-semibold">${esc(d.software||'Unknown')}</div></div></div>
+                <div class="bg-dark-500/50 rounded-xl p-4">
+                    <div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">MOTD</div>${hasColorCodes?'<span class="text-[10px] text-gray-600">Contains color codes</span>':''}</div>
+                    <div class="text-sm leading-relaxed text-white font-mono bg-dark-400/50 rounded-lg p-3">${motdHtml}</div>
+                    ${hasColorCodes?'<div class="mt-2 text-[10px] text-gray-600">Raw: <span class="font-mono text-gray-500">'+esc(motdRawLines.substring(0,120))+'</span></div>':''}
+                </div>
+                <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">30-Day Uptime (est.)</div><div class="text-xs text-green-400 font-semibold">~92%</div></div><div class="flex gap-0.5">${uptimeBars}</div><div class="flex justify-between mt-1.5 text-[9px] text-gray-700"><span>30d ago</span><span>Today</span></div></div>
+                ${pl.sample&&pl.sample.length>0?'<div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Online Players (sample)</div><div class="flex flex-wrap gap-1.5">'+pl.sample.slice(0,12).map(p=>'<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-dark-400 text-xs text-gray-300"><img src="https://mc-heads.net/avatar/'+p.uuid+'/16" class="w-3.5 h-3.5 rounded skin-preview"> '+esc(p.name)+'</span>').join('')+(pl.sample.length>12?'<span class="px-2 py-0.5 text-xs text-gray-600">+'+(pl.sample.length-12)+' more</span>':'')+'</div></div>':''}
+                <div class="flex gap-2"><a href="https://mcsrvstat.us/server/${address}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">Full Stats</a><button onclick="navigator.clipboard.writeText(\''+esc(d.ip||address)+'\');showToast(\'IP copied!\',\'success\')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px] inline-flex items-center gap-1">Copy IP</button></div>
+            </div>`;
+        showToast('Server online: '+(d.ip||address),'success');
+    }catch(e){
+        res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">'+esc(e.message||'Lookup failed')+'</div><div class="text-xs text-gray-600">Make sure the address is correct</div></div>';
+        showToast('Server lookup failed','error');
+    }
 }
 
 // ========== SKIN STEALER ==========
@@ -458,146 +513,283 @@ async function doSkinSteal(){
     if(!username){showToast('Please enter a username','warning');return;}
     res.innerHTML='<div class="flex items-center justify-center py-6"><div class="w-5 h-5 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-2 text-sm text-gray-400">Loading skin...</span></div>';
     try{
-        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username)),d=await r.json();
-        if(!d.success)throw 0;const p=d.data.player;incStat('skins');
-        res.innerHTML=`<div class="text-center"><div class="inline-block relative mb-4"><img src="https://mc-heads.net/body/${p.id}/256" alt="${esc(p.username)}" class="w-48 h-64 rounded-2xl border-2 border-brand/30 skin-preview mx-auto bg-dark-500" onerror="this.src='https://mc-heads.net/body/MHF_Steve/256'"></div><p class="font-heading text-lg font-bold mb-1">${esc(p.username)}</p><p class="text-xs text-gray-500 font-mono mb-4">${p.id}</p><div class="flex items-center justify-center gap-3 flex-wrap"><a href="https://mc-heads.net/download/${p.id}" target="_blank" class="btn-primary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Skin</a><a href="https://mc-heads.net/skin/${p.id}" target="_blank" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Skin</a><button onclick="navigator.clipboard.writeText('https://mc-heads.net/download/${p.id}');showToast('URL copied!','success')" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL</button></div></div>`;
+        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username));
+        const d=await r.json();
+        if(!d.success)throw new Error('Not found');
+        const p=d.data.player;
+        incStat('skins');
+        // mc-heads.net URLs - very reliable for skin downloads
+        const bodyUrl='https://mc-heads.net/body/'+p.id+'/256';
+        const skinPage='https://mc-heads.net/skin/'+p.id;
+        const downloadUrl='https://mc-heads.net/download/'+p.id;
+
+        res.innerHTML=`
+            <div class="text-center">
+                <div class="inline-block relative mb-4">
+                    <img src="${bodyUrl}" alt="${esc(p.username)}" class="w-48 h-64 rounded-2xl border-2 border-brand/30 skin-preview mx-auto bg-dark-500" onerror="this.src='https://mc-heads.net/body/MHF_Steve/256'">
+                </div>
+                <p class="font-heading text-lg font-bold mb-1">${esc(p.username)}</p>
+                <p class="text-xs text-gray-500 font-mono mb-4">${p.id}</p>
+                <div class="flex items-center justify-center gap-3 flex-wrap">
+                    <a href="${downloadUrl}" target="_blank" class="btn-primary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Skin</a>
+                    <a href="${skinPage}" target="_blank" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Full Skin</a>
+                    <button onclick="navigator.clipboard.writeText('${downloadUrl}');showToast('Download URL copied!','success')" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL</button>
+                </div>
+            </div>`;
         showToast('Skin loaded: '+p.username,'success');
-    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm">Player not found</div></div>';showToast('Player not found','error');}
+    }catch(e){
+        res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm">Player not found</div></div>';
+        showToast('Player not found','error');
+    }
 }
 
-// ========== UUID ==========
-async function doUUIDFromName(){const inp=document.getElementById('inp-uuid-name'),res=document.getElementById('res-uuid-name'),name=inp.value.trim();if(!name){res.innerHTML='';return;}res.innerHTML='<div class="w-4 h-4 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div>';try{const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(name)),d=await r.json();if(!d.success)throw 0;const u=d.data.player.id;incStat('players');sessionLookups[23]++;res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5"><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${u}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${u}</div><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${u.replace(/-/g,'')}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${u.replace(/-/g,'')}</div></div>`;}catch(e){res.innerHTML='<div class="text-red-400 text-xs">Not found</div>';}}
-function doUUIDConvert(){const inp=document.getElementById('inp-uuid-convert'),res=document.getElementById('res-uuid-convert');let v=inp.value.trim().replace(/[^0-9a-fA-F]/g,'');if(!v){res.innerHTML='';return;}if(v.length===32){const d=v.slice(0,8)+'-'+v.slice(8,12)+'-'+v.slice(12,16)+'-'+v.slice(16,20)+'-'+v.slice(20);res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5"><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${d}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${d}</div><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${v}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${v}</div></div>`;}else{res.innerHTML='<div class="text-yellow-500 text-xs">Invalid UUID (32 hex chars needed)</div>';}}
+// ========== UUID CONVERTER ==========
+async function doUUIDFromName(){
+    const inp=document.getElementById('inp-uuid-name'),res=document.getElementById('res-uuid-name'),name=inp.value.trim();
+    if(!name){res.innerHTML='';return;}
+    res.innerHTML='<div class="w-4 h-4 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div>';
+    try{
+        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(name));
+        const d=await r.json();if(!d.success)throw new Error('Not found');
+        const uuid=d.data.player.id;incStat('players');sessionLookups[23]++;
+        res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5">
+            <div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${uuid}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${uuid}</div>
+            <div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${uuid.replace(/-/g,'')}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${uuid.replace(/-/g,'')}</div>
+        </div>`;
+    }catch(e){res.innerHTML='<div class="text-red-400 text-xs">Not found</div>';}
+}
+function doUUIDConvert(){
+    const inp=document.getElementById('inp-uuid-convert'),res=document.getElementById('res-uuid-convert');
+    let v=inp.value.trim().replace(/[^0-9a-fA-F]/g,'');
+    if(!v){res.innerHTML='';return;}
+    if(v.length===32){
+        const dashed=v.slice(0,8)+'-'+v.slice(8,12)+'-'+v.slice(12,16)+'-'+v.slice(16,20)+'-'+v.slice(20);
+        res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5">
+            <div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${dashed}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${dashed}</div>
+            <div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${v}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${v}</div>
+        </div>`;
+    }else{res.innerHTML='<div class="text-yellow-500 text-xs">Invalid UUID (need 32 hex chars)</div>';}
+}
 
-// ========== COORDS ==========
-function convertCoords(dir){if(dir==='ow2nether'){const x=parseFloat(document.getElementById('coord-ow-x').value),z=parseFloat(document.getElementById('coord-ow-z').value);if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}const nx=Math.floor(x/8),nz=Math.floor(z/8);document.getElementById('res-ow2nether').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${nx}  Z: ${nz}</div><button onclick="navigator.clipboard.writeText('${nx}, ${nz}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy</button></div>`;}else{const x=parseFloat(document.getElementById('coord-n-x').value),z=parseFloat(document.getElementById('coord-n-z').value);if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}document.getElementById('res-nether2ow').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${x*8}  Z: ${z*8}</div><button onclick="navigator.clipboard.writeText('${x*8}, ${z*8}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy</button></div>`;}}
+// ========== COORD CONVERTER ==========
+function convertCoords(dir){
+    if(dir==='ow2nether'){
+        const x=parseFloat(document.getElementById('coord-ow-x').value),z=parseFloat(document.getElementById('coord-ow-z').value);
+        if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}
+        const nx=Math.floor(x/8),nz=Math.floor(z/8);
+        document.getElementById('res-ow2nether').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${nx}  Z: ${nz}</div><button onclick="navigator.clipboard.writeText('${nx}, ${nz}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy coords</button></div>`;
+    }else{
+        const x=parseFloat(document.getElementById('coord-n-x').value),z=parseFloat(document.getElementById('coord-n-z').value);
+        if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}
+        document.getElementById('res-nether2ow').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${x*8}  Z: ${z*8}</div><button onclick="navigator.clipboard.writeText('${x*8}, ${z*8}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy coords</button></div>`;
+    }
+}
 
-// ========== XP ==========
+// ========== XP CALCULATOR ==========
 function xpToLevel(l){if(l<=16)return l*l+l*6;if(l<=31)return 2.5*l*l-40.5*l+360;return 4.5*l*l-162.5*l+2220;}
-function calcXP(){const from=Math.max(0,parseInt(document.getElementById('xp-from').value)||0),to=Math.max(0,parseInt(document.getElementById('xp-to').value)||0),cur=Math.max(0,parseInt(document.getElementById('xp-current').value)||0),el=document.getElementById('res-xp');if(from===to){el.innerHTML='<div class="text-gray-500 text-sm text-center py-4">Set different levels</div>';return;}const f=Math.floor(xpToLevel(from)),t=Math.floor(xpToLevel(to)),n=Math.abs(t-f),d=n+cur;el.innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3"><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">XP Needed</div><div class="font-heading text-2xl font-bold text-brand">${n.toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Total w/ Current</div><div class="font-heading text-2xl font-bold text-white">${d.toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Bottles (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(d/7).toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Orbs (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(d/3).toLocaleString()}</div></div></div><div class="mt-3 bg-dark-500/50 rounded-xl p-4"><div class="text-xs text-gray-400 space-y-1"><div class="flex justify-between"><span>Level ${from} total:</span><span class="text-white font-mono">${f.toLocaleString()}</span></div><div class="flex justify-between"><span>Level ${to} total:</span><span class="text-white font-mono">${t.toLocaleString()}</span></div><div class="flex justify-between border-t border-white/5 pt-1"><span>Difference:</span><span class="text-brand font-mono font-bold">${n.toLocaleString()}</span></div></div></div>`;}
+function calcXP(){
+    const from=Math.max(0,parseInt(document.getElementById('xp-from').value)||0),to=Math.max(0,parseInt(document.getElementById('xp-to').value)||0),cur=Math.max(0,parseInt(document.getElementById('xp-current').value)||0);
+    const el=document.getElementById('res-xp');
+    if(from===to){el.innerHTML='<div class="text-gray-500 text-sm text-center py-4">Set different levels to calculate</div>';return;}
+    const fXP=Math.floor(xpToLevel(from)),tXP=Math.floor(xpToLevel(to)),needed=Math.abs(tXP-fXP),diff=needed+cur;
+    el.innerHTML=`<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">XP Needed</div><div class="font-heading text-2xl font-bold text-brand">${needed.toLocaleString()}</div><div class="text-[10px] text-gray-600">+ ${cur} current</div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Total w/ Current</div><div class="font-heading text-2xl font-bold text-white">${diff.toLocaleString()}</div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">XP Bottles (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(diff/7).toLocaleString()}</div><div class="text-[10px] text-gray-600">~7 XP per bottle</div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">XP Orbs (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(diff/3).toLocaleString()}</div><div class="text-[10px] text-gray-600">~3 XP per avg orb</div></div>
+    </div>
+    <div class="mt-3 bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">XP Breakdown</div><div class="text-xs text-gray-400 space-y-1">
+        <div class="flex justify-between"><span>Level ${from} total XP:</span><span class="text-white font-mono">${fXP.toLocaleString()}</span></div>
+        <div class="flex justify-between"><span>Level ${to} total XP:</span><span class="text-white font-mono">${tXP.toLocaleString()}</span></div>
+        <div class="flex justify-between border-t border-white/5 pt-1"><span>Difference:</span><span class="text-brand font-mono font-bold">${needed.toLocaleString()}</span></div>
+    </div></div>`;
+}
 
 // ========== MC COLOR CODES ==========
-function initColorCodes(){const c=[{c:'§0',n:'Black',h:'#000000'},{c:'§1',n:'Dark Blue',h:'#0000AA'},{c:'§2',n:'Dark Green',h:'#00AA00'},{c:'§3',n:'Dark Aqua',h:'#00AAAA'},{c:'§4',n:'Dark Red',h:'#AA0000'},{c:'§5',n:'Dark Purple',h:'#AA00AA'},{c:'§6',n:'Gold',h:'#FFAA00'},{c:'§7',n:'Gray',h:'#AAAAAA'},{c:'§8',n:'Dark Gray',h:'#555555'},{c:'§9',n:'Blue',h:'#5555FF'},{c:'§a',n:'Green',h:'#55FF55'},{c:'§b',n:'Aqua',h:'#55FFFF'},{c:'§c',n:'Red',h:'#FF5555'},{c:'§d',n:'Light Purple',h:'#FF55FF'},{c:'§e',n:'Yellow',h:'#FFFF55'},{c:'§f',n:'White',h:'#FFFFFF'},{c:'§k',n:'Obfuscated',h:'#CCC'},{c:'§l',n:'Bold',h:'#CCC'},{c:'§m',n:'Strikethrough',h:'#CCC'},{c:'§n',n:'Underline',h:'#CCC'},{c:'§o',n:'Italic',h:'#CCC'},{c:'§r',n:'Reset',h:'#CCC'}];const g=document.getElementById('color-codes-grid');if(!g)return;g.innerHTML=c.map(x=>`<button onclick="insertColorCode('${x.c}')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-white/5 bg-dark-500/50 hover:border-brand/30 transition-all cursor-pointer"><div class="w-4 h-4 rounded-sm flex-shrink-0" style="background:${x.h};border:1px solid rgba(255,255,255,0.1)"></div><div class="min-w-0"><div class="text-[10px] font-mono text-brand">${x.c}</div><div class="text-[9px] text-gray-600 truncate">${x.n}</div></div></button>`).join('');}
-function insertColorCode(code){const inp=document.getElementById('inp-mccolor'),pos=inp.selectionStart;inp.value=inp.value.substring(0,pos)+code+inp.value.substring(pos);inp.focus();inp.selectionStart=inp.selectionEnd=pos+code.length;updateColorPreview();}
-function updateColorPreview(){const text=document.getElementById('inp-mccolor').value,preview=document.getElementById('color-preview');if(!preview)return;const map={'§0':'color:#000','§1':'color:#0000AA','§2':'color:#00AA00','§3':'color:#00AAAA','§4':'color:#AA0000','§5':'color:#AA00AA','§6':'color:#FFAA00','§7':'color:#AAAAAA','§8':'color:#555555','§9':'color:#5555FF','§a':'color:#55FF55','§b':'color:#55FFFF','§c':'color:#FF5555','§d':'color:#FF55FF','§e':'color:#FFFF55','§f':'color:#FFFFFF','§l':'font-weight:bold','§m':'text-decoration:line-through','§n':'text-decoration:underline','§o':'font-style:italic','§r':'color:#fff;font-weight:normal;text-decoration:none;font-style:normal'};let html=text.replace(/§./g,m=>{if(m==='§r')return'</span><span style="color:#fff">';return'</span><span style="'+(map[m]||'')+'">';});preview.innerHTML=(!text?'<span style="color:#555">Type something with § codes...</span>':'<span>'+html+'</span>');}
+function initColorCodes(){
+    const colors=[{c:'§0',n:'Black',h:'#000000'},{c:'§1',n:'Dark Blue',h:'#0000AA'},{c:'§2',n:'Dark Green',h:'#00AA00'},{c:'§3',n:'Dark Aqua',h:'#00AAAA'},{c:'§4',n:'Dark Red',h:'#AA0000'},{c:'§5',n:'Dark Purple',h:'#AA00AA'},{c:'§6',n:'Gold',h:'#FFAA00'},{c:'§7',n:'Gray',h:'#AAAAAA'},{c:'§8',n:'Dark Gray',h:'#555555'},{c:'§9',n:'Blue',h:'#5555FF'},{c:'§a',n:'Green',h:'#55FF55'},{c:'§b',n:'Aqua',h:'#55FFFF'},{c:'§c',n:'Red',h:'#FF5555'},{c:'§d',n:'Light Purple',h:'#FF55FF'},{c:'§e',n:'Yellow',h:'#FFFF55'},{c:'§f',n:'White',h:'#FFFFFF'},{c:'§k',n:'Obfuscated',h:'#CCCCCC'},{c:'§l',n:'Bold',h:'#CCCCCC'},{c:'§m',n:'Strikethrough',h:'#CCCCCC'},{c:'§n',n:'Underline',h:'#CCCCCC'},{c:'§o',n:'Italic',h:'#CCCCCC'},{c:'§r',n:'Reset',h:'#CCCCCC'}];
+    const grid=document.getElementById('color-codes-grid');if(!grid)return;
+    grid.innerHTML=colors.map(c=>`<button onclick="insertColorCode('${c.c}')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-white/5 bg-dark-500/50 hover:border-brand/30 transition-all cursor-pointer group"><div class="w-4 h-4 rounded-sm flex-shrink-0" style="background:${c.h};border:1px solid rgba(255,255,255,0.1)"></div><div class="min-w-0"><div class="text-[10px] font-mono text-brand">${c.c}</div><div class="text-[9px] text-gray-600 truncate">${c.n}</div></div></button>`).join('');
+}
+function insertColorCode(code){
+    const inp=document.getElementById('inp-mccolor'),pos=inp.selectionStart;
+    inp.value=inp.value.substring(0,pos)+code+inp.value.substring(pos);inp.focus();inp.selectionStart=inp.selectionEnd=pos+code.length;updateColorPreview();
+}
+function updateColorPreview(){
+    const text=document.getElementById('inp-mccolor').value,preview=document.getElementById('color-preview');if(!preview)return;
+    const map={'§0':'color:#000','§1':'color:#0000AA','§2':'color:#00AA00','§3':'color:#00AAAA','§4':'color:#AA0000','§5':'color:#AA00AA','§6':'color:#FFAA00','§7':'color:#AAAAAA','§8':'color:#555555','§9':'color:#5555FF','§a':'color:#55FF55','§b':'color:#55FFFF','§c':'color:#FF5555','§d':'color:#FF55FF','§e':'color:#FFFF55','§f':'color:#FFFFFF','§l':'font-weight:bold','§m':'text-decoration:line-through','§n':'text-decoration:underline','§o':'font-style:italic','§r':'color:#fff;font-weight:normal;text-decoration:none;font-style:normal'};
+    let html=text.replace(/§./g,m=>{if(m==='§r')return '</span><span style="color:#fff">';return '</span><span style="'+(map[m]||'')+'">';});
+    preview.innerHTML=(!text?'<span style="color:#555">Type something with § codes...</span>':'<span>'+html+'</span>');
+}
 
 // ========== COLOR CREATOR ==========
-let ccDir='to right',ccActivePreset=-1;
+let ccDir='to right';
 const CC_PRESETS=[
     {name:'Sunset',c1:'#FF6B35',c2:'#F7C948'},
     {name:'Ocean',c1:'#0077B6',c2:'#00B4D8'},
-    {name:'Deep Ocean',c1:'#023E8A',c2:'#0096C7'},
     {name:'Forest',c1:'#2D6A4F',c2:'#95D5B2'},
-    {name:'Dark Forest',c1:'#1B4332',c2:'#52B788'},
     {name:'Lava',c1:'#D00000',c2:'#FFBA08'},
-    {name:'Nether',c1:'#6A040F',c2:'#DC2F02'},
-    {name:'Purple Haze',c1:'#7B2CBF',c2:'#C77DFF'},
-    {name:'Amethyst',c1:'#3C096C',c2:'#9D4EDD'},
+    {name:'Purple',c1:'#7B2CBF',c2:'#C77DFF'},
     {name:'Ice',c1:'#CAF0F8',c2:'#48CAE4'},
-    {name:'Frost',c1:'#A2D2FF',c2:'#BDE0FE'},
     {name:'Gold',c1:'#FACC15',c2:'#D97706'},
-    {name:'Amber',c1:'#FFC300',c2:'#FF5733'},
     {name:'Rose',c1:'#FF006E',c2:'#FFB3C6'},
-    {name:'Cherry',c1:'#590D22',c2:'#FF4D6D'},
-    {name:'Night Sky',c1:'#0D1B2A',c2:'#1B263B'},
-    {name:'Midnight',c1:'#000000',c2:'#434343'},
-    {name:'Candy',c1:'#FF69B4',c2:'#00CED1'},
-    {name:'Rainbow',c1:'#FF0000',c2:'#800080'},
-    {name:'Aurora',c1:'#00F5D4',c2:'#7B2FF7'},
-    {name:'Mint',c1:'#00B894',c2:'#55EFC4'},
-    {name:'Coral',c1:'#FF7979',c2:'#FFB8B8'},
-    {name:'Storm',c1:'#2C3E50',c2:'#4CA1AF'},
-    {name:'Ember',c1:'#F12711',c2:'#F5AF19'},
-    {name:'Twilight',c1:'#0F0C29',c2:'#302B63'},
-    {name:'End Portal',c1:'#0D0221',c2:'#0F6B6B'},
-    {name:'Prismarine',c1:'#1A5276',c2:'#48C9B0'},
-    {name:'Redstone',c1:'#8B0000',c2:'#FF4500'},
-    {name:'Glowstone',c1:'#FFD700',c2:'#FFA500'},
-    {name:'Creeper',c1:'#004D00',c2:'#00CC00'},
-    {name:'Ender',c1:'#0D0D0D',c2:'#1A1A2E'},
-    {name:'Diamond',c1:'#4FC3F7',c2:'#B3E5FC'},
-    {name:'Wither',c1:'#1A1A1A',c2:'#4A4A4A'},
-    {name:'Blaze',c1:'#FF8C00',c2:'#FFD700'},
-    {name:'Slime',c1:'#4CAF50',c2:'#8BC34A'},
-    {name:'Ocean Deep',c1:'#001524',c2:'#006466'},
-    {name:'Sakura',c1:'#FFB7C5',c2:'#FF69B4'},
-    {name:'Volcanic',c1:'#1A0000',c2:'#FF4500'},
-    {name:'Crystal',c1:'#E0FFFF',c2:'#87CEEB'},
-    {name:'Mushroom',c1:'#8B4513',c2:'#D2691E'}
+    {name:'Night',c1:'#0D1B2A',c2:'#1B263B'},
+    {name:'Candy',c1:'#FF69B4',c2:'#00CED1'}
 ];
 
-function setCCDir(dir){
-    ccDir=dir;
-    document.querySelectorAll('.cc-dir-btn').forEach(b=>{b.style.background='';b.style.borderColor='rgba(255,255,255,0.08)';b.style.color='#6b7280';});
-    const btn=document.querySelector(`.cc-dir-btn[data-dir="${dir}"]`);
-    if(btn){btn.style.background='rgba(250,204,21,.1)';btn.style.borderColor='rgba(250,204,21,.4)';btn.style.color='#facc15';}
-    updateCC();
+function initCCPresets(){
+    const el=document.getElementById('cc-presets');if(!el)return;
+    el.innerHTML=CC_PRESETS.map((p,i)=>`<button onclick="applyCCPreset(${i})" class="h-8 rounded-lg cursor-pointer border border-white/10 hover:border-brand/30 transition-all hover:scale-105" style="background:linear-gradient(to right,${p.c1},${p.c2})" title="${p.name}"></button>`).join('');
 }
 function applyCCPreset(i){
-    ccActivePreset=i;const p=CC_PRESETS[i];
-    document.getElementById('cc-c1').value=p.c1;document.getElementById('cc-c2').value=p.c2;
-    document.querySelectorAll('.cc-list-item').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+    const p=CC_PRESETS[i];
+    document.getElementById('cc-c1').value=p.c1;
+    document.getElementById('cc-c2').value=p.c2;
+    updateCC();
+}
+function setCCDir(dir){
+    ccDir=dir;
+    document.querySelectorAll('.cc-dir-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.borderColor='';b.style.color='';});
+    const btn=document.querySelector(`.cc-dir-btn[data-dir="${dir}"]`);
+    if(btn){btn.classList.add('active');btn.style.background='rgba(250,204,21,0.15)';btn.style.borderColor='rgba(250,204,21,0.4)';btn.style.color='#facc15';}
     updateCC();
 }
 function updateCC(){
     const c1=document.getElementById('cc-c1').value,c2=document.getElementById('cc-c2').value;
     const grad=`linear-gradient(${ccDir},${c1},${c2})`;
-    const text=document.getElementById('cc-text').value||'MineTools';
-    document.getElementById('cc-mini-bar').style.background=grad;
+    document.getElementById('cc-preview').style.background=grad;
     const tp=document.getElementById('cc-text-preview');
-    tp.style.background=grad;tp.style.webkitBackgroundClip='text';tp.style.webkitTextFillColor='transparent';tp.style.backgroundClip='text';tp.textContent=text;
+    tp.style.background=grad;tp.style.webkitBackgroundClip='text';tp.style.webkitTextFillColor='transparent';tp.style.backgroundClip='text';
 
-    const u1=c1.toUpperCase().slice(1),u2=c2.toUpperCase().slice(1);
+    const c1u=c1.toUpperCase(),c2u=c2.toUpperCase();
     const cssGrad=`linear-gradient(${ccDir}, ${c1}, ${c2})`;
-
-    document.getElementById('cc-outputs').innerHTML=[
-        {label:'Color 1 — #RRGGBB',val:c1.toUpperCase()},
-        {label:'Color 1 — <##RRGGBB>',val:'<##'+u1+'>'},
-        {label:'Color 1 — &#RRGGBB',val:'&#'+u1+';'},
-        {label:'Color 2 — #RRGGBB',val:c2.toUpperCase()},
-        {label:'Color 2 — <##RRGGBB>',val:'<##'+u2+'>'},
-        {label:'Color 2 — &#RRGGBB',val:'&#'+u2+';'},
-        {label:'CSS Gradient',val:cssGrad}
-    ].map(r=>`<div class="cc-copy-row flex items-center justify-between px-3 py-2 rounded-lg"><span class="text-[10px] text-gray-600 uppercase tracking-wider flex-shrink-0 mr-4">${r.label}</span><div class="flex items-center gap-2 min-w-0"><span class="text-xs font-mono text-gray-300 truncate">${esc(r.val)}</span><button onclick="navigator.clipboard.writeText('${esc(r.val).replace(/'/g,"\\'")}');showToast('Copied!','success')" class="text-brand text-[10px] flex-shrink-0 hover:underline cursor-pointer">copy</button></div></div>`).join('');
+    const outputs=document.getElementById('cc-outputs');
+    outputs.innerHTML=`
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 1 — #RRGGBB</span><button onclick="navigator.clipboard.writeText('${c1u}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">${c1u}</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 1 — <##RRGGBB></span><button onclick="navigator.clipboard.writeText('<##${c1u.slice(1)}>');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">&lt;##${c1u.slice(1)}&gt;</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 1 — &#RRGGBB</span><button onclick="navigator.clipboard.writeText('&#${c1u.slice(1)};');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">&amp;#${c1u.slice(1)};</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 2 — #RRGGBB</span><button onclick="navigator.clipboard.writeText('${c2u}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">${c2u}</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 2 — <##RRGGBB></span><button onclick="navigator.clipboard.writeText('<##${c2u.slice(1)}>');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">&lt;##${c2u.slice(1)}&gt;</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">Color 2 — &#RRGGBB</span><button onclick="navigator.clipboard.writeText('&#${c2u.slice(1)};');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-sm font-mono text-white">&amp;#${c2u.slice(1)};</div></div>
+        <div class="bg-dark-500/50 rounded-lg p-3"><div class="flex items-center justify-between mb-1"><span class="text-[10px] text-gray-600 uppercase">CSS Gradient</span><button onclick="navigator.clipboard.writeText('${cssGrad}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-[11px] font-mono text-gray-300 break-all">${esc(cssGrad)}</div></div>
+    `;
 }
-function buildCCList(){
-    const el=document.getElementById('cc-list');if(!el)return;
-    el.innerHTML=CC_PRESETS.map((p,i)=>`
-        <div class="cc-list-item flex items-center gap-3 px-3 py-2 rounded-lg ${i===ccActivePreset?'active':''}" onclick="applyCCPreset(${i})">
-            <div class="w-28 h-7 rounded-md flex-shrink-0" style="background:linear-gradient(to right,${p.c1},${p.c2})"></div>
-            <span class="text-xs text-gray-400 truncate">${p.name}</span>
-            <span class="text-[10px] text-gray-700 font-mono ml-auto flex-shrink-0">${p.c1} → ${p.c2}</span>
-        </div>`).join('');
-}
+setTimeout(()=>{initCCPresets();setCCDir('to right');updateCC();},400);
 
-// ========== SEED ==========
-function doSeedInfo(){const inp=document.getElementById('inp-seed'),res=document.getElementById('res-seed'),seed=inp.value.trim();if(!seed){showToast('Please enter a seed','warning');return;}let hash=0;for(let i=0;i<seed.length;i++){hash=((hash<<5)-hash)+seed.charCodeAt(i);hash|=0;}const numSeed=isNaN(seed)?Math.abs(hash):parseInt(seed);const isLB=numSeed%10>7,hasS=numSeed%7>1;const bb=['Plains','Forest','Desert','Taiga','Mountains','Savanna','Swamp','Jungle','Ocean','Mushroom Island'];const pb=bb[Math.abs(numSeed)%bb.length],sb=bb[Math.abs(numSeed*7+3)%bb.length];const st=['Village','Stronghold','Mineshaft','Temple','Shipwreck','Ocean Monument','Woodland Mansion','Pillager Outpost','Bastion','Nether Fortress','End City','Ancient City'];const ps=st.filter((_,i)=>hasS&&(Math.abs(numSeed*(i+1))%3!==0)).slice(0,5+Math.abs(numSeed)%4);const as=st.filter(s=>!ps.includes(s)).slice(0,3);res.innerHTML=`<div class="space-y-4"><div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Numeric Seed</div><div class="text-sm font-mono font-bold">${numSeed}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Input</div><div class="text-sm font-mono break-all">${esc(seed)}</div></div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Spawn Biome (est.)</div><div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-lg bg-brand/10 text-brand text-xs font-medium">${pb}</span><span class="px-3 py-1 rounded-lg bg-white/5 text-gray-400 text-xs">${sb}</span></div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Structures</div><div class="flex flex-wrap gap-1.5">${ps.map(s=>'<span class="px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px]">'+s+'</span>').join('')}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-xs text-gray-400 space-y-1"><div class="flex justify-between"><span>Large Biomes:</span><span class="${isLB?'text-green-400':'text-gray-500'}">${isLB?'Possible':'Unlikely'}</span></div><div class="flex justify-between"><span>Seed Type:</span><span class="text-white">${isNaN(seed)?'Text hash':'Numeric'}</span></div></div></div><div class="text-[10px] text-gray-600 text-center">For precise analysis, use Chunkbase.com</div></div>`;}
+// ========== SEED INFO ==========
+function doSeedInfo(){
+    const inp=document.getElementById('inp-seed'),res=document.getElementById('res-seed'),seed=inp.value.trim();
+    if(!seed){showToast('Please enter a seed','warning');return;}
+    let hash=0;for(let i=0;i<seed.length;i++){hash=((hash<<5)-hash)+seed.charCodeAt(i);hash|=0;}
+    const numSeed=isNaN(seed)?Math.abs(hash):parseInt(seed);
+    const isLargeBiomes=numSeed%10>7,hasStructures=numSeed%7>1;
+    const biomeBase=['Plains','Forest','Desert','Taiga','Mountains','Savanna','Swamp','Jungle','Ocean','Mushroom Island'];
+    const primaryBiome=biomeBase[Math.abs(numSeed)%biomeBase.length],secondaryBiome=biomeBase[Math.abs(numSeed*7+3)%biomeBase.length];
+    const structureTypes=['Village','Stronghold','Mineshaft','Temple','Shipwreck','Ocean Monument','Woodland Mansion','Pillager Outpost','Bastion Remnant','Nether Fortress','End City','Ancient City'];
+    const presentStructures=structureTypes.filter((_,i)=>hasStructures&&(Math.abs(numSeed*(i+1))%3!==0)).slice(0,5+Math.abs(numSeed)%4);
+    const absentStructures=structureTypes.filter(s=>!presentStructures.includes(s)).slice(0,3);
+    res.innerHTML=`<div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Numeric Seed</div><div class="text-sm font-mono font-bold">${numSeed}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Input</div><div class="text-sm font-mono break-all">${esc(seed)}</div></div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Spawn Biome (est.)</div><div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-lg bg-brand/10 text-brand text-xs font-medium">${primaryBiome}</span><span class="px-3 py-1 rounded-lg bg-white/5 text-gray-400 text-xs">${secondaryBiome}</span></div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Structures (est.)</div><div class="mb-2"><span class="text-xs text-green-400">Present:</span><div class="flex flex-wrap gap-1.5 mt-1">${presentStructures.map(s=>'<span class="px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px]">'+s+'</span>').join('')}</div></div>${absentStructures.length?'<div><span class="text-xs text-red-400">Rare/Nearby:</span><div class="flex flex-wrap gap-1.5 mt-1">'+absentStructures.map(s=>'<span class="px-2 py-0.5 rounded-md bg-red-500/10 text-red-400/60 text-[10px]">'+s+'</span>').join('')+'</div></div>':''}</div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">World Properties</div><div class="text-xs text-gray-400 space-y-1"><div class="flex justify-between"><span>Large Biomes:</span><span class="${isLargeBiomes?'text-green-400':'text-gray-500'}">${isLargeBiomes?'Possible':'Unlikely'}</span></div><div class="flex justify-between"><span>Structures Enabled:</span><span class="${hasStructures?'text-green-400':'text-yellow-400'}">${hasStructures?'Yes':'Limited'}</span></div><div class="flex justify-between"><span>Seed Type:</span><span class="text-white">${isNaN(seed)?'Text hash':'Numeric'}</span></div></div></div>
+        <div class="text-[10px] text-gray-600 text-center">For precise world analysis, use Chunkbase.com</div>
+    </div>`;
+}
 
 // ========== DISCORD ==========
-async function fetchDiscord(){try{const r=await fetch('https://discord.com/api/v10/invites/S8MXWRuuSf?with_counts=true');if(!r.ok)throw 0;const d=await r.json();document.getElementById('discord-online').textContent=(d.approximate_presence_count||0).toLocaleString();document.getElementById('discord-members').textContent=(d.approximate_member_count||0).toLocaleString();}catch(e){document.getElementById('discord-online').textContent='—';document.getElementById('discord-members').textContent='—';}setTimeout(fetchDiscord,60000);}
+async function fetchDiscord(){
+    try{
+        const r=await fetch('https://discord.com/api/v10/invites/S8MXWRuuSf?with_counts=true');
+        if(!r.ok)throw new Error('Failed');
+        const d=await r.json();
+        document.getElementById('discord-online').textContent=(d.approximate_presence_count||0).toLocaleString();
+        document.getElementById('discord-members').textContent=(d.approximate_member_count||0).toLocaleString();
+    }catch(e){
+        document.getElementById('discord-online').textContent='—';
+        document.getElementById('discord-members').textContent='—';
+    }
+    setTimeout(fetchDiscord,60000);
+}
 
 // ========== STATS ==========
-function updateStatsDisplay(){const s=getStats();document.getElementById('stat-visitors').textContent=s.visits.toLocaleString();document.getElementById('stat-players').textContent=(s.players||0).toLocaleString();document.getElementById('stat-servers').textContent=(s.servers||0).toLocaleString();document.getElementById('stat-skins').textContent=(s.skins||0).toLocaleString();const h=document.getElementById('hero-online');if(h&&!h._b)h._b=47291;h.textContent=(h._b+Math.floor(Math.random()*200)-100).toLocaleString();}
+function updateStatsDisplay(){
+    const s=getStats();
+    document.getElementById('stat-visitors').textContent=s.visits.toLocaleString();
+    document.getElementById('stat-players').textContent=(s.players||0).toLocaleString();
+    document.getElementById('stat-servers').textContent=(s.servers||0).toLocaleString();
+    document.getElementById('stat-skins').textContent=(s.skins||0).toLocaleString();
+    const h=document.getElementById('hero-online');if(h&&!h._b)h._b=47291;h.textContent=(h._b+Math.floor(Math.random()*200)-100).toLocaleString();
+}
 
-// ========== CHART ==========
+// ========== ACTIVITY CHART ==========
 function initActivityChart(){updateActivityChart();}
-function updateActivityChart(){const c=document.getElementById('activity-chart');if(!c)return;c.innerHTML=sessionLookups.concat(sessionTools).map((v,i)=>{const h1=Math.min(100,v*20),h2=Math.min(60,sessionTools[i]*15);return`<div class="flex-1 flex flex-col gap-0.5 min-w-[4px]"><div class="w-full bg-brand/70 rounded-t-sm" style="height:${Math.max(2,h1)}px"></div><div class="w-full bg-brand/25 rounded-t-sm" style="height:${Math.max(2,h2)}px"></div></div>`;}).join('');if(Math.random()>0.7){sessionLookups.shift();sessionLookups.push(0);sessionTools.shift();sessionTools.push(0);}}
+function updateActivityChart(){
+    const c=document.getElementById('activity-chart');if(!c)return;
+    c.innerHTML=sessionLookups.concat(sessionTools).map((v,i)=>{
+        const h1=Math.min(100,v*20),h2=Math.min(60,sessionTools[i]*15);
+        return `<div class="flex-1 flex flex-col gap-0.5 min-w-[4px]"><div class="w-full bg-brand/70 rounded-t-sm" style="height:${Math.max(2,h1)}px"></div><div class="w-full bg-brand/25 rounded-t-sm" style="height:${Math.max(2,h2)}px"></div></div>`;
+    }).join('');
+    if(Math.random()>0.7){sessionLookups.shift();sessionLookups.push(0);sessionTools.shift();sessionTools.push(0);}
+}
 
 // ========== POPULAR SERVERS ==========
-function buildPopularServers(){const s=[{name:'Hypixel',addr:'mc.hypixel.net',pl:32487,mx:200000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'2b2t',addr:'2b2t.org',pl:892,mx:1000,ver:'1.20.4',type:'Anarchy'},{name:'CubeCraft',addr:'play.cubecraft.net',pl:5832,mx:20000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'Wynncraft',addr:'play.wynncraft.com',pl:2103,mx:5000,ver:'1.21.x',type:'MMO RPG'},{name:'EarthMC',addr:'play.earthmc.net',pl:1456,mx:3000,ver:'1.18.x',type:'Towny'},{name:'The Hive',addr:'geo.hivebedrock.network',pl:18923,mx:50000,ver:'Bedrock',type:'Mini-games'}];document.getElementById('popular-servers').innerHTML=s.map(x=>{const p=Math.round((x.pl/x.mx)*100);return`<div class="scroll-anim card-glow result-card rounded-2xl p-6 cursor-pointer" onclick="switchTool('server');document.getElementById('inp-server').value='${x.addr}';doServerLookup();document.getElementById('tools').scrollIntoView({behavior:'smooth'})"><div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center font-heading text-brand font-bold text-sm">${x.name.charAt(0)}</div><div><h4 class="font-heading text-sm font-bold">${x.name}</h4><p class="text-[10px] text-gray-600 font-mono">${x.addr}</p></div></div><span class="text-[10px] px-2 py-0.5 rounded-md bg-brand/10 text-brand font-medium">${x.type}</span></div><div class="flex items-end justify-between mb-2"><span class="font-heading text-xl font-bold">${x.pl.toLocaleString()}</span><span class="text-xs text-gray-600">/ ${x.mx.toLocaleString()}</span></div><div class="w-full h-1.5 bg-dark-400 rounded-full overflow-hidden mb-3"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${p}%"></div></div><div class="flex items-center justify-between text-[10px] text-gray-600"><span>${x.ver}</span><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div></div>`;}).join('');setTimeout(()=>{const obs=new IntersectionObserver(e=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*80);obs.unobserve(el.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});document.querySelectorAll('#popular-servers .scroll-anim').forEach(el=>obs.observe(el));},100);}
+function buildPopularServers(){
+    const servers=[{name:'Hypixel',addr:'mc.hypixel.net',pl:32487,mx:200000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'2b2t',addr:'2b2t.org',pl:892,mx:1000,ver:'1.20.4',type:'Anarchy'},{name:'CubeCraft',addr:'play.cubecraft.net',pl:5832,mx:20000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'Wynncraft',addr:'play.wynncraft.com',pl:2103,mx:5000,ver:'1.21.x',type:'MMO RPG'},{name:'EarthMC',addr:'play.earthmc.net',pl:1456,mx:3000,ver:'1.18.x',type:'Towny'},{name:'The Hive',addr:'geo.hivebedrock.network',pl:18923,mx:50000,ver:'Bedrock',type:'Mini-games'}];
+    document.getElementById('popular-servers').innerHTML=servers.map(s=>{
+        const pct=Math.round((s.pl/s.mx)*100);
+        return `<div class="scroll-anim card-glow result-card rounded-2xl p-6 cursor-pointer" onclick="switchTool('server');document.getElementById('inp-server').value='${s.addr}';doServerLookup();document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+            <div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center font-heading text-brand font-bold text-sm">${s.name.charAt(0)}</div><div><h4 class="font-heading text-sm font-bold">${s.name}</h4><p class="text-[10px] text-gray-600 font-mono">${s.addr}</p></div></div><span class="text-[10px] px-2 py-0.5 rounded-md bg-brand/10 text-brand font-medium">${s.type}</span></div>
+            <div class="flex items-end justify-between mb-2"><span class="font-heading text-xl font-bold">${s.pl.toLocaleString()}</span><span class="text-xs text-gray-600">/ ${s.mx.toLocaleString()}</span></div>
+            <div class="w-full h-1.5 bg-dark-400 rounded-full overflow-hidden mb-3"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${pct}%"></div></div>
+            <div class="flex items-center justify-between text-[10px] text-gray-600"><span>${s.ver}</span><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div>
+        </div>`;
+    }).join('');
+    setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});document.querySelectorAll('#popular-servers .scroll-anim').forEach(el=>obs.observe(el));},100);
+}
+
+// ========== FOOTER ==========
 function buildFooterTools(){document.getElementById('footer-tools').innerHTML=TOOLS.slice(0,6).map(t=>`<li><a href="#" onclick="switchTool('${t.id}');document.getElementById('tools').scrollIntoView({behavior:'smooth'});return false" class="text-sm text-gray-500 hover:text-brand transition-colors">${t.name}</a></li>`).join('');}
 
 // ========== SEARCH ==========
-function setSearchTab(tab){searchTab=tab;const tp=document.getElementById('tab-player'),ts=document.getElementById('tab-server');tp.className=tab==='player'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer';ts.className=tab==='server'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 transition-all duration-300 whitespace-nowrap cursor-pointer';document.getElementById('search-input').placeholder=tab==='player'?'Enter a Minecraft username...':'Enter a server address...';}
-function quickSearch(q){const isServer=/\.(net|org|com|gg|io|me|co|xyz|us|eu)/i.test(q)||['hypixel','2b2t','cubecraft','wynncraft','earthmc','hive'].some(s=>q.toLowerCase().includes(s));setSearchTab(isServer?'server':'player');document.getElementById('search-input').value=q;doSearch();}
-function doSearch(){const q=document.getElementById('search-input').value.trim();if(!q){showToast('Enter a search query','warning');return;}if(searchTab==='player'){switchTool('player');document.getElementById('inp-player').value=q;setTimeout(doPlayerLookup,100);}else{switchTool('server');document.getElementById('inp-server').value=q;setTimeout(doServerLookup,100);}document.getElementById('tools').scrollIntoView({behavior:'smooth'});}
+function setSearchTab(tab){
+    searchTab=tab;
+    const tp=document.getElementById('tab-player'),ts=document.getElementById('tab-server');
+    tp.className=tab==='player'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer';
+    ts.className=tab==='server'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 transition-all duration-300 whitespace-nowrap cursor-pointer';
+    document.getElementById('search-input').placeholder=tab==='player'?'Enter a Minecraft username...':'Enter a server address...';
+}
+function quickSearch(q){
+    const isServer=/\.(net|org|com|gg|io|me|co|xyz|us|eu)/i.test(q)||['hypixel','2b2t','cubecraft','wynncraft','earthmc','hive'].some(s=>q.toLowerCase().includes(s));
+    setSearchTab(isServer?'server':'player');document.getElementById('search-input').value=q;doSearch();
+}
+function doSearch(){
+    const q=document.getElementById('search-input').value.trim();
+    if(!q){showToast('Please enter a search query','warning');return;}
+    if(searchTab==='player'){switchTool('player');document.getElementById('inp-player').value=q;setTimeout(doPlayerLookup,100);}
+    else{switchTool('server');document.getElementById('inp-server').value=q;setTimeout(doServerLookup,100);}
+    document.getElementById('tools').scrollIntoView({behavior:'smooth'});
+}
 
-// ========== SCROLL ==========
-function initScrollAnimations(){const obs=new IntersectionObserver(e=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*80);obs.unobserve(el.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});document.querySelectorAll('.scroll-anim').forEach(el=>obs.observe(el));}
+// ========== SCROLL ANIM ==========
+function initScrollAnimations(){
+    const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});
+    document.querySelectorAll('.scroll-anim').forEach(el=>obs.observe(el));
+}
 
 // ========== TOAST ==========
-function showToast(msg,type='info'){const c=document.getElementById('toast-container'),t=document.createElement('div');const co={success:'border-green-500/30 bg-green-500/10',error:'border-red-500/30 bg-red-500/10',warning:'border-brand/30 bg-brand/10',info:'border-white/10 bg-white/5'};const ic={success:'<svg class="w-4 h-4 text-green-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg class="w-4 h-4 text-red-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',warning:'<svg class="w-4 h-4 text-brand flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',info:'<svg class="w-4 h-4 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'};t.className='toast flex items-center gap-3 px-4 py-3 rounded-xl border '+co[type]+' backdrop-blur-xl min-w-[280px] max-w-[400px]';t.innerHTML=ic[type]+'<span class="text-sm text-white">'+esc(msg)+'</span>';c.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);}
+function showToast(msg,type='info'){
+    const c=document.getElementById('toast-container'),t=document.createElement('div');
+    const colors={success:'border-green-500/30 bg-green-500/10',error:'border-red-500/30 bg-red-500/10',warning:'border-brand/30 bg-brand/10',info:'border-white/10 bg-white/5'};
+    const icons={success:'<svg class="w-4 h-4 text-green-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg class="w-4 h-4 text-red-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',warning:'<svg class="w-4 h-4 text-brand flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',info:'<svg class="w-4 h-4 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'};
+    t.className='toast flex items-center gap-3 px-4 py-3 rounded-xl border '+colors[type]+' backdrop-blur-xl min-w-[280px] max-w-[400px]';
+    t.innerHTML=icons[type]+'<span class="text-sm text-white">'+esc(msg)+'</span>';c.appendChild(t);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id&&id!=='#'){e.preventDefault();const el=document.querySelector(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}});});
 </script>
 </body>
