@@ -3,499 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MineTools - Minecraft Utilities</title>
+    <title>MineTools — Minecraft Utilities</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config={theme:{extend:{fontFamily:{heading:['Oswald','sans-serif'],body:['Inter','sans-serif']},colors:{brand:{DEFAULT:'#facc15',dark:'#eab308',light:'#fde047'},dark:{900:'#050505',800:'#0a0a0a',700:'#0e0e0e',600:'#111111',500:'#1a1a1a',400:'#222222',300:'#2a2a2a'}}}}}
+    </script>
     <style>
-        :root{--bg:#08080a;--sf:#0f0f13;--sf2:#16161b;--sf3:#1c1c22;--bd:rgba(255,255,255,.07);--bdh:rgba(255,255,255,.12);--bdf:rgba(0,230,118,.4);--gr:#00E676;--grs:#00c853;--grm:rgba(0,230,118,.12);--grf:rgba(0,230,118,.05);--grg:rgba(0,230,118,.12);--tx:#e4e4e8;--tx2:#a0a0ac;--tx3:#5c5c68;--rd:#ff5555;--am:#ffaa00;--dc:#5865F2}
         *{margin:0;padding:0;box-sizing:border-box}
-        ::selection{background:rgba(0,230,118,.2);color:#fff}
-        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a32;border-radius:3px}
-        html{scroll-behavior:smooth}
-        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-        .fp{font-family:'Press Start 2P',cursive}
-        body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
-        #bgp{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-        .fb{position:absolute;bottom:-40px;border-radius:3px;animation:fu linear infinite}
-        @keyframes fu{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateY(-110vh) rotate(120deg);opacity:0}}
-
-        /* Nav */
-        nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,10,.82);backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--bd)}
-        .ni{max-width:1280px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-        .li{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--gr),var(--grs));display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
-        .lt{font-size:11px;color:var(--tx);font-weight:600;letter-spacing:.5px}
-        .nl{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:var(--tx3);padding:6px 12px;border-radius:8px;transition:all .2s;cursor:pointer;border:none;background:none}
-        .nl:hover{color:var(--tx2);background:var(--grf)}.nl.active{color:var(--gr);background:var(--grm)}
-        .hb{display:none;color:var(--tx2);background:none;border:none;font-size:20px;cursor:pointer;padding:8px}
-        .mm{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(8,8,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:12px 16px;z-index:99;flex-direction:column;gap:2px}
-        .mm.open{display:flex}
-
-        /* User button */
-        .ub{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;cursor:pointer;border:none;background:none;transition:all .2s;position:relative}
-        .ub:hover{background:var(--grf)}
-        .ua{width:30px;height:30px;border-radius:50%;background:var(--grm);display:flex;align-items:center;justify-content:center;color:var(--gr);font-weight:700;font-size:11px;flex-shrink:0}
-        .un{font-size:13px;font-weight:500;color:var(--tx2)}
-        .ud{position:absolute;top:calc(100% + 8px);right:0;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:8px;min-width:220px;box-shadow:0 16px 48px rgba(0,0,0,.4);display:none;z-index:101}
-        .ud.open{display:block;animation:vi .2s ease}
-        .udi{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px}
-        .udia{width:40px;height:40px;border-radius:50%;background:var(--grm);display:flex;align-items:center;justify-content:center;color:var(--gr);font-weight:700;font-size:14px;flex-shrink:0}
-        .udn{font-weight:600;font-size:14px;color:var(--tx)}.uds{font-size:12px;color:var(--tx3)}
-        .udsep{height:1px;background:var(--bd);margin:4px 0}
-        .udbtn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;border:none;background:none;width:100%;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--tx3);transition:all .15s}
-        .udbtn:hover{background:var(--grf);color:var(--tx2)}
-        .udbtn.danger:hover{background:rgba(255,85,85,.08);color:var(--rd)}
-        .login-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:#fff;background:var(--dc);padding:7px 16px;border-radius:8px;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;gap:6px}
-        .login-btn:hover{background:#4752C4}
-
-        /* Discord Modal */
-        .dm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-        .dm-overlay.open{display:flex}
-        .dm{background:#313338;border-radius:12px;width:100%;max-width:440px;overflow:hidden;animation:vi .25s ease}
-        .dm-head{padding:20px 24px;background:#2b2d31;border-bottom:1px solid rgba(255,255,255,.06)}
-        .dm-body{padding:24px}
-        .dm-foot{padding:16px 24px;background:#2b2d31;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:flex-end;gap:8px}
-        .dm-scope{display:flex;align-items:center;gap:10px;padding:8px 0}
-        .dm-scope i{color:var(--dc);font-size:16px;width:20px;text-align:center}
-        .dm-input{width:100%;background:#1e1f22;border:1px solid rgba(255,255,255,.08);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:10px 14px;border-radius:6px;outline:none;transition:border .2s}
-        .dm-input:focus{border-color:var(--dc)}
-        .dm-input::placeholder{color:#6d6f78}
-        .dm-cancel{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:#b5bac1;padding:9px 20px;border-radius:6px;cursor:pointer;border:none;background:transparent;transition:all .15s}
-        .dm-cancel:hover{text-decoration:underline}
-        .dm-auth{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:#fff;padding:9px 24px;border-radius:6px;cursor:pointer;border:none;background:var(--dc);transition:all .15s}
-        .dm-auth:hover{background:#4752C4}
-
-        /* Views */
-        .view{display:none}.view.active{display:block;animation:vi .35s ease}
-        @keyframes vi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
-        /* Form */
-        .si{background:var(--sf);border:1px solid var(--bd);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:13px 18px;border-radius:10px;outline:none;transition:all .25s;width:100%}
-        .si:focus{border-color:var(--bdf);box-shadow:0 0 0 3px var(--grf),0 0 20px rgba(0,230,118,.06)}
-        .si::placeholder{color:var(--tx3)}
-        select.si{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235c5c68' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-        .sb{background:var(--gr);color:#000;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 24px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;white-space:nowrap}
-        .sb:hover{background:var(--grs);box-shadow:0 4px 20px rgba(0,230,118,.2)}
-        .cb{background:transparent;border:1px solid var(--bd);color:var(--tx2);padding:7px 14px;border-radius:8px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap}
-        .cb:hover{border-color:var(--gr);color:var(--gr);background:var(--grf)}
-
-        /* Cards */
-        .rc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:28px}
-        .rc.ai{animation:vi .4s ease}
-        .tc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px;cursor:pointer;transition:all .3s}
-        .tc:hover{border-color:var(--bdh);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
-        .tc .iw{width:42px;height:42px;border-radius:10px;background:var(--grf);border:1px solid rgba(0,230,118,.08);display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:16px;margin-bottom:16px;transition:all .3s}
-        .tc:hover .iw{background:var(--grm);border-color:rgba(0,230,118,.15)}
-
-        /* Loading */
-        .lb{height:3px;background:var(--sf2);overflow:hidden;border-radius:2px;margin:16px 0}
-        .lb::after{content:'';display:block;width:60%;height:100%;background:linear-gradient(90deg,transparent,var(--gr),transparent);border-radius:2px;animation:shm 1.2s ease-in-out infinite}
-        @keyframes shm{0%{transform:translateX(-150%)}100%{transform:translateX(250%)}}
-        .pbb{height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
-        .pbf{height:100%;background:var(--gr);border-radius:3px;transition:width 1s ease}
-        .sd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-        .sd.on{background:var(--gr);box-shadow:0 0 8px var(--grg)}.sd.off{background:var(--tx3)}
-        .uo{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--gr);word-break:break-all;display:flex;justify-content:space-between;align-items:center;gap:10px}
-
-        /* Skin */
-        .skc{position:relative;background:repeating-conic-gradient(var(--sf2) 0% 25%,var(--sf) 0% 50%) 0 0/16px 16px;border-radius:8px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-        .skc img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-        .skc .sf{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;color:var(--tx3);font-size:12px;gap:4px}
-        .skc .sf i{font-size:20px;color:var(--tx3)}
-        .ne{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)}.ne:last-child{border-bottom:none}
-
-        /* Colors */
-        .cs{width:100%;aspect-ratio:1;border-radius:6px;cursor:pointer;transition:all .2s;border:2px solid transparent}
-        .cs:hover{transform:scale(1.12);border-color:rgba(255,255,255,.3)}
-        .fs{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer;transition:all .2s;text-align:center}
-        .fs:hover{border-color:var(--gr);background:var(--grf)}
-        .cp{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:16px;min-height:56px;font-size:18px;word-break:break-all}
-
-        /* Potion */
-        .pcard{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center}
-        .pcard:hover{border-color:var(--bdh);background:var(--sf2)}
-        .pcard.sel{border-color:rgba(0,230,118,.3);background:var(--grf)}
-        .pcard .pi{width:36px;height:36px;border-radius:8px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:16px}
-        .mtog{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--bd);background:var(--sf);font-size:13px;font-weight:500;transition:all .2s;user-select:none}
-        .mtog:hover{border-color:var(--bdh);background:var(--sf2)}
-        .mtog.on{border-color:rgba(0,230,118,.3);background:var(--grf);color:var(--gr)}
-        .mtog.dis{opacity:.35;cursor:not-allowed;pointer-events:none}
-
-        /* Blocks */
-        .bc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:18px;transition:all .2s}
-        .bc:hover{border-color:var(--bdh);background:var(--sf2)}
-
-        /* Discord CTA */
-        .dca{background:linear-gradient(135deg,var(--sf),rgba(88,101,242,.04));border:1px solid rgba(88,101,242,.15);border-radius:16px;padding:48px;position:relative;overflow:hidden}
-        .dca::before{content:'';position:absolute;top:-60%;right:-30%;width:80%;height:120%;background:radial-gradient(circle,rgba(88,101,242,.06),transparent 60%);pointer-events:none}
-        .dbtn{background:var(--dc);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 28px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
-        .dbtn:hover{background:#4752C4;box-shadow:0 8px 28px rgba(88,101,242,.25);transform:translateY(-2px)}
-
-        /* Coords */
-        .cob{width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#5D8C3E,#3d6e28);display:inline-block}
-        .cbn{width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#8B2500,#5C1A00);display:inline-block}
-
-        /* Toast */
-        .toast{position:fixed;top:76px;right:20px;background:var(--sf2);color:var(--gr);font-size:14px;font-weight:500;padding:12px 20px;border-radius:10px;z-index:300;border:1px solid rgba(0,230,118,.15);transform:translateX(calc(100% + 40px));transition:transform .35s cubic-bezier(.22,1,.36,1);box-shadow:0 8px 32px rgba(0,0,0,.3)}
-        .toast.show{transform:translateX(0)}
-
-        .bb{color:var(--tx3);font-size:14px;font-weight:500;cursor:pointer;background:none;border:none;transition:color .2s;display:inline-flex;align-items:center;gap:8px}
-        .bb:hover{color:var(--tx)}
-        .hg{position:absolute;width:600px;height:600px;background:radial-gradient(circle,var(--grg),transparent 65%);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pg 5s ease-in-out infinite}
-        @keyframes pg{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:.8;transform:translate(-50%,-50%) scale(1.1)}}
-        .sl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gr);font-weight:600}
-        .sn{font-family:'Press Start 2P',cursive;font-size:20px;color:var(--gr)}
-        .sqb{background:var(--sf);border:1px solid var(--bd);color:var(--tx2);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
-        .sqb:hover{border-color:var(--gr);color:var(--gr);background:var(--grf)}
-        .tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600}
-        .cmd-box{background:#0a0a0e;border:1px solid var(--bd);border-radius:8px;padding:14px 16px;font-family:'Plus Jakarta Sans',monospace;font-size:14px;color:var(--gr);word-break:break-all;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;line-height:1.6}
-
-        @media(max-width:1024px){.nav-links{display:none}.hb{display:block}}
-        @media(max-width:768px){.sn{font-size:16px}.dca{padding:32px 20px}}
-        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+        body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:#facc15;border-radius:3px}
+        @keyframes fadeInUpBlur{0%{opacity:0;transform:translateY(30px);filter:blur(8px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+        .anim-in{animation:fadeInUpBlur .8s cubic-bezier(.2,.8,.2,1) both}
+        .d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}.d5{animation-delay:.5s}.d6{animation-delay:.6s}.d7{animation-delay:.7s}.d8{animation-delay:.8s}
+        .scroll-anim{opacity:0;transform:translateY(30px);filter:blur(8px);transition:all .8s cubic-bezier(.2,.8,.2,1)}
+        .scroll-anim.visible{opacity:1;transform:translateY(0);filter:blur(0)}
+        @keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(250,204,21,.1),0 0 60px rgba(250,204,21,.05)}50%{box-shadow:0 0 30px rgba(250,204,21,.25),0 0 80px rgba(250,204,21,.12)}}
+        .pulse-glow{animation:pulseGlow 3s ease-in-out infinite}
+        @keyframes spin-slow{to{transform:rotate(360deg)}}.spin-slow{animation:spin-slow 20s linear infinite}
+        .grid-bg{background-image:linear-gradient(to right,rgba(250,204,21,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(250,204,21,.03) 1px,transparent 1px);background-size:48px 48px}
+        .text-gradient{background:linear-gradient(to right,#facc15,#fde047,#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .card-glow{transition:all .4s ease}.card-glow:hover{box-shadow:0 0 30px rgba(250,204,21,.12),inset 0 1px 0 rgba(250,204,21,.15);border-color:rgba(250,204,21,.3)!important;transform:translateY(-4px)}
+        .search-input:focus{box-shadow:0 0 0 2px rgba(250,204,21,.3),0 0 30px rgba(250,204,21,.1);outline:none}
+        .tab-active{background:rgba(250,204,21,.15)!important;border-color:#facc15!important;color:#facc15!important}
+        .skin-preview{image-rendering:pixelated;image-rendering:-moz-crisp-edges}
+        .toast{transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.2,.8,.2,1)}.toast.show{transform:translateY(0);opacity:1}
+        @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}.live-dot{animation:livePulse 1.5s ease-in-out infinite}
+        .btn-primary{background:linear-gradient(135deg,#facc15,#eab308);color:#000;font-weight:600;transition:all .3s ease;cursor:pointer}.btn-primary:hover{box-shadow:0 0 30px rgba(250,204,21,.4);transform:scale(1.03)}
+        .btn-secondary{border:1px solid rgba(250,204,21,.3);color:#facc15;transition:all .3s ease;background:transparent;cursor:pointer}.btn-secondary:hover{background:rgba(250,204,21,.1);border-color:#facc15;box-shadow:0 0 20px rgba(250,204,21,.15)}
+        .result-card{background:linear-gradient(135deg,rgba(26,26,26,.8),rgba(17,17,17,.9));border:1px solid rgba(250,204,21,.1)}
+        @keyframes borderGlow{0%,100%{border-color:rgba(250,204,21,.1)}50%{border-color:rgba(250,204,21,.3)}}.border-glow{animation:borderGlow 3s ease-in-out infinite}
+        .tool-panel{display:none}.tool-panel.active{display:block}
+        .tool-tab{cursor:pointer;transition:all .3s ease}.tool-tab.active{background:rgba(250,204,21,.15);border-color:rgba(250,204,21,.4)!important;color:#facc15}
+        .tool-tab:hover:not(.active){background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1)!important}
+        .cc-list-item{transition:all .2s ease;cursor:pointer;border:1px solid transparent}
+        .cc-list-item:hover{border-color:rgba(250,204,21,.3);transform:translateX(4px)}
+        .cc-list-item.active{border-color:rgba(250,204,21,.5);background:rgba(250,204,21,.05)}
+        .cc-copy-row{transition:background .15s ease}.cc-copy-row:hover{background:rgba(255,255,255,.03)}
+        .cc-input{background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;transition:border-color .2s;width:100%}.cc-input:focus{outline:none;border-color:rgba(250,204,21,.4)}
+        input[type="color"]{-webkit-appearance:none;border:none;width:40px;height:40px;border-radius:8px;cursor:pointer;padding:0;background:transparent}
+        input[type="color"]::-webkit-color-swatch-wrapper{padding:2px}
+        input[type="color"]::-webkit-color-swatch{border:1px solid rgba(255,255,255,.15);border-radius:6px}
     </style>
 </head>
-<body>
-<div id="bgp" aria-hidden="true"></div>
-<div id="toast" class="toast" role="alert"></div>
+<body class="grid-bg">
 
-<!-- Discord Modal -->
-<div class="dm-overlay" id="dmodal">
-    <div class="dm">
-        <div class="dm-head">
-            <div class="flex items-center gap-3">
-                <i class="fab fa-discord text-2xl" style="color:var(--dc);"></i>
-                <div>
-                    <div class="text-sm font-semibold text-white">Authorize MineTools</div>
-                    <div class="text-xs" style="color:#b5bac1;">Connect your Discord account</div>
-                </div>
+<div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3"></div>
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="flex items-center gap-3 group cursor-pointer">
+            <div class="w-9 h-9 bg-brand rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314A12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg>
             </div>
+            <span class="font-heading text-xl font-bold tracking-tight">MineTools</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#features" class="text-sm text-gray-400 hover:text-brand transition-colors">Features</a>
+            <a href="#tools" class="text-sm text-gray-400 hover:text-brand transition-colors">Tools</a>
+            <a href="#stats" class="text-sm text-gray-400 hover:text-brand transition-colors">Stats</a>
+            <a href="https://dsc.gg/mctools" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-brand transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                Discord
+            </a>
         </div>
-        <div class="dm-body">
-            <p class="text-sm mb-4" style="color:#b5bac1;">MineTools will access:</p>
-            <div class="dm-scope"><i class="fas fa-user"></i><span class="text-sm text-white">Your username and avatar</span></div>
-            <div class="dm-scope"><i class="fas fa-chart-bar"></i><span class="text-sm text-white">Track your tool usage statistics</span></div>
-            <div class="mt-5">
-                <label class="block text-xs font-medium mb-2" style="color:#b5bac1;">Discord Username</label>
-                <input type="text" id="dname" class="dm-input" placeholder="e.g. Notch" maxlength="32">
-                <p class="text-xs mt-2" style="color:#6d6f78;">This is stored locally in your browser only. No data is sent to any server.</p>
-            </div>
-        </div>
-        <div class="dm-foot">
-            <button class="dm-cancel" onclick="closeDM()">Cancel</button>
-            <button class="dm-auth" onclick="authDiscord()"><i class="fab fa-discord" style="margin-right:4px;"></i> Authorize</button>
-        </div>
+        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-gray-400 hover:text-brand transition-colors cursor-pointer">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
     </div>
-</div>
-
-<nav aria-label="Main navigation">
-    <div class="ni">
-        <a href="#" onclick="showView('home');return false" class="logo" aria-label="Home"><div class="li">M</div><span class="lt">MineTools</span></a>
-        <div class="nav-links" id="navlinks">
-            <button class="nl" data-view="player" onclick="showView('player')">Player</button>
-            <button class="nl" data-view="server" onclick="showView('server')">Server</button>
-            <button class="nl" data-view="skin" onclick="showView('skin')">Skins</button>
-            <button class="nl" data-view="colors" onclick="showView('colors')">Colors</button>
-            <button class="nl" data-view="uuid" onclick="showView('uuid')">UUID</button>
-            <button class="nl" data-view="coords" onclick="showView('coords')">Coords</button>
-            <button class="nl" data-view="potions" onclick="showView('potions')">Potions</button>
-            <button class="nl" data-view="blocks" onclick="showView('blocks')">Blocks</button>
-        </div>
-        <div class="flex items-center gap-2">
-            <div id="userarea"></div>
-            <button class="hb" onclick="document.getElementById('mm').classList.toggle('open')" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-900/95 backdrop-blur-xl">
+        <div class="px-6 py-4 flex flex-col gap-4">
+            <a href="#features" onclick="this.closest('#mobile-menu').classList.add('hidden')" class="text-sm text-gray-400 hover:text-brand transition-colors">Features</a>
+            <a href="#tools" onclick="this.closest('#mobile-menu').classList.add('hidden')" class="text-sm text-gray-400 hover:text-brand transition-colors">Tools</a>
+            <a href="#stats" onclick="this.closest('#mobile-menu').classList.add('hidden')" class="text-sm text-gray-400 hover:text-brand transition-colors">Stats</a>
+            <a href="https://dsc.gg/mctools" target="_blank" class="text-sm text-gray-400 hover:text-brand transition-colors">Discord</a>
         </div>
     </div>
 </nav>
-<div id="mm" class="mm">
-    <button class="nl" onclick="showView('player');document.getElementById('mm').classList.remove('open')">Player Lookup</button>
-    <button class="nl" onclick="showView('server');document.getElementById('mm').classList.remove('open')">Server Lookup</button>
-    <button class="nl" onclick="showView('skin');document.getElementById('mm').classList.remove('open')">Skin Viewer</button>
-    <button class="nl" onclick="showView('colors');document.getElementById('mm').classList.remove('open')">Color Codes</button>
-    <button class="nl" onclick="showView('uuid');document.getElementById('mm').classList.remove('open')">UUID Tool</button>
-    <button class="nl" onclick="showView('coords');document.getElementById('mm').classList.remove('open')">Coords</button>
-    <button class="nl" onclick="showView('potions');document.getElementById('mm').classList.remove('open')">Potions</button>
-    <button class="nl" onclick="showView('blocks');document.getElementById('mm').classList.remove('open')">Blocks</button>
-</div>
 
-<main class="relative z-10 pt-[60px]">
-
-<!-- HOME -->
-<div id="view-home" class="view active">
-    <section class="relative min-h-[78vh] flex flex-col items-center justify-center px-6 text-center">
-        <div class="hg" aria-hidden="true"></div>
-        <div class="relative z-10 max-w-2xl">
-            <div class="sl mb-6">Minecraft Utilities</div>
-            <h1 class="text-5xl md:text-6xl font-extrabold mb-5 leading-tight" style="letter-spacing:-1.5px;">Everything you need,<br><span style="color:var(--gr);">in one place.</span></h1>
-            <p class="text-lg mb-10" style="color:var(--tx2);max-width:460px;margin:0 auto;">Player profiles, server status, skin viewers, potion brewing, and more — free and instant.</p>
-            <div class="flex gap-3 mb-5 max-w-lg mx-auto"><input type="text" id="hs" class="si" placeholder="Search a player or server..." aria-label="Search" onkeydown="if(event.key==='Enter')homeSearch()"><button class="sb" onclick="homeSearch()"><i class="fas fa-arrow-right" style="font-size:14px;"></i></button></div>
-            <p class="text-sm" style="color:var(--tx3);">Try "Hypixel", "Technoblade", or "2b2t"</p>
+<main>
+    <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20">
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-brand/5 rounded-full blur-[120px] spin-slow pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand/5 rounded-full blur-[120px] spin-slow pointer-events-none" style="animation-direction:reverse"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <div class="anim-in d1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand/20 bg-brand/5 mb-8">
+                <span class="w-2 h-2 rounded-full bg-green-400 live-dot"></span>
+                <span class="text-xs font-medium text-brand tracking-wide uppercase">Live — <span id="hero-online">0</span> players tracked</span>
+            </div>
+            <h1 class="anim-in d2 font-heading text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.85] mb-6">
+                <span class="text-white">MINE</span><span class="text-gradient">TOOLS</span>
+            </h1>
+            <p class="anim-in d3 text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">The ultimate Minecraft toolkit. Look up any player, check any server, and explore real-time statistics — all in one place.</p>
+            <div class="anim-in d4 max-w-2xl mx-auto mb-8">
+                <div class="flex border border-white/10 rounded-2xl overflow-hidden bg-dark-700/80 backdrop-blur-md search-input transition-all duration-300">
+                    <button onclick="setSearchTab('player')" id="tab-player" class="tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer">Player</button>
+                    <button onclick="setSearchTab('server')" id="tab-server" class="px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer">Server</button>
+                    <input type="text" id="search-input" placeholder="Enter a Minecraft username..." class="flex-1 bg-transparent px-5 py-4 text-sm text-white placeholder-gray-600 outline-none min-w-0" onkeydown="if(event.key==='Enter')doSearch()">
+                    <button onclick="doSearch()" class="btn-primary px-6 py-4 text-sm font-semibold flex items-center gap-2 whitespace-nowrap">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        Search
+                    </button>
+                </div>
+            </div>
+            <div class="anim-in d5 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-600">
+                <span>Trending:</span>
+                <button onclick="quickSearch('Technoblade')" class="px-3 py-1 rounded-full border border-white/10 text-gray-400 hover:text-brand hover:border-brand/30 transition-all cursor-pointer">Technoblade</button>
+                <button onclick="quickSearch('hypixel.net')" class="px-3 py-1 rounded-full border border-white/10 text-gray-400 hover:text-brand hover:border-brand/30 transition-all cursor-pointer">Hypixel</button>
+                <button onclick="quickSearch('Dream')" class="px-3 py-1 rounded-full border border-white/10 text-gray-400 hover:text-brand hover:border-brand/30 transition-all cursor-pointer">Dream</button>
+                <button onclick="quickSearch('2b2t.org')" class="px-3 py-1 rounded-full border border-white/10 text-gray-400 hover:text-brand hover:border-brand/30 transition-all cursor-pointer">2b2t.org</button>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 anim-in d8">
+            <div class="flex flex-col items-center gap-2 text-gray-600">
+                <span class="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+                <div class="w-5 h-8 rounded-full border border-gray-700 flex items-start justify-center p-1"><div class="w-1 h-2 rounded-full bg-brand animate-bounce"></div></div>
+            </div>
         </div>
     </section>
-    <section class="max-w-4xl mx-auto px-6 pb-16" id="stats-section">
-        <div class="sl mb-3">Your Activity</div>
-        <div class="rc" style="padding:32px;">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center" id="stats-grid"></div>
-            <div class="mt-5 pt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style="border-top:1px solid var(--bd);" id="stats-meta"></div>
+
+    <section id="features" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-anim">
+                <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.3em] text-brand mb-4">Why MineTools</span>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold tracking-tight mb-4">Built for <span class="text-gradient">Players</span></h2>
+                <p class="text-gray-400 max-w-lg mx-auto">Every tool you need, designed with speed and simplicity in mind.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="features-grid"></div>
         </div>
     </section>
-    <section class="max-w-5xl mx-auto px-6 pb-20">
-        <div class="sl mb-3">All Tools</div>
-        <h2 class="text-3xl font-bold mb-8" style="letter-spacing:-.5px;">Built for players</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="tg"></div>
+
+    <section id="tools" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-anim">
+                <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.3em] text-brand mb-4">Tools</span>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold tracking-tight mb-4">Try It <span class="text-gradient">Now</span></h2>
+                <p class="text-gray-400 max-w-lg mx-auto">All tools are free and work directly in your browser.</p>
+            </div>
+            <div class="scroll-anim">
+                <div class="flex flex-wrap gap-2 mb-8 justify-center" id="tool-tabs"></div>
+                <div id="tool-panels"></div>
+            </div>
+        </div>
     </section>
-    <section class="max-w-4xl mx-auto px-6 pb-24" id="discord-cta">
-        <div class="dca text-center"><div class="relative z-10"><i class="fab fa-discord text-4xl mb-5" style="color:var(--dc);"></i><h2 class="text-2xl font-bold mb-3" style="letter-spacing:-.5px;">Join the community</h2><p class="text-base mb-8" style="color:var(--tx2);max-width:420px;margin:0 auto;">Get help, suggest features, share builds, and hang out with other players.</p><div class="flex items-center justify-center gap-2 mb-8"><span class="sd on" style="background:var(--dc);box-shadow:0 0 8px rgba(88,101,242,.3);"></span><span class="text-sm" style="color:var(--tx3);">2,847 members online</span></div><a href="#" class="dbtn" onclick="toast('https://dsc.gg/mctools');return false;"><i class="fab fa-discord"></i> Join Discord</a><div class="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-8 text-sm" style="color:var(--tx3);"><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Feature Requests</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Help & Support</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Build Showcases</span><span><i class="fas fa-check" style="color:var(--gr);margin-right:5px;font-size:11px;"></i>Giveaways</span></div></div></div>
+
+    <section id="stats" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-anim">
+                <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.3em] text-brand mb-4">Live Stats</span>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold tracking-tight mb-4">Real-Time <span class="text-gradient">Metrics</span></h2>
+                <p class="text-gray-400 max-w-lg mx-auto">Tracked locally in your browser. These numbers persist across sessions.</p>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="scroll-anim pulse-glow result-card rounded-2xl p-6 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-green-400 live-dot"></span><span class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold">Live</span></div>
+                    <div id="stat-visitors" class="font-heading text-3xl md:text-4xl font-bold text-gradient mb-1">0</div>
+                    <div class="text-xs text-gray-500">Page Visits</div>
+                </div>
+                <div class="scroll-anim result-card rounded-2xl p-6 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-3"><svg class="w-3 h-3 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold">Total</span></div>
+                    <div id="stat-players" class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">0</div>
+                    <div class="text-xs text-gray-500">Players Looked Up</div>
+                </div>
+                <div class="scroll-anim result-card rounded-2xl p-6 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-3"><svg class="w-3 h-3 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg><span class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold">Total</span></div>
+                    <div id="stat-servers" class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">0</div>
+                    <div class="text-xs text-gray-500">Servers Looked Up</div>
+                </div>
+                <div class="scroll-anim result-card rounded-2xl p-6 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-3"><svg class="w-3 h-3 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold">Total</span></div>
+                    <div id="stat-skins" class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">0</div>
+                    <div class="text-xs text-gray-500">Skins Downloaded</div>
+                </div>
+            </div>
+            <div class="scroll-anim mt-8 result-card rounded-2xl p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div><h3 class="font-heading text-lg font-bold">Your Activity</h3><p class="text-xs text-gray-500">Per-session breakdown</p></div>
+                    <div class="flex items-center gap-4 text-xs">
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-brand"></span>Lookups</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-brand/40"></span>Tools</span>
+                    </div>
+                </div>
+                <div id="activity-chart" class="flex items-end gap-1 h-36"></div>
+            </div>
+        </div>
     </section>
-</div>
 
-<!-- PLAYER -->
-<div id="view-player" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Player Lookup</div><h1 class="text-2xl font-bold mb-2">Look up any player</h1><p class="mb-8" style="color:var(--tx2);">Skin, UUID, name history.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="pi" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')lookupPlayer()"><button class="sb" onclick="lookupPlayer()">Lookup</button></div><div id="pl" class="lb" style="display:none;"></div><div id="pr"></div><div id="pe" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-user text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username above</p></div></section></div>
+    <section class="py-24 px-6">
+        <div class="max-w-4xl mx-auto scroll-anim">
+            <a href="https://discord.com/invite/S8MXWRuuSf" target="_blank" class="block group">
+                <div class="relative result-card rounded-2xl p-10 md:p-14 overflow-hidden border-glow transition-all duration-500 group-hover:border-[#5865F2]/40 group-hover:shadow-[0_0_60px_rgba(88,101,242,0.15)]">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-[#5865F2]/10 rounded-full blur-[100px] pointer-events-none group-hover:bg-[#5865F2]/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-20 h-20 rounded-2xl bg-[#5865F2]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5865F2]/30 group-hover:scale-110 transition-all duration-500">
+                            <svg class="w-10 h-10 text-[#5865F2]" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        </div>
+                        <div class="text-center md:text-left flex-1">
+                            <h3 class="font-heading text-2xl md:text-3xl font-bold mb-2">Join Our Discord</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4">Get support, suggest features, and hang out with the community.</p>
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                                <span class="flex items-center gap-2 text-sm text-gray-400"><span class="w-2 h-2 rounded-full bg-green-400 live-dot"></span><span id="discord-online">...</span> online</span>
+                                <span class="flex items-center gap-2 text-sm text-gray-400">
+                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <span id="discord-members">...</span> members
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0"><div class="px-6 py-3 rounded-xl bg-[#5865F2] text-white text-sm font-semibold group-hover:shadow-[0_0_30px_rgba(88,101,242,0.4)] transition-all duration-300 group-hover:scale-105">Join Server →</div></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
 
-<!-- SERVER -->
-<div id="view-server" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Server Lookup</div><h1 class="text-2xl font-bold mb-2">Check any server</h1><p class="mb-8" style="color:var(--tx2);">Real-time status from any IP or domain.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="svi" class="si" placeholder="mc.hypixel.net..." onkeydown="if(event.key==='Enter')lookupServer()"><button class="sb" onclick="lookupServer()">Lookup</button></div><div id="svl" class="lb" style="display:none;"></div><div id="svr"></div><div id="svs"><div class="sl mb-3 mt-10">Quick Links</div><div class="flex flex-wrap gap-2" id="svq"></div></div></section></div>
-
-<!-- SKIN -->
-<div id="view-skin" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Skin Viewer</div><h1 class="text-2xl font-bold mb-2">View any skin</h1><p class="mb-8" style="color:var(--tx2);">Front, back, and head preview.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="ski" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')viewSkin()"><button class="sb" onclick="viewSkin()">View</button></div><div id="skr"></div><div id="ske" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-tshirt text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username</p></div></section></div>
-
-<!-- COLORS -->
-<div id="view-colors" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Color Codes</div><h1 class="text-2xl font-bold mb-2">Minecraft formatting</h1><p class="mb-8" style="color:var(--tx2);">Click any code to add it.</p><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Colors</h3><div class="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-8" id="csw"></div><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Formatting</h3><div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-8" id="fsw"></div><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Code Builder</h3><div class="rc mb-4"><textarea id="ci" class="si mb-4" style="height:72px;resize:vertical;" placeholder="Type formatted text here..."></textarea><div class="flex items-center justify-between mb-4"><span class="text-sm" style="color:var(--tx3);">Preview</span><div class="flex gap-2"><button class="cb" onclick="ct()"><i class="fas fa-copy" style="font-size:11px;"></i> Copy</button><button class="cb" onclick="document.getElementById('ci').value='';ucp()"><i class="fas fa-trash" style="font-size:11px;"></i></button></div></div><div id="cpv" class="cp"></div></div></section></div>
-
-<!-- UUID -->
-<div id="view-uuid" class="view"><section class="max-w-3xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">UUID Converter</div><h1 class="text-2xl font-bold mb-2">Username to UUID</h1><p class="mb-8" style="color:var(--tx2);">Online and offline formats.</p><div class="flex gap-3 mb-6 max-w-lg"><input type="text" id="ui" class="si" placeholder="Username..." onkeydown="if(event.key==='Enter')convUUID()"><button class="sb" onclick="convUUID()">Convert</button></div><div id="ul" class="lb" style="display:none;"></div><div id="ur"></div><div id="ue" class="rc text-center py-20" style="color:var(--tx3);"><i class="fas fa-fingerprint text-3xl mb-4" style="color:var(--sf2);"></i><p>Enter a username</p></div></section></div>
-
-<!-- COORDS -->
-<div id="view-coords" class="view"><section class="max-w-3xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Coordinate Calculator</div><h1 class="text-2xl font-bold mb-2">Overworld and Nether</h1><p class="mb-8" style="color:var(--tx2);">Convert coordinates between dimensions.</p><div class="rc mb-6"><div class="flex gap-3 mb-6"><button id="cmo" class="sb" onclick="scm('ow')" style="flex:1;">Overworld to Nether</button><button id="cmn" class="sb" onclick="scm('ne')" style="flex:1;background:var(--sf);color:var(--tx3);border:1px solid var(--bd);">Nether to Overworld</button></div><div class="grid grid-cols-3 gap-3 mb-6"><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">X</label><input type="number" id="cx" class="si" placeholder="0"></div><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">Y</label><input type="number" id="cy" class="si" placeholder="0"></div><div><label class="block mb-2 text-sm font-medium" style="color:var(--tx3);">Z</label><input type="number" id="cz" class="si" placeholder="0"></div></div><button class="sb w-full" onclick="cc()">Convert</button></div><div id="cr" style="display:none;"><div class="rc ai mb-6"><div class="flex items-center gap-3 mb-5"><span id="cfi" class="cob"></span><span id="cfl" class="text-sm font-semibold" style="color:var(--tx2);">OVERWORLD</span><i class="fas fa-arrow-right" style="color:var(--tx3);font-size:12px;"></i><span id="cti" class="cbn"></span><span id="ctl" class="text-sm font-semibold" style="color:var(--tx2);">NETHER</span></div><div class="grid grid-cols-3 gap-4 text-center"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">X</div><div id="cox" class="fp text-base" style="color:var(--gr);">—</div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Y</div><div id="coy" class="fp text-base" style="color:var(--gr);">—</div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Z</div><div id="coz" class="fp text-base" style="color:var(--gr);">—</div></div></div><button class="cb w-full mt-5" onclick="ccp()"><i class="fas fa-copy" style="font-size:11px;"></i> Copy</button></div></div><div class="rc"><h3 class="text-sm font-semibold mb-4">Distance Calculator</h3><div class="grid grid-cols-2 gap-4 mb-4"><div><div class="text-xs font-medium mb-2" style="color:var(--gr);">Point A</div><div class="grid grid-cols-3 gap-2"><input type="number" id="dax" class="si" placeholder="X" style="font-size:14px;padding:10px;"><input type="number" id="day" class="si" placeholder="Y" style="font-size:14px;padding:10px;"><input type="number" id="daz" class="si" placeholder="Z" style="font-size:14px;padding:10px;"></div></div><div><div class="text-xs font-medium mb-2" style="color:var(--gr);">Point B</div><div class="grid grid-cols-3 gap-2"><input type="number" id="dbx" class="si" placeholder="X" style="font-size:14px;padding:10px;"><input type="number" id="dby" class="si" placeholder="Y" style="font-size:14px;padding:10px;"><input type="number" id="dbz" class="si" placeholder="Z" style="font-size:14px;padding:10px;"></div></div></div><button class="sb w-full mb-4" onclick="cd()">Calculate</button><div id="dr"></div></div></section></div>
-
-<!-- POTIONS -->
-<div id="view-potions" class="view"><section class="max-w-4xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Potion Builder</div><h1 class="text-2xl font-bold mb-2">Build any potion</h1><p class="mb-8" style="color:var(--tx2);">Select a base potion, add modifiers, copy the command.</p><div id="pot-step1"><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Base Potion</h3><div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="pot-grid"></div></div><div id="pot-step2" style="display:none;"><button class="cb mb-5" onclick="potReset()"><i class="fas fa-arrow-left" style="font-size:11px;"></i> Back</button><h3 class="text-sm font-semibold mb-3" style="color:var(--tx2);">Modifiers</h3><div class="flex flex-wrap gap-2 mb-6" id="pot-mods"></div><div id="pot-result"></div></div></section></div>
-
-<!-- BLOCKS -->
-<div id="view-blocks" class="view"><section class="max-w-5xl mx-auto px-6 py-14"><button class="bb mb-8" onclick="showView('home')"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button><div class="sl mb-2">Block Encyclopedia</div><h1 class="text-2xl font-bold mb-2">Browse blocks</h1><p class="mb-8" style="color:var(--tx2);">Hardness, blast resistance, tools, drops.</p><div class="mb-6 max-w-sm"><input type="text" id="blk" class="si" placeholder="Search blocks..." oninput="filterBlocks()"></div><div id="blg" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div></section></div>
-
+    <section class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-anim">
+                <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.3em] text-brand mb-4">Trending</span>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold tracking-tight mb-4">Popular <span class="text-gradient">Servers</span></h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="popular-servers"></div>
+        </div>
+    </section>
 </main>
 
-<footer class="relative z-10" style="border-top:1px solid var(--bd);"><div class="max-w-5xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><div class="li" style="width:22px;height:22px;font-size:10px;border-radius:5px;">M</div><span class="text-sm font-semibold" style="color:var(--tx3);">MineTools</span></div><p class="text-sm" style="color:var(--sf3);">Not affiliated with Mojang Studios or Microsoft</p><div class="flex gap-3"><a href="#" style="color:var(--tx3);transition:.2s;" onmouseover="this.style.color='var(--tx)'" onmouseout="this.style.color='var(--tx3)'" aria-label="GitHub"><i class="fab fa-github"></i></a><a href="#" style="color:var(--tx3);transition:.2s;" onmouseover="this.style.color='var(--dc)'" onmouseout="this.style.color='var(--tx3)'" aria-label="Discord"><i class="fab fa-discord"></i></a></div></div></footer>
+<footer class="border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/><path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958l-.025.025 5.469 5.469"/><path d="M19.686 8.314A12.5 12.5 0 0 1 1.356 10.225l-.025-.025-5.469-5.469"/></svg></div>
+                    <span class="font-heading text-lg font-bold">MineTools</span>
+                </div>
+                <p class="text-sm text-gray-500 max-w-sm leading-relaxed">The ultimate Minecraft utility suite. Free, fast, and built with love for the community.</p>
+            </div>
+            <div><h4 class="font-heading text-sm font-bold uppercase tracking-wider text-gray-300 mb-4">Tools</h4><ul class="space-y-2" id="footer-tools"></ul></div>
+            <div>
+                <h4 class="font-heading text-sm font-bold uppercase tracking-wider text-gray-300 mb-4">Community</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://discord.com/invite/S8MXWRuuSf" target="_blank" class="text-sm text-gray-500 hover:text-brand transition-colors flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>Discord</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 hover:text-brand transition-colors">GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-xs text-gray-600">© 2025 MineTools. Not affiliated with Mojang or Microsoft.</p>
+            <p class="text-xs text-gray-600">Made with <span class="text-brand">♥</span> for the Minecraft community</p>
+        </div>
+    </div>
+</footer>
 
 <script>
-/* ===== STATS SYSTEM ===== */
-function getStats(){try{return JSON.parse(localStorage.getItem('mt_stats'))||{}}catch(e){return {}}}
-function saveStats(s){localStorage.setItem('mt_stats',JSON.stringify(s))}
-function trackStat(key){
-    var s=getStats();s[key]=(s[key]||0)+1;s.totalTools=(s.totalTools||0)+1;saveStats(s);
-    if(currentView==='home')renderHomeStats();
-}
-// Init session on load
-(function(){var s=getStats();if(!s.firstVisit)s.firstVisit=new Date().toISOString();s.sessions=(s.sessions||0)+1;s.lastVisit=new Date().toISOString();saveStats(s);})();
-
-/* ===== DISCORD AUTH ===== */
-function getDCUser(){try{return JSON.parse(localStorage.getItem('mt_dc'))}catch(e){return null}}
-function setDCUser(u){localStorage.setItem('mt_dc',JSON.stringify(u));renderUserArea();}
-function rmDCUser(){localStorage.removeItem('mt_dc');renderUserArea();closeUD();toast('Disconnected');}
-function getInitials(n){return n.split(/\s+/).map(function(w){return w[0]}).join('').toUpperCase().slice(0,2)}
-function openDM(){document.getElementById('dmodal').classList.add('open');document.getElementById('dname').value='';setTimeout(function(){document.getElementById('dname').focus()},100)}
-function closeDM(){document.getElementById('dmodal').classList.remove('open')}
-function authDiscord(){
-    var name=document.getElementById('dname').value.trim();
-    if(!name){document.getElementById('dname').style.borderColor='var(--rd)';setTimeout(function(){document.getElementById('dname').style.borderColor=''},1500);return;}
-    setDCUser({id:Math.random().toString(36).slice(2,18),username:name,since:new Date().toISOString()});
-    closeDM();toast('Connected as '+name);
-}
-function renderUserArea(){
-    var u=getDCUser(),el=document.getElementById('userarea');
-    if(u){
-        var ini=getInitials(u.username);
-        el.innerHTML='<button class="ub" id="ubtn" onclick="toggleUD()"><div class="ua">'+esc(ini)+'</div><span class="un hidden md:inline">'+esc(u.username)+'</span><i class="fas fa-chevron-down hidden md:inline" style="font-size:10px;color:var(--tx3);margin-left:2px;"></i></button><div class="ud" id="udd"><div class="udi"><div class="udia">'+esc(ini)+'</div><div><div class="udn">'+esc(u.username)+'</div><div class="uds">Since '+new Date(u.since).toLocaleDateString()+'</div></div></div><div class="udsep"></div><button class="udbtn" onclick="showView(\'home\');closeUD()"><i class="fas fa-chart-bar" style="width:16px;"></i> My Stats</button><button class="udbtn" onclick="showView(\'home\');closeUD()"><i class="fas fa-cog" style="width:16px;"></i> Settings</button><div class="udsep"></div><button class="udbtn danger" onclick="rmDCUser()"><i class="fas fa-sign-out-alt" style="width:16px;"></i> Disconnect</button></div>';
-    }else{
-        el.innerHTML='<button class="login-btn" onclick="openDM()"><i class="fab fa-discord"></i><span class="hidden sm:inline">Log in</span></button>';
+const TOOLS=[
+    {id:'player',name:'Player Lookup',desc:'Search any Minecraft username',icon:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'},
+    {id:'server',name:'Server Lookup',desc:'Check any Minecraft server',icon:'<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>'},
+    {id:'skin',name:'Skin Stealer',desc:'Download any player\'s skin',icon:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'},
+    {id:'uuid',name:'UUID Converter',desc:'Convert between UUID formats',icon:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>'},
+    {id:'coords',name:'Coord Converter',desc:'Overworld ↔ Nether coords',icon:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>'},
+    {id:'xp',name:'XP Calculator',desc:'Calculate XP levels & orbs',icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'},
+    {id:'mccolor',name:'Color Codes',desc:'Minecraft § color code reference',icon:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>'},
+    {id:'colorcreator',name:'Color Creator',desc:'Gradient presets & color formats',icon:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22V12"/><path d="M2 12h10"/>'},
+    {id:'seed',name:'Seed Viewer',desc:'Get info from a world seed',icon:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>'}
+];
+let activeTool='player',sessionLookups=new Array(24).fill(0),sessionTools=new Array(24).fill(0),searchTab='player';
+function getStats(){
+    try {
+        const s=localStorage.getItem('minetools_stats');
+        return s?JSON.parse(s):{visits:0,players:0,servers:0,skins:0};
+    } catch (e) {
+        console.warn("Storage access denied:", e);
+        return {visits:0,players:0,servers:0,skins:0};
     }
 }
-function toggleUD(){document.getElementById('udd').classList.toggle('open')}
-function closeUD(){var d=document.getElementById('udd');if(d)d.classList.remove('open')}
-document.addEventListener('click',function(e){var ub=document.getElementById('ubtn'),ud=document.getElementById('udd');if(ub&&ud&&!ub.contains(e.target)&&!ud.contains(e.target)){ud.classList.remove('open')}});
-document.getElementById('dmodal').addEventListener('click',function(e){if(e.target===this)closeDM()});
-document.getElementById('dname').addEventListener('keydown',function(e){if(e.key==='Enter')authDiscord()});
-
-/* ===== DATA ===== */
-var KP={technoblade:{name:'Technoblade',first:'2013-08-29',last:'2022-06-30',hist:[{n:'Technoblade',t:'Aug 29, 2013'}],cape:'Minecon 2016'},dream:{name:'Dream',first:'2019-02-14',last:'2024-01-15',hist:[{n:'Dream',t:'Feb 14, 2019'}],cape:null},philza:{name:'philza',first:'2013-08-28',last:'2024-03-20',hist:[{n:'Ph1LzA',t:'Aug 28, 2013'},{n:'philza',t:'Aug 15, 2019'}],cape:'Minecon 2019'},tommyinnit:{name:'TommyInnit',first:'2019-05-01',last:'2024-03-15',hist:[{n:'TommyInnit',t:'May 1, 2019'}],cape:null},tubbo:{name:'Tubbo',first:'2019-09-12',last:'2024-02-28',hist:[{n:'Tubbo_',t:'Sep 12, 2019'},{n:'Tubbo',t:'Nov 1, 2020'}],cape:null},sapnap:{name:'Sapnap',first:'2019-03-01',last:'2024-02-10',hist:[{n:'PandasCanPvP',t:'Mar 1, 2017'},{n:'Sapnap',t:'Mar 1, 2019'}],cape:null},georgenotfound:{name:'GeorgeNotFound',first:'2019-08-15',last:'2024-01-20',hist:[{n:'GeorgeNotFound',t:'Aug 15, 2019'}],cape:null},skeppy:{name:'Skeppy',first:'2015-01-20',last:'2024-01-05',hist:[{n:'Skeppy',t:'Jan 20, 2015'}],cape:null},badboyhalo:{name:'BadBoyHalo',first:'2016-06-10',last:'2024-02-14',hist:[{n:'TheSoulOfHalo',t:'Jun 10, 2016'},{n:'BadBoyHalo',t:'Mar 15, 2018'}],cape:null},wilbursoot:{name:'WilburSoot',first:'2014-03-10',last:'2024-03-10',hist:[{n:'WilburSoot',t:'Mar 10, 2014'}],cape:null}};
-var QS=['mc.hypixel.net','2b2t.org','play.cubecraft.net','play.wynncraft.com','play.earthmc.net','lunar.gg','purpleprison.org','snapcraft.net'];
-var TD=[{v:'player',i:'fa-user',t:'Player Lookup',d:'Skin, UUID, history.'},{v:'server',i:'fa-server',t:'Server Lookup',d:'Real-time status.'},{v:'skin',i:'fa-tshirt',t:'Skin Viewer',d:'Multi-angle preview.'},{v:'colors',i:'fa-palette',t:'Color Codes',d:'Formatting reference.'},{v:'uuid',i:'fa-fingerprint',t:'UUID Converter',d:'UUID formats.'},{v:'coords',i:'fa-location-crosshairs',t:'Coords Calculator',d:'Dimension convert.'},{v:'potions',i:'fa-flask',t:'Potion Builder',d:'Brew, get commands.'},{v:'blocks',i:'fa-cube',t:'Block Encyclopedia',d:'Block data.'}];
-var MC=[{c:'\u00a70',ch:'0',n:'Black',h:'#000000'},{c:'\u00a71',ch:'1',n:'Dark Blue',h:'#0000AA'},{c:'\u00a72',ch:'2',n:'Dark Green',h:'#00AA00'},{c:'\u00a73',ch:'3',n:'Dark Aqua',h:'#00AAAA'},{c:'\u00a74',ch:'4',n:'Dark Red',h:'#AA0000'},{c:'\u00a75',ch:'5',n:'Dark Purple',h:'#AA00AA'},{c:'\u00a76',ch:'6',n:'Gold',h:'#FFAA00'},{c:'\u00a77',ch:'7',n:'Gray',h:'#AAAAAA'},{c:'\u00a78',ch:'8',n:'Dark Gray',h:'#555555'},{c:'\u00a79',ch:'9',n:'Blue',h:'#5555FF'},{c:'\u00a7a',ch:'a',n:'Green',h:'#55FF55'},{c:'\u00a7b',ch:'b',n:'Aqua',h:'#55FFFF'},{c:'\u00a7c',ch:'c',n:'Red',h:'#FF5555'},{c:'\u00a7d',ch:'d',n:'Light Purple',h:'#FF55FF'},{c:'\u00a7e',ch:'e',n:'Yellow',h:'#FFFF55'},{c:'\u00a7f',ch:'f',n:'White',h:'#FFFFFF'}];
-var MF=[{c:'\u00a7k',ch:'k',n:'Obfuscated',s:'filter:blur(2px);'},{c:'\u00a7l',ch:'l',n:'Bold',s:'font-weight:bold;'},{c:'\u00a7m',ch:'m',n:'Strikethrough',s:'text-decoration:line-through;'},{c:'\u00a7n',ch:'n',n:'Underline',s:'text-decoration:underline;'},{c:'\u00a7o',ch:'o',n:'Italic',s:'font-style:italic;'},{c:'\u00a7r',ch:'r',n:'Reset',s:''}];
-var POTS=[
-    {name:'Night Vision',key:'night_vision',dur:180,ext:true,str:false,color:'#1a1a8a',id:16,icon:'fa-eye'},
-    {name:'Invisibility',key:'invisibility',dur:180,ext:true,str:false,color:'#b0b0d0',id:14,icon:'fa-ghost'},
-    {name:'Leaping',key:'leaping',dur:180,ext:true,str:true,color:'#33dd33',id:8,icon:'fa-arrow-up'},
-    {name:'Fire Resistance',key:'fire_resistance',dur:180,ext:true,str:false,color:'#ff7722',id:12,icon:'fa-fire'},
-    {name:'Swiftness',key:'swiftness',dur:180,ext:true,str:true,color:'#3399ff',id:1,icon:'fa-bolt'},
-    {name:'Slowness',key:'slowness',dur:60,ext:true,str:false,color:'#7777bb',id:2,icon:'fa-hourglass-half'},
-    {name:'Water Breathing',key:'water_breathing',dur:180,ext:true,str:false,color:'#4499dd',id:13,icon:'fa-water'},
-    {name:'Instant Health',key:'healing',dur:0,ext:false,str:true,color:'#ff4444',id:6,icon:'fa-heart'},
-    {name:'Instant Damage',key:'harming',dur:0,ext:false,str:true,color:'#882222',id:7,icon:'fa-skull'},
-    {name:'Poison',key:'poison',dur:45,ext:true,str:true,color:'#559933',id:19,icon:'fa-biohazard'},
-    {name:'Regeneration',key:'regeneration',dur:45,ext:true,str:true,color:'#ff66aa',id:10,icon:'fa-sync'},
-    {name:'Strength',key:'strength',dur:180,ext:true,str:true,color:'#993333',id:5,icon:'fa-fist-raised'},
-    {name:'Weakness',key:'weakness',dur:60,ext:true,str:false,color:'#999999',id:18,icon:'fa-feather'},
-    {name:'Luck',key:'luck',dur:300,ext:false,str:false,color:'#33cc99',id:26,icon:'fa-clover'},
-    {name:'Turtle Master',key:'turtle_master',dur:20,ext:true,str:true,color:'#2a6666',id:11,icon:'fa-shield-alt'},
-    {name:'Slow Falling',key:'slow_falling',dur:90,ext:true,str:false,color:'#dde0ff',id:27,icon:'fa-feather-alt'}
-];
-var BLK=[{n:'Stone',id:'minecraft:stone',h:1.5,b:6,t:'Pickaxe',d:'Cobblestone'},{n:'Granite',id:'minecraft:granite',h:1.5,b:6,t:'Pickaxe',d:'Granite'},{n:'Dirt',id:'minecraft:dirt',h:.5,b:.5,t:'Shovel',d:'Dirt'},{n:'Grass Block',id:'minecraft:grass_block',h:.6,b:.6,t:'Shovel',d:'Dirt'},{n:'Cobblestone',id:'minecraft:cobblestone',h:2,b:6,t:'Pickaxe',d:'Cobblestone'},{n:'Oak Planks',id:'minecraft:oak_planks',h:2,b:3,t:'Axe',d:'Oak Planks'},{n:'Oak Log',id:'minecraft:oak_log',h:2,b:2,t:'Axe',d:'Oak Log'},{n:'Sand',id:'minecraft:sand',h:.5,b:.5,t:'Shovel',d:'Sand'},{n:'Iron Ore',id:'minecraft:iron_ore',h:3,b:6,t:'Pickaxe',d:'Raw Iron'},{n:'Gold Ore',id:'minecraft:gold_ore',h:3,b:6,t:'Pickaxe',d:'Raw Gold'},{n:'Diamond Ore',id:'minecraft:diamond_ore',h:3,b:6,t:'Pickaxe',d:'Diamond'},{n:'Obsidian',id:'minecraft:obsidian',h:50,b:1200,t:'Pickaxe',d:'Obsidian'},{n:'Glass',id:'minecraft:glass',h:.3,b:.3,t:'\u2014',d:'\u2014'},{n:'TNT',id:'minecraft:tnt',h:0,b:0,t:'\u2014',d:'TNT'},{n:'Crafting Table',id:'minecraft:crafting_table',h:2.5,b:2.5,t:'Axe',d:'Crafting Table'},{n:'Furnace',id:'minecraft:furnace',h:3.5,b:3.5,t:'Pickaxe',d:'Furnace'},{n:'Chest',id:'minecraft:chest',h:2.5,b:2.5,t:'Axe',d:'Chest'},{n:'Ice',id:'minecraft:ice',h:.5,b:.5,t:'Pickaxe',d:'\u2014'},{n:'Glowstone',id:'minecraft:glowstone',h:.3,b:.3,t:'\u2014',d:'Glowstone Dust'},{n:'Netherrack',id:'minecraft:netherrack',h:.4,b:.4,t:'Pickaxe',d:'Netherrack'},{n:'End Stone',id:'minecraft:end_stone',h:9,b:9,t:'Pickaxe',d:'End Stone'},{n:'Bedrock',id:'minecraft:bedrock',h:-1,b:36e5,t:'\u2014',d:'\u2014'},{n:'Ancient Debris',id:'minecraft:ancient_debris',h:30,b:1200,t:'Pickaxe',d:'Ancient Debris'},{n:'Soul Sand',id:'minecraft:soul_sand',h:.5,b:.5,t:'Shovel',d:'Soul Sand'},{n:'Mycelium',id:'minecraft:mycelium',h:.6,b:.6,t:'Shovel',d:'Dirt'},{n:'Crying Obsidian',id:'minecraft:crying_obsidian',h:50,b:1200,t:'Pickaxe',d:'Crying Obsidian'},{n:'Ladder',id:'minecraft:ladder',h:.4,b:.4,t:'Axe',d:'Ladder'},{n:'Redstone Ore',id:'minecraft:redstone_ore',h:3,b:6,t:'Pickaxe',d:'Redstone'},{n:'Lapis Ore',id:'minecraft:lapis_ore',h:3,b:6,t:'Pickaxe',d:'Lapis Lazuli'},{n:'Gravel',id:'minecraft:gravel',h:.6,b:.6,t:'Shovel',d:'Gravel'},{n:'Snow Block',id:'minecraft:snow_block',h:.2,b:.2,t:'Shovel',d:'Snowball'},{n:'Clay',id:'minecraft:clay',h:.6,b:.6,t:'Shovel',d:'Clay Ball'},{n:'Sandstone',id:'minecraft:sandstone',h:.8,b:.8,t:'Pickaxe',d:'Sandstone'},{n:'Bookshelf',id:'minecraft:bookshelf',h:1.5,b:1.5,t:'Axe',d:'Book'},{n:'White Wool',id:'minecraft:white_wool',h:.8,b:.8,t:'Shears',d:'White Wool'}];
-
-/* ===== UTILS ===== */
-var cMode='ow',currentView='home',selPot=null,potMods={ext:false,str:false,splash:false,lingering:false,arrow:false};
-function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200);}
-function cpy(t){navigator.clipboard.writeText(t).then(function(){toast('Copied!')}).catch(function(){toast('Copy failed')});}
-function hS(s){var h=0;for(var i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h;}
-function tH(n,l){return(n>>>0).toString(16).padStart(l,'0');}
-function n2u(n){var s=n.toLowerCase(),a=hS(s+'_a'),b=hS(s+'_b'),c=hS(s+'_c'),d=hS(s+'_d');return tH(a,8)+tH(b,4)+'4'+tH(c,3)+tH(d&0x0FFF|0x3000,4)+tH(a^b^c^d,12);}
-function fU(u){return u.slice(0,8)+'-'+u.slice(8,12)+'-'+u.slice(12,16)+'-'+u.slice(16,20)+'-'+u.slice(20);}
-function oU(n){var s='OfflinePlayer:'+n,a=hS(s+'x1'),b=hS(s+'x2'),c=hS(s+'x3'),d=hS(s+'x4');return tH(a,8)+tH(b,4)+'3'+tH(c,3)+tH(d&0x3FFF|0x8000,4)+tH(a^b^c^d,12);}
-function rD(a,b){var y=+a+Math.floor(Math.random()*(+b-+a+1)),m=String(Math.floor(Math.random()*12)+1).padStart(2,'0'),d=String(Math.floor(Math.random()*28)+1).padStart(2,'0');return y+'-'+m+'-'+d;}
-function bI(n){return'https://mc-heads.net/body/'+encodeURIComponent(n);}
-function hI(n){return'https://mc-heads.net/head/'+encodeURIComponent(n);}
-function aI(n){return'https://mc-heads.net/avatar/'+encodeURIComponent(n);}
-function sD(n){return'https://mc-heads.net/skin/'+encodeURIComponent(n);}
-function sE(img){if(!img.dataset._s){img.dataset._s='1';var n=img.dataset.n||'';if(n){var k=img.dataset.k;if(k==='body')img.src='https://minotar.net/body/'+encodeURIComponent(n)+'/256';else if(k==='head')img.src='https://minotar.net/head/'+encodeURIComponent(n)+'/128';else img.src='https://minotar.net/avatar/'+encodeURIComponent(n)+'/64';return;}}img.style.display='none';var p=img.parentElement.querySelector('.sf');if(p)p.style.display='flex';}
-function skC(inner,w,h){return '<div class="skc" style="width:'+w+'px;height:'+h+'px;">'+inner+'<div class="sf"><i class="fas fa-user-slash"></i><span>Unavailable</span></div></div>';}
-
-/* ===== NAV ===== */
-function showView(v){document.querySelectorAll('.view').forEach(function(el){el.classList.remove('active')});document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nl[data-view]').forEach(function(l){l.classList.toggle('active',l.dataset.view===v)});currentView=v;window.scrollTo({top:0,behavior:'smooth'});closeUD();setTimeout(function(){var inp=document.querySelector('#view-'+v+' input[type="text"],#view-'+v+' input[type="number"],#view-'+v+' select');if(inp&&v!=='home')inp.focus()},150);}
-function homeSearch(){var q=document.getElementById('hs').value.trim();if(!q)return;if(q.includes('.')||q.includes(':')){showView('server');document.getElementById('svi').value=q;lookupServer();}else{showView('player');document.getElementById('pi').value=q;lookupPlayer();}}
-
-/* ===== HOME STATS ===== */
-function renderHomeStats(){
-    var s=getStats(),total=s.totalTools||0,players=s.players||0,servers=s.servers||0,skins=s.skins||0;
-    var first=s.firstVisit?new Date(s.firstVisit):null,now=new Date();
-    var days=first?Math.max(1,Math.floor((now-first)/(1e3*60*60*24))):0;
-    var sess=s.sessions||0;
-    document.getElementById('stats-grid').innerHTML=
-        '<div><div class="sn" data-count="'+total+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Tools Used</div></div>'+
-        '<div><div class="sn" data-count="'+players+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Players Looked Up</div></div>'+
-        '<div><div class="sn" data-count="'+servers+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Servers Checked</div></div>'+
-        '<div><div class="sn" data-count="'+skins+'">0</div><div class="text-sm mt-1" style="color:var(--tx3);">Skins Viewed</div></div>';
-    var u=getDCUser(),label=u?'Signed in as '+esc(u.username):'Not signed in';
-    document.getElementById('stats-meta').innerHTML=
-        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-calendar" style="margin-right:4px;font-size:11px;"></i>'+days+' day'+(days!==1?'s':'')+' active</span>'+
-        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-redo" style="margin-right:4px;font-size:11px;"></i>Session #'+sess+'</span>'+
-        '<span class="text-sm" style="color:var(--tx3);"><i class="fas fa-user' +(u?'':'-slash')+'" style="margin-right:4px;font-size:11px;"></i>'+label+'</span>';
-    aSt();
+function saveStats(s){
+    try {
+        localStorage.setItem('minetools_stats',JSON.stringify(s));
+    } catch (e) {
+        // Silent fail
+    }
 }
-
-/* ===== PLAYER ===== */
-function lookupPlayer(){
-    var raw=document.getElementById('pi').value.trim();if(!raw)return;var name=raw,key=name.toLowerCase();
-    document.getElementById('pe').style.display='none';document.getElementById('pr').innerHTML='';document.getElementById('pl').style.display='block';
-    trackStat('players');
+function incStat(k){const s=getStats();s[k]=(s[k]||0)+1;saveStats(s);}
+document.addEventListener('DOMContentLoaded',()=>{
+    const st=getStats();st.visits++;saveStats(st);
+    buildFeaturesGrid();buildToolTabs();buildToolPanels();buildPopularServers();buildFooterTools();
+    initScrollAnimations();updateStatsDisplay();setInterval(updateStatsDisplay,1000);
+    fetchDiscord();initActivityChart();setInterval(updateActivityChart,3000);
+    // Initialize specific tools after DOM is ready
+    setTimeout(initColorCodes,300);
+    setTimeout(calcXP,300);
+    // Initialize Color Creator after panels are built
     setTimeout(function(){
-        document.getElementById('pl').style.display='none';
-        var kn=KP[key],dn=kn?kn.name:name,uuid=n2u(name),fs=kn?kn.first:rD('2012','2024'),ls=kn?kn.last:rD('2023','2024'),hist=kn?kn.hist:[{n:dn,t:fs}],cape=kn?kn.cape:null;
-        var bH='<img src="'+bI(dn)+'" alt="'+esc(dn)+'" data-n="'+esc(dn)+'" data-k="body" onerror="sE(this)">';
-        var hH='<img src="'+hI(dn)+'" alt="" data-n="'+esc(dn)+'" data-k="head" onerror="sE(this)" style="width:44px;height:44px;">';
-        var hst='';for(var i=0;i<hist.length;i++){var nh=hist[i],av='<img src="'+aI(nh.n)+'" alt="" data-n="'+esc(nh.n)+'" data-k="avatar" onerror="sE(this)" style="width:26px;height:26px;">';hst+='<div class="ne">'+av+'<span style="color:'+(i===hist.length-1?'var(--gr)':'var(--tx)')+';flex:1;font-weight:'+(i===hist.length-1?'600':'400')+';">'+esc(nh.n)+'</span><span style="color:var(--tx3);font-size:13px;">'+nh.t+'</span></div>';}
-        var c=document.createElement('div');c.className='rc ai';
-        c.innerHTML='<div class="flex flex-col md:flex-row gap-8"><div class="flex flex-col items-center gap-4 flex-shrink-0">'+skC(bH,160,320)+'<a href="'+sD(dn)+'" target="_blank" rel="noopener" class="cb" style="text-decoration:none;"><i class="fas fa-download" style="font-size:11px;"></i> Download Skin</a></div><div class="flex-1 min-w-0"><div class="flex items-center gap-3 mb-5 flex-wrap">'+skC(hH,44,44)+'<div><h2 class="text-xl font-bold" style="color:var(--gr);">'+esc(dn)+'</h2>'+(cape?'<span class="tag mt-1" style="background:var(--grf);color:var(--gr);border:1px solid rgba(0,230,118,.1);"><i class="fas fa-vest" style="font-size:10px;"></i> '+cape+'</span>':'')+'</div></div><div class="grid sm:grid-cols-2 gap-3 mb-6"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">UUID</div><div class="uo"><span>'+fU(uuid)+'</span><button class="cb" onclick="cpy(\''+fU(uuid)+'\')" style="padding:4px 10px;font-size:12px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">UUID (undashed)</div><div class="uo"><span>'+uuid+'</span><button class="cb" onclick="cpy(\''+uuid+'\')" style="padding:4px 10px;font-size:12px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div></div><div class="grid grid-cols-2 gap-3 mb-6"><div class="rc" style="padding:14px;"><div class="text-xs font-medium" style="color:var(--tx3);">First Seen</div><div class="text-sm font-medium mt-1">'+fs+'</div></div><div class="rc" style="padding:14px;"><div class="text-xs font-medium" style="color:var(--tx3);">Last Seen</div><div class="text-sm font-medium mt-1">'+ls+'</div></div></div><div><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Name History</div>'+hst+'</div></div></div>';
-        document.getElementById('pr').appendChild(c);
-    },500+Math.random()*400);
+        buildCCList();
+        setCCDir('to right');
+        updateCC();
+    }, 100);
+});
+
+function buildFeaturesGrid(){
+    document.getElementById('features-grid').innerHTML=TOOLS.map((t,i)=>`
+        <div class="scroll-anim card-glow result-card rounded-2xl p-8 group cursor-pointer" onclick="switchTool('${t.id}');document.getElementById('tools').scrollIntoView({behavior:'smooth'})" style="transition-delay:${i*60}ms">
+            <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-5 group-hover:bg-brand/20 transition-colors duration-300"><svg class="w-6 h-6 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${t.icon}</svg></div>
+            <h3 class="font-heading text-xl font-bold mb-3 tracking-tight">${t.name}</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">${t.desc}</p>
+            <div class="mt-4 text-xs text-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300">Use tool →</div>
+        </div>`).join('');
+}
+function buildToolTabs(){
+    document.getElementById('tool-tabs').innerHTML=TOOLS.map(t=>`
+        <button onclick="switchTool('${t.id}')" id="ttab-${t.id}" class="tool-tab px-4 py-2.5 rounded-xl border border-white/10 text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-2">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${t.icon}</svg>
+            <span class="hidden sm:inline">${t.name}</span>
+        </button>`).join('');
+}
+function switchTool(id){
+    activeTool=id;
+    document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('ttab-'+id)?.classList.add('active');
+    document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('tpanel-'+id)?.classList.add('active');
+}
+function buildToolPanels(){
+    document.getElementById('tool-panels').innerHTML=TOOLS.map(t=>`<div id="tpanel-${t.id}" class="tool-panel ${t.id==='player'?'active':''}"><div class="result-card rounded-2xl p-8 border-glow">${getToolHTML(t.id)}</div></div>`).join('');
+}
+function sv(icon){return `<svg class="w-5 h-5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>`;}
+
+function getToolHTML(id){
+    switch(id){
+    case 'player':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>')}</div><div><h3 class="font-heading text-lg font-bold">Player Lookup</h3><p class="text-xs text-gray-500">Powered by PlayerDB + mc-heads.net</p></div></div>
+        <div class="flex gap-3 mb-6"><input type="text" id="inp-player" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doPlayerLookup()"><button onclick="doPlayerLookup()" class="btn-primary px-5 py-3 rounded-xl text-sm">Lookup</button></div>
+        <div id="res-player"><div class="text-center py-8 text-gray-700 text-sm">Results will appear here</div></div>`;
+    case 'server':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/>')}</div><div><h3 class="font-heading text-lg font-bold">Server Lookup</h3><p class="text-xs text-gray-500">Powered by mcsrvstat.us</p></div></div>
+        <div class="flex gap-3 mb-6"><input type="text" id="inp-server" placeholder="Server address..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doServerLookup()"><button onclick="doServerLookup()" class="btn-primary px-5 py-3 rounded-xl text-sm">Lookup</button></div>
+        <div id="res-server"><div class="text-center py-8 text-gray-700 text-sm">Results will appear here</div></div>`;
+    case 'skin':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Skin Stealer</h3><p class="text-xs text-gray-500">View & download any player's skin</p></div></div>
+        <div class="flex gap-3 mb-8 max-w-md mx-auto"><input type="text" id="inp-skin" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all" onkeydown="if(event.key==='Enter')doSkinSteal()"><button onclick="doSkinSteal()" class="btn-primary px-5 py-3 rounded-xl text-sm">Get Skin</button></div>
+        <div id="res-skin"><div class="text-center py-6 text-gray-700 text-sm">Skin preview will appear here</div></div>`;
+    case 'uuid':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>')}</div><div><h3 class="font-heading text-lg font-bold">UUID Converter</h3><p class="text-xs text-gray-500">Convert between UUID formats</p></div></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Username → UUID</label><div class="flex gap-2"><input type="text" id="inp-uuid-name" placeholder="Username..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600" onkeydown="if(event.key==='Enter')doUUIDFromName()"><button onclick="doUUIDFromName()" class="btn-primary px-4 py-3 rounded-xl text-sm">Get</button></div><div id="res-uuid-name" class="mt-3"></div></div>
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">UUID Format Convert</label><input type="text" id="inp-uuid-convert" placeholder="Paste UUID..." class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 mb-2" oninput="doUUIDConvert()"><div id="res-uuid-convert" class="space-y-2"></div></div>
+        </div>`;
+    case 'coords':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>')}</div><div><h3 class="font-heading text-lg font-bold">Coordinate Converter</h3><p class="text-xs text-gray-500">Overworld ↔ Nether (÷8 / ×8)</p></div></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-dark-500/50 rounded-xl p-5"><div class="text-xs text-brand font-semibold mb-3 uppercase tracking-wider">Overworld → Nether</div><div class="flex gap-2 mb-2"><input type="number" id="coord-ow-x" placeholder="X" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"><input type="number" id="coord-ow-z" placeholder="Z" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"></div><button onclick="convertCoords('ow2nether')" class="btn-primary w-full py-2.5 rounded-lg text-sm mb-3">Convert</button><div id="res-ow2nether" class="text-sm text-gray-400"></div></div>
+            <div class="bg-dark-500/50 rounded-xl p-5"><div class="text-xs text-brand font-semibold mb-3 uppercase tracking-wider">Nether → Overworld</div><div class="flex gap-2 mb-2"><input type="number" id="coord-n-x" placeholder="X" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"><input type="number" id="coord-n-z" placeholder="Z" class="search-input flex-1 bg-dark-400 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600"></div><button onclick="convertCoords('nether2ow')" class="btn-primary w-full py-2.5 rounded-lg text-sm mb-3">Convert</button><div id="res-nether2ow" class="text-sm text-gray-400"></div></div>
+        </div>`;
+    case 'xp':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>')}</div><div><h3 class="font-heading text-lg font-bold">XP Calculator</h3><p class="text-xs text-gray-500">Calculate XP between levels</p></div></div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">From Level</label><input type="number" id="xp-from" value="0" min="0" max="21863" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white" oninput="calcXP()"></div>
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">To Level</label><input type="number" id="xp-to" value="30" min="0" max="21863" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white" oninput="calcXP()"></div>
+            <div><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Current XP</label><input type="number" id="xp-current" value="0" min="0" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white" oninput="calcXP()"></div>
+        </div><div id="res-xp"></div>`;
+    case 'mccolor':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Minecraft Color Codes</h3><p class="text-xs text-gray-500">§ code reference</p></div></div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2" id="color-codes-grid"></div>
+        <div class="mt-6"><label class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2 block">Live Preview</label><div class="bg-dark-500/50 rounded-xl p-4 font-mono text-lg leading-relaxed min-h-[60px]" id="color-preview" style="white-space:pre-wrap"><span style="color:#555">Type something with § codes...</span></div><input type="text" id="inp-mccolor" placeholder="e.g. §aHello §bWorld" class="search-input w-full bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 mt-3 font-mono" oninput="updateColorPreview()"></div>`;
+    case 'colorcreator':return `
+        <div class="flex items-center gap-4 mb-8"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22V12"/><path d="M2 12h10"/>')}</div><div><h3 class="font-heading text-lg font-bold">Color Creator</h3><p class="text-xs text-gray-500">Gradients & color format outputs</p></div></div>
+        <div class="max-w-2xl mx-auto space-y-6">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2"><span class="text-[10px] uppercase tracking-wider text-gray-500 w-6">C1</span><input type="color" id="cc-c1" value="#facc15" oninput="updateCC()"></div>
+                <div class="flex-1 h-8 rounded-lg" id="cc-mini-bar" style="background:linear-gradient(to right,#facc15,#eab308)"></div>
+                <div class="flex items-center gap-2"><span class="text-[10px] uppercase tracking-wider text-gray-500 w-6">C2</span><input type="color" id="cc-c2" value="#eab308" oninput="updateCC()"></div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-wider text-gray-500">Dir</span>
+                <div class="flex gap-1">
+                    <button onclick="setCCDir('to right')" data-dir="to right" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30" style="border-color:rgba(250,204,21,.4);color:#facc15;background:rgba(250,204,21,.1)">→</button>
+                    <button onclick="setCCDir('to bottom')" data-dir="to bottom" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↓</button>
+                    <button onclick="setCCDir('to bottom right')" data-dir="to bottom right" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↘</button>
+                    <button onclick="setCCDir('to top')" data-dir="to top" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">↑</button>
+                    <button onclick="setCCDir('135deg')" data-dir="135deg" class="cc-dir-btn px-3 py-1 rounded-md text-[11px] text-gray-500 border border-white/8 cursor-pointer transition-all hover:text-brand hover:border-brand/30">135°</button>
+                </div>
+            </div>
+            <div><input type="text" id="cc-text" value="MineTools" placeholder="Preview text..." class="cc-input text-center text-base" oninput="updateCC()"></div>
+            <div id="cc-text-preview" class="py-10 text-center font-heading text-4xl font-bold rounded-xl" style="background:linear-gradient(to right,#facc15,#eab308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">MineTools</div>
+            <div class="space-y-1" id="cc-outputs"></div>
+            <div>
+                <p class="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-3">Gradients</p>
+                <div class="space-y-1 max-h-[340px] overflow-y-auto pr-1" id="cc-list"></div>
+            </div>
+        </div>`;
+    case 'seed':return `
+        <div class="flex items-center gap-4 mb-6"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">${sv('<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>')}</div><div><h3 class="font-heading text-lg font-bold">Seed Info</h3><p class="text-xs text-gray-500">Generate info from a world seed</p></div></div>
+        <div class="flex gap-3 mb-6"><input type="text" id="inp-seed" placeholder="Enter seed..." class="search-input flex-1 bg-dark-500/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600" onkeydown="if(event.key==='Enter')doSeedInfo()"><button onclick="doSeedInfo()" class="btn-primary px-5 py-3 rounded-xl text-sm">Analyze</button></div>
+        <div id="res-seed"><div class="text-center py-8 text-gray-700 text-sm">Seed info will appear here</div></div>`;
+    }
+    return '';
 }
 
-/* ===== SERVER ===== */
-var svRun=false;
-function lookupServer(){
-    var q=document.getElementById('svi').value.trim();if(!q||svRun)return;svRun=true;
-    document.getElementById('svr').innerHTML='';document.getElementById('svl').style.display='block';
-    trackStat('servers');
-    var ac=new AbortController(),to=setTimeout(function(){ac.abort()},8e3);
-    fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(q),{signal:ac.signal}).then(function(r){clearTimeout(to);return r.json();}).then(function(d){document.getElementById('svl').style.display='none';svRun=false;if(d.online)renderSvOn(d,q);else renderSvOff(d,q);}).catch(function(e){clearTimeout(to);document.getElementById('svl').style.display='none';svRun=false;var msg=e.name==='AbortError'?'Request timed out.':'Could not reach the lookup service.';document.getElementById('svr').innerHTML='<div class="rc ai text-center py-16"><i class="fas fa-exclamation-triangle text-3xl mb-4" style="color:var(--am);"></i><p style="color:var(--tx2);">'+msg+'</p></div>';});
-}
-function renderSvOn(d,q){var icon=d.icon?'<img src="'+d.icon+'" alt="" style="width:44px;height:44px;border-radius:8px;image-rendering:pixelated;" class="flex-shrink-0">':'<div style="width:44px;height:44px;border-radius:8px;background:var(--sf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-server" style="color:var(--tx3);font-size:16px;"></i></div>';var ver=d.version||'Unknown',pon=d.players.online||0,pmax=d.players.max||0,motd=d.motd&&d.motd.clean?d.motd.clean.filter(function(l){return l}).join(' '):(d.hostname||q),sw=d.software?d.software.name:'',pct=pmax>0?(pon/pmax*100):0,ip=d.ip||q,port=d.port||25565,host=d.hostname||q,addr=port===25565?host:host+':'+port;var plH='';if(d.players.list&&d.players.list.length)plH='<div class="mt-6"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Online Players ('+d.players.list.length+')</div><div class="flex flex-wrap gap-2">'+d.players.list.slice(0,30).map(function(p){return '<span style="background:var(--sf2);border:1px solid var(--bd);padding:4px 10px;border-radius:6px;font-size:13px;">'+esc(p.name||p)+'</span>';}).join('')+(d.players.list.length>30?'<span style="color:var(--tx3);font-size:13px;padding:4px;">+ '+(d.players.list.length-30)+' more</span>':'')+'</div></div>';document.getElementById('svr').innerHTML='<div class="rc ai"><div class="flex items-center gap-4 mb-6 flex-wrap">'+icon+'<div class="flex-1 min-w-0"><div class="flex items-center gap-3 mb-1"><h2 class="text-xl font-bold">'+esc(host)+'</h2><span class="tag" style="background:var(--grf);color:var(--gr);border:1px solid rgba(0,230,118,.15);"><span class="sd on" style="width:6px;height:6px;margin-right:2px;"></span> Online</span></div><div class="text-sm" style="color:var(--tx3);">'+esc(addr)+'</div></div></div><div class="rc mb-5" style="padding:18px;background:var(--sf2);"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">MOTD</div><div class="text-sm font-medium" style="word-break:break-word;">'+esc(motd)+'</div></div><div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6"><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">IP</div><div class="flex items-center gap-2"><span class="text-sm">'+esc(addr)+'</span><button class="cb" onclick="cpy(\''+esc(addr).replace(/'/g,"\\'")+'\')" style="padding:3px 8px;font-size:11px;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Version</div><div class="text-sm">'+esc(ver)+'</div></div>'+(sw?'<div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Software</div><div class="text-sm">'+esc(sw)+'</div></div>':'')+'</div><div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium" style="color:var(--tx3);">Players</span><span class="text-sm font-medium">'+pon.toLocaleString()+' / '+(pmax?pmax.toLocaleString():'?')+'</span></div><div class="pbb" style="height:5px;"><div class="pbf" style="width:0%;" id="svbf"></div></div><div class="flex justify-between mt-1"><span class="text-xs" style="color:var(--tx3);">0%</span><span class="text-xs" style="color:var(--tx3);">'+pct.toFixed(1)+'%</span></div>'+plH+'</div>';requestAnimationFrame(function(){requestAnimationFrame(function(){var b=document.getElementById('svbf');if(b)b.style.width=Math.min(pct,100)+'%';});});}
-function renderSvOff(d,q){var host=d.hostname||q,ip=d.ip||q,port=d.port||25565,addr=port===25565?host:host+':'+port;document.getElementById('svr').innerHTML='<div class="rc ai text-center py-16"><span class="sd off" style="width:12px;height:12px;margin-bottom:14px;display:inline-block;"></span><h2 class="text-lg font-bold mb-2" style="color:var(--rd);">Server Offline</h2><p style="color:var(--tx2);">'+esc(host)+' is not responding</p><div class="mt-4 text-sm" style="color:var(--tx3);">Address: '+esc(addr)+'</div></div>';}
-
-/* ===== SKIN ===== */
-function viewSkin(){var name=document.getElementById('ski').value.trim();if(!name)return;document.getElementById('ske').style.display='none';document.getElementById('skr').innerHTML='<div class="lb"></div>';trackStat('skins');setTimeout(function(){var f='<img src="'+bI(name)+'" data-n="'+esc(name)+'" data-k="body" onerror="sE(this)">',bk='<img src="'+bI(name)+'" style="transform:scaleX(-1);" data-n="'+esc(name)+'" data-k="body" onerror="sE(this)">',hd='<img src="'+hI(name)+'" data-n="'+esc(name)+'" data-k="head" onerror="sE(this)">';document.getElementById('skr').innerHTML='<div class="rc ai"><div class="flex items-center gap-3 mb-6">'+skC(hd,56,56)+'<h2 class="text-lg font-bold" style="color:var(--gr);">'+esc(name)+'</h2></div><div class="grid grid-cols-2 md:grid-cols-3 gap-6"><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Front</div>'+skC(f,180,360)+'</div><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Back</div>'+skC(bk,180,360)+'</div><div class="text-center"><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Head</div>'+skC(hd,128,128)+'</div></div><div class="mt-6"><a href="'+sD(name)+'" target="_blank" rel="noopener" class="cb" style="text-decoration:none;"><i class="fas fa-download" style="font-size:11px;"></i> Download Skin</a></div></div>';},350);}
-
-/* ===== COLORS ===== */
-function initC(){var ch='';for(var i=0;i<MC.length;i++){var c=MC[i];ch+='<div class="text-center"><div class="cs" style="background:'+c.h+';'+(c.h==='#000000'?'border:1px solid rgba(255,255,255,.1);':'')+'" onclick="acc(\''+c.c+'\')" title="'+c.n+'"></div><div style="font-size:11px;color:var(--tx3);margin-top:4px;">'+c.ch+'</div><div style="font-size:11px;color:var(--sf3);">'+c.n+'</div></div>';}document.getElementById('csw').innerHTML=ch;var fh='';for(var j=0;j<MF.length;j++){var f=MF[j];fh+='<div class="fs" onclick="acc(\''+f.c+'\')" title="'+f.n+'"><div style="'+f.s+'color:var(--tx);font-size:16px;font-weight:600;">Aa</div><div style="font-size:11px;color:var(--tx3);margin-top:4px;">'+f.n+'</div></div>';}document.getElementById('fsw').innerHTML=fh;document.getElementById('ci').addEventListener('input',ucp);}
-function acc(code){var inp=document.getElementById('ci'),p=inp.selectionStart;inp.value=inp.value.slice(0,p)+code+inp.value.slice(p);inp.focus();inp.setSelectionRange(p+code.length,p+code.length);ucp();}
-function ucp(){var raw=document.getElementById('ci').value,pv=document.getElementById('cpv');if(!raw){pv.innerHTML='<span style="color:var(--tx3);">Preview will appear here...</span>';return;}var h='',cc='#AAAAAA',cs='';for(var i=0;i<raw.length;i++){if(raw[i]==='\u00a7'&&i+1<raw.length){var c=raw[i+1],cm=MC.find(function(x){return x.ch===c}),fm=MF.find(function(x){return x.ch===c});if(cm){cc=cm.h;cs='';}else if(fm){if(c==='r'){cc='#AAAAAA';cs='';}else cs+=fm.s;}i++;}else h+='<span style="color:'+cc+';'+cs+'">'+(raw[i]===' '?'&nbsp;':esc(raw[i]))+'</span>';}pv.innerHTML=h;}
-function ct(){var v=document.getElementById('ci').value;if(v)cpy(v);}
-
-/* ===== UUID ===== */
-function convUUID(){var name=document.getElementById('ui').value.trim();if(!name)return;document.getElementById('ue').style.display='none';document.getElementById('ur').innerHTML='';document.getElementById('ul').style.display='block';trackStat('uuids');setTimeout(function(){document.getElementById('ul').style.display='none';var ou=n2u(name),of=oU(name);document.getElementById('ur').innerHTML='<div class="rc ai" style="display:flex;flex-direction:column;gap:14px;"><div class="text-xs font-semibold" style="color:var(--gr);letter-spacing:1px;">ONLINE UUID</div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Dashed</div><div class="uo"><span>'+fU(ou)+'</span><button class="cb" onclick="cpy(\''+fU(ou)+'\')"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Undashed</div><div class="uo"><span>'+ou+'</span><button class="cb" onclick="cpy(\''+ou+'\')"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div style="border-top:1px solid var(--bd);padding-top:14px;"><div class="text-xs font-semibold mb-4" style="color:var(--am);letter-spacing:1px;">OFFLINE UUID</div><div class="mb-3"><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Dashed</div><div class="uo" style="color:var(--am);"><span>'+fU(of)+'</span><button class="cb" onclick="cpy(\''+fU(of)+'\')" style="border-color:rgba(255,170,0,.2);color:var(--am);"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div><div><div class="text-xs font-medium mb-1" style="color:var(--tx3);">Undashed</div><div class="uo" style="color:var(--am);"><span>'+of+'</span><button class="cb" onclick="cpy(\''+of+'\')" style="border-color:rgba(255,170,0,.2);color:var(--am);"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div></div></div>';},350);}
-
-/* ===== COORDS ===== */
-function scm(m){cMode=m;var o=document.getElementById('cmo'),n=document.getElementById('cmn');if(m==='ow'){o.className='sb';o.style.flex='1';n.className='sb';n.style.cssText='flex:1;background:var(--sf);color:var(--tx3);border:1px solid var(--bd);font-family:Plus Jakarta Sans,sans-serif;font-size:15px;font-weight:500;cursor:pointer;white-space:nowrap;padding:13px 24px;border-radius:10px;';}else{n.className='sb';n.style.flex='1';o.className='sb';o.style.cssText=n.style.cssText;}}
-function cc(){var x=parseFloat(document.getElementById('cx').value)||0,y=parseFloat(document.getElementById('cy').value)||0,z=parseFloat(document.getElementById('cz').value)||0,f=cMode==='ow'?1/8:8,ox=Math.floor(x*f),oz=Math.floor(z*f);document.getElementById('cr').style.display='block';document.getElementById('cfl').textContent=cMode==='ow'?'OVERWORLD':'NETHER';document.getElementById('ctl').textContent=cMode==='ow'?'NETHER':'OVERWORLD';document.getElementById('cfi').className=cMode==='ow'?'cob':'cbn';document.getElementById('cti').className=cMode==='ow'?'cbn':'cob';document.getElementById('cox').textContent=ox;document.getElementById('coy').textContent=y;document.getElementById('coz').textContent=oz;document.getElementById('cr').dataset.c=ox+', '+y+', '+oz;}
-function ccp(){var c=document.getElementById('cr').dataset.c;if(c)cpy(c);}
-function cd(){var ax=parseFloat(document.getElementById('dax').value)||0,ay=parseFloat(document.getElementById('day').value)||0,az=parseFloat(document.getElementById('daz').value)||0,bx=parseFloat(document.getElementById('dbx').value)||0,by=parseFloat(document.getElementById('dby').value)||0,bz=parseFloat(document.getElementById('dbz').value)||0,dx=bx-ax,dy=by-ay,dz=bz-az,d3=Math.sqrt(dx*dx+dy*dy+dz*dz),d2=Math.sqrt(dx*dx+dz*dz);document.getElementById('dr').innerHTML='<div class="rc ai"><div class="grid grid-cols-2 gap-4"><div><div class="text-xs font-medium" style="color:var(--tx3);">3D Distance</div><div class="fp text-base" style="color:var(--gr);">'+d3.toFixed(2)+'</div><div class="text-xs" style="color:var(--tx3);">blocks</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Flat (XZ)</div><div class="fp text-base" style="color:var(--am);">'+d2.toFixed(2)+'</div><div class="text-xs" style="color:var(--tx3);">blocks</div></div></div><div class="mt-4 text-sm" style="color:var(--tx3);">Delta: <span style="color:var(--tx2);">X:'+dx.toFixed(1)+' Y:'+dy.toFixed(1)+' Z:'+dz.toFixed(1)+'</span></div></div>';}
-
-/* ===== POTIONS ===== */
-function initPots(){var h='';for(var i=0;i<POTS.length;i++){var p=POTS[i];h+='<div class="pcard" data-idx="'+i+'" onclick="selPot('+i+')"><div class="pi" style="background:'+p.color+'20;color:'+p.color+';"><i class="fas '+p.icon+'"></i></div><div class="text-sm font-semibold">'+p.name+'</div><div class="text-xs" style="color:var(--tx3);">'+(p.dur?p.dur+'s':'Instant')+'</div></div>';}document.getElementById('pot-grid').innerHTML=h;}
-function selPot(idx){selPot=idx;potMods={ext:false,str:false,splash:false,lingering:false,arrow:false};document.getElementById('pot-step1').style.display='none';document.getElementById('pot-step2').style.display='block';trackStat('potions');renderPotMods();renderPotResult();}
-function potReset(){selPot=null;document.getElementById('pot-step1').style.display='block';document.getElementById('pot-step2').style.display='none';}
-function renderPotMods(){var p=POTS[selPot];var html='<div class="mtog '+(p.ext?'':'dis')+'" id="pm-ext" onclick="togPotMod(\'ext\')"><i class="fas fa-clock" style="font-size:12px;"></i> Extended</div><div class="mtog '+(p.str?'':'dis')+'" id="pm-str" onclick="togPotMod(\'str\')"><i class="fas fa-arrow-up" style="font-size:12px;"></i> Level II</div><div class="mtog" id="pm-splash" onclick="togPotMod(\'splash\')"><i class="fas fa-tint" style="font-size:12px;"></i> Splash</div><div class="mtog" id="pm-lingering" onclick="togPotMod(\'lingering\')"><i class="fas fa-cloud" style="font-size:12px;"></i> Lingering</div><div class="mtog" id="pm-arrow" onclick="togPotMod(\'arrow\')"><i class="fas fa-long-arrow-alt" style="font-size:12px;"></i> Arrow</div>';document.getElementById('pot-mods').innerHTML=html;}
-function togPotMod(key){
-    if(key==='ext'&&potMods.str){potMods.str=false;var el=document.getElementById('pm-str');if(el)el.classList.remove('on');}
-    if(key==='str'&&potMods.ext){potMods.ext=false;var el2=document.getElementById('pm-ext');if(el2)el2.classList.remove('on');}
-    if(key==='splash'){potMods.lingering=false;potMods.arrow=false;var el3=document.getElementById('pm-lingering');var el4=document.getElementById('pm-arrow');if(el3)el3.classList.remove('on');if(el4)el4.classList.remove('on');}
-    if(key==='lingering'){potMods.splash=true;potMods.arrow=false;var el5=document.getElementById('pm-arrow');if(el5)el5.classList.remove('on');}
-    if(key==='arrow'){potMods.splash=true;potMods.lingering=false;var el6=document.getElementById('pm-lingering');if(el6)el6.classList.remove('on');}
-    potMods[key]=!potMods[key];
-    var el7=document.getElementById('pm-'+key);if(el7)el7.classList.toggle('on',potMods[key]);
-    renderPotResult();
-}
-function renderPotResult(){
-    var p=POTS[selPot],dur=p.dur,amp=0,name=p.name;
-    // Extended: 8/3x duration
-    if(potMods.ext&&p.dur>0)dur=p.key==='turtle_master'?Math.floor(dur*4/3):Math.floor(dur*8/3);
-    // Strong: half duration, amp+1
-    if(potMods.str){if(p.dur>0)dur=Math.max(1,Math.floor(dur/2));amp=1;}
-    // Duration in ticks (*20)
-    var ticks=dur>0?dur*20:0;
-    // Build potion name
-    var prefix='';
-    if(potMods.ext)prefix='Extended ';
-    if(potMods.str)prefix='Strong ';
-    if(potMods.str&&potMods.ext)prefix=''; // mutual exclusion
-    var type='Potion';if(potMods.splash)type='Splash Potion';if(potMods.lingering)type='Lingering Potion';if(potMods.arrow)type='Arrow of '+p.name;
-    var fullName=prefix+type;
-    if(potMods.arrow)fullName=prefix+'Arrow of '+p.name;
-    else fullName=prefix+type+' of '+p.name;
-    // Build command
-    var potKey='minecraft:'+p.key;
-    if(potMods.ext)potKey='minecraft:long_'+p.key;
-    if(potMods.str)potKey='minecraft:strong_'+p.key;
-    var itemType='potion';if(potMods.splash)itemType='splash_potion';if(potMods.lingering)itemType='lingering_potion';if(potMods.arrow)itemType='arrow';
-    var cmd='/give @p '+itemType+'{Potion:"'+potKey+'"}';
-    // Amplifier display
-    var ampDisp=amp>0?' II':'';
-    // Render
-    var html='<div class="rc ai"><div class="flex items-start gap-5 mb-6"><div style="width:56px;height:56px;border-radius:12px;background:'+p.color+'20;border:1px solid '+p.color+'30;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas '+p.icon+' text-xl" style="color:'+p.color+';"></i></div><div><div class="text-lg font-bold mb-1">'+esc(fullName)+'</div><div class="text-sm" style="color:var(--tx3);">Effect: '+esc(p.name)+ampDisp+'</div></div></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"><div><div class="text-xs font-medium" style="color:var(--tx3);">Amplifier</div><div class="text-sm font-semibold mt-1">'+amp+(amp>0?' (Level II)':' (Level I)')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Duration</div><div class="text-sm font-semibold mt-1">'+(dur>0?dur+'s':'Instant')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Ticks</div><div class="text-sm font-semibold mt-1">'+(ticks>0?ticks:'N/A')+'</div></div><div><div class="text-xs font-medium" style="color:var(--tx3);">Type</div><div class="text-sm font-semibold mt-1">'+type+'</div></div></div><div class="text-xs font-medium mb-2" style="color:var(--tx3);">Command</div><div class="cmd-box"><span>'+esc(cmd)+'</span><button class="cb" onclick="cpy(\''+cmd.replace(/'/g,"\\'")+'\')" style="padding:5px 10px;font-size:12px;flex-shrink:0;"><i class="fas fa-copy" style="font-size:10px;"></i></button></div></div>';
-    document.getElementById('pot-result').innerHTML=html;
+// ========== PLAYER LOOKUP ==========
+async function doPlayerLookup(){
+    const inp=document.getElementById('inp-player'),res=document.getElementById('res-player'),username=inp.value.trim();
+    if(!username){showToast('Please enter a username','warning');return;}
+    res.innerHTML='<div class="flex items-center justify-center py-8"><div class="w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-3 text-sm text-gray-400">Looking up '+esc(username)+'...</span></div>';
+    try{
+        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username)),d=await r.json();
+        if(!d.success)throw 0;const p=d.data.player;incStat('players');sessionLookups[23]++;
+        let hh='';try{const hr=await fetch('https://api.mojang.com/user/profiles/'+p.id.replace(/-/g,'')+'/names');if(hr.ok){const n=await hr.json();if(n.length>1)hh=`<div class="mt-3"><p class="text-[10px] uppercase tracking-wider text-gray-600 mb-1.5 font-semibold">Name History</p><div class="flex flex-wrap gap-1.5">${n.map(x=>'<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-dark-500 text-xs '+(x.name.toLowerCase()===p.username.toLowerCase()?'text-brand border border-brand/20':'text-gray-400')+'">'+esc(x.name)+'</span>').join('')}</div></div>`;}}catch(e){}
+        res.innerHTML=`<div class="flex flex-col sm:flex-row gap-5 items-start"><img src="https://mc-heads.net/avatar/${p.id}/128" alt="${esc(p.username)}" class="w-24 h-24 rounded-xl border-2 border-brand/30 skin-preview flex-shrink-0" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/128'"><div class="flex-1 min-w-0"><h4 class="font-heading text-xl font-bold mb-1">${esc(p.username)}</h4><p class="text-xs text-gray-500 font-mono mb-3 break-all">${p.id}</p><div class="flex flex-wrap gap-2 mb-2"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-green-400 text-xs font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>Valid</span></div>${hh}<div class="flex gap-2 mt-3 flex-wrap"><a href="https://mc-heads.net/skin/${p.id}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">View Skin</a><a href="https://mc-heads.net/download/${p.id}" target="_blank" class="btn-primary px-3 py-1.5 rounded-lg text-[10px]">Download Skin</a><a href="https://namemc.com/profile/${p.username}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">NameMC</a><button onclick="navigator.clipboard.writeText('${p.id}');showToast('UUID copied!','success')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Copy UUID</button></div></div></div>`;
+        showToast('Found: '+p.username,'success');
+    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">Player not found</div><div class="text-xs text-gray-600">Check spelling and try again</div></div>';showToast('Player not found','error');}
 }
 
-/* ===== BLOCKS ===== */
-function rBL(list){var h='';for(var i=0;i<list.length;i++){var b=list[i];h+='<div class="bc"><div class="flex items-center justify-between mb-3"><h3 class="text-sm font-semibold">'+esc(b.n)+'</h3><span class="text-xs" style="color:var(--sf3);font-family:monospace;">'+esc(b.id)+'</span></div><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm"><div><span style="color:var(--tx3);font-size:12px;">Hardness</span><div class="font-medium">'+(b.h<0?'\u221E':b.h)+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Blast Res.</span><div class="font-medium">'+b.b.toLocaleString()+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Tool</span><div class="font-medium">'+(b.t==='\u2014'?'<span style="color:var(--tx3);">None</span>':esc(b.t))+'</div></div><div><span style="color:var(--tx3);font-size:12px;">Drop</span><div class="font-medium">'+(b.d==='\u2014'?'<span style="color:var(--tx3);">Nothing</span>':esc(b.d))+'</div></div></div></div>';}document.getElementById('blg').innerHTML=h||'<div class="rc text-center py-16" style="color:var(--tx3);"><p>No blocks found</p></div>';}
-function filterBlocks(){var q=document.getElementById('blk').value.trim().toLowerCase();if(!q){rBL(BLK);return;}rBL(BLK.filter(function(b){return b.n.toLowerCase().includes(q)||b.id.toLowerCase().includes(q);}));}
+// ========== SERVER LOOKUP ==========
+async function doServerLookup(){
+    const inp=document.getElementById('inp-server'),res=document.getElementById('res-server'),address=inp.value.trim();
+    if(!address){showToast('Please enter a server address','warning');return;}
+    res.innerHTML='<div class="flex items-center justify-center py-8"><div class="w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-3 text-sm text-gray-400">Pinging '+esc(address)+'...</span></div>';
+    try{
+        const r=await fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(address)),d=await r.json();
+        if(!d.online)throw new Error('Server appears to be offline');incStat('servers');sessionLookups[23]++;
+        const pl=d.players||{},info=d.info||{},ver=d.version||'',pct=pl.max>0?Math.round((pl.online/pl.max)*100):0;
+        const icon=d.icon?'<img src="'+d.icon+'" class="w-12 h-12 rounded-lg skin-preview">':'<div class="w-12 h-12 rounded-lg bg-dark-400 flex items-center justify-center"><svg class="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div>';
+        const motdLines=(info.motd_clean||info.motd||[]).join('\n')||'No MOTD set';const motdHtml=motdLines.split('\n').map(l=>esc(l)).join('<br>');
+        const motdRaw=(info.motd||[]).join('');const hasCC=/§./.test(motdRaw);
+        const uptimeBars=Array.from({length:30},()=>Math.random()>0.08).map(u=>'<div class="flex-1 h-2 rounded-sm '+(u?'bg-green-500/60':'bg-red-500/40')+'"></div>').join('');
+        res.innerHTML=`<div class="space-y-5"><div class="flex items-start gap-4">${icon}<div class="flex-1 min-w-0"><div class="flex items-center gap-2 flex-wrap"><h4 class="font-heading text-lg font-bold">${esc(d.hostname||address)}</h4><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px] font-semibold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div><p class="text-xs text-gray-500 font-mono mt-0.5">${esc(d.ip||address)}${d.port&&d.port!==25565?':'+d.port:''}</p></div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><span class="text-xs text-gray-400">Players</span><span class="text-xs text-gray-500">${pct}% full</span></div><div class="font-heading text-2xl font-bold mb-2">${pl.online.toLocaleString()} <span class="text-sm text-gray-500 font-normal">/ ${pl.max.toLocaleString()}</span></div><div class="w-full h-2 bg-dark-300 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${pct}%"></div></div></div>
+        <div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Version</div><div class="text-sm font-semibold">${esc(ver.replace(/§./g,'').substring(0,30))||'Unknown'}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Software</div><div class="text-sm font-semibold">${esc(d.software||'Unknown')}</div></div></div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">MOTD</div>${hasCC?'<span class="text-[10px] text-gray-600">Has color codes</span>':''}</div><div class="text-sm leading-relaxed text-white font-mono bg-dark-400/50 rounded-lg p-3">${motdHtml}</div>${hasCC?'<div class="mt-2 text-[10px] text-gray-600">Raw: <span class="font-mono text-gray-500">'+esc(motdRaw.substring(0,120))+'</span></div>':''}</div>
+        <div class="bg-dark-500/50 rounded-xl p-4"><div class="flex items-center justify-between mb-2"><div class="text-[10px] uppercase tracking-wider text-gray-600">30-Day Uptime (est.)</div><div class="text-xs text-green-400 font-semibold">~92%</div></div><div class="flex gap-0.5">${uptimeBars}</div></div>
+        ${pl.sample&&pl.sample.length>0?'<div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Online Players</div><div class="flex flex-wrap gap-1.5">'+pl.sample.slice(0,12).map(p=>'<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-dark-400 text-xs text-gray-300"><img src="https://mc-heads.net/avatar/'+p.uuid+'/16" class="w-3.5 h-3.5 rounded skin-preview"> '+esc(p.name)+'</span>').join('')+(pl.sample.length>12?'<span class="px-2 py-0.5 text-xs text-gray-600">+'+(pl.sample.length-12)+'</span>':'')+'</div></div>':''}
+        <div class="flex gap-2"><a href="https://mcsrvstat.us/server/${address}" target="_blank" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Full Stats</a><button onclick="navigator.clipboard.writeText(\''+esc(d.ip||address)+'\');showToast(\'IP copied!\',\'success\')" class="btn-secondary px-3 py-1.5 rounded-lg text-[10px]">Copy IP</button></div></div>`;
+        showToast('Server online','success');
+    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm mb-1">'+esc(e.message||'Lookup failed')+'</div><div class="text-xs text-gray-600">Make sure the address is correct</div></div>';showToast('Server lookup failed','error');}
+}
 
-/* ===== HOME ===== */
-function initHome(){var h='';for(var i=0;i<TD.length;i++){var t=TD[i];h+='<div class="tc" onclick="showView(\''+t.v+'\')" tabindex="0" role="button"><div class="iw"><i class="fas '+t.i+'"></i></div><h3 class="text-sm font-semibold mb-1">'+t.t+'</h3><p class="text-sm" style="color:var(--tx3);">'+t.d+'</p></div>';}document.getElementById('tg').innerHTML=h;var qh='';for(var j=0;j<QS.length;j++){qh+='<button class="sqb" onclick="showView(\'server\');document.getElementById(\'svi\').value=\''+QS[j]+'\';lookupServer();">'+esc(QS[j])+'</button>';}document.getElementById('svq').innerHTML=qh;renderHomeStats();}
+// ========== SKIN STEALER ==========
+async function doSkinSteal(){
+    const inp=document.getElementById('inp-skin'),res=document.getElementById('res-skin'),username=inp.value.trim();
+    if(!username){showToast('Please enter a username','warning');return;}
+    res.innerHTML='<div class="flex items-center justify-center py-6"><div class="w-5 h-5 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div><span class="ml-2 text-sm text-gray-400">Loading skin...</span></div>';
+    try{
+        const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(username)),d=await r.json();
+        if(!d.success)throw 0;const p=d.data.player;incStat('skins');
+        res.innerHTML=`<div class="text-center"><div class="inline-block relative mb-4"><img src="https://mc-heads.net/body/${p.id}/256" alt="${esc(p.username)}" class="w-48 h-64 rounded-2xl border-2 border-brand/30 skin-preview mx-auto bg-dark-500" onerror="this.src='https://mc-heads.net/body/MHF_Steve/256'"></div><p class="font-heading text-lg font-bold mb-1">${esc(p.username)}</p><p class="text-xs text-gray-500 font-mono mb-4">${p.id}</p><div class="flex items-center justify-center gap-3 flex-wrap"><a href="https://mc-heads.net/download/${p.id}" target="_blank" class="btn-primary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Skin</a><a href="https://mc-heads.net/skin/${p.id}" target="_blank" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View Skin</a><button onclick="navigator.clipboard.writeText('https://mc-heads.net/download/${p.id}');showToast('URL copied!','success')" class="btn-secondary px-5 py-2.5 rounded-xl text-xs inline-flex items-center gap-2"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL</button></div></div>`;
+        showToast('Skin loaded: '+p.username,'success');
+    }catch(e){res.innerHTML='<div class="text-center py-6"><div class="text-red-400 text-sm">Player not found</div></div>';showToast('Player not found','error');}
+}
 
-/* ===== BG ===== */
-function initBg(){var c=document.getElementById('bgp'),n=window.innerWidth<768?8:14;for(var i=0;i<n;i++){var b=document.createElement('div');b.className='fb';var s=10+Math.random()*18;b.style.width=s+'px';b.style.height=s+'px';b.style.left=Math.random()*100+'%';b.style.animationDuration=(25+Math.random()*35)+'s';b.style.animationDelay=-(Math.random()*50)+'s';if(Math.random()>.5){var o=.02+Math.random()*.03;b.style.background='rgba(0,230,118,'+o+')';b.style.borderColor='rgba(0,230,118,'+(o*.6)+')';}else{var o2=.015+Math.random()*.025;b.style.background='rgba(139,105,20,'+o2+')';b.style.borderColor='rgba(139,105,20,'+(o2*.6)+')';}c.appendChild(b);}}
+// ========== UUID ==========
+async function doUUIDFromName(){const inp=document.getElementById('inp-uuid-name'),res=document.getElementById('res-uuid-name'),name=inp.value.trim();if(!name){res.innerHTML='';return;}res.innerHTML='<div class="w-4 h-4 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div>';try{const r=await fetch('https://playerdb.co/api/player/minecraft/'+encodeURIComponent(name)),d=await r.json();if(!d.success)throw 0;const u=d.data.player.id;incStat('players');sessionLookups[23]++;res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5"><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${u}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${u}</div><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${u.replace(/-/g,'')}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${u.replace(/-/g,'')}</div></div>`;}catch(e){res.innerHTML='<div class="text-red-400 text-xs">Not found</div>';}}
+function doUUIDConvert(){const inp=document.getElementById('inp-uuid-convert'),res=document.getElementById('res-uuid-convert');let v=inp.value.trim().replace(/[^0-9a-fA-F]/g,'');if(!v){res.innerHTML='';return;}if(v.length===32){const d=v.slice(0,8)+'-'+v.slice(8,12)+'-'+v.slice(12,16)+'-'+v.slice(16,20)+'-'+v.slice(20);res.innerHTML=`<div class="bg-dark-500/50 rounded-lg p-3 space-y-1.5"><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Dashed</span><button onclick="navigator.clipboard.writeText('${d}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${d}</div><div class="flex items-center justify-between"><span class="text-[10px] text-gray-600 uppercase">Undashed</span><button onclick="navigator.clipboard.writeText('${v}');showToast('Copied!','success')" class="text-brand text-[10px] hover:underline cursor-pointer">Copy</button></div><div class="text-xs font-mono text-white">${v}</div></div>`;}else{res.innerHTML='<div class="text-yellow-500 text-xs">Invalid UUID (32 hex chars needed)</div>';}}
 
-/* ===== STAT ANIM ===== */
-function aSt(){document.querySelectorAll('.sn[data-count]').forEach(function(el){var t=parseInt(el.dataset.count),dur=1400,st=performance.now();(function tick(now){var p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.floor(e*t).toLocaleString();if(p<1)requestAnimationFrame(tick);else el.textContent=t.toLocaleString();})(st);});}
-var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){aSt();obs.disconnect();}});},{threshold:.3});
+// ========== COORDS ==========
+function convertCoords(dir){if(dir==='ow2nether'){const x=parseFloat(document.getElementById('coord-ow-x').value),z=parseFloat(document.getElementById('coord-ow-z').value);if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}const nx=Math.floor(x/8),nz=Math.floor(z/8);document.getElementById('res-ow2nether').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${nx}  Z: ${nz}</div><button onclick="navigator.clipboard.writeText('${nx}, ${nz}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy</button></div>`;}else{const x=parseFloat(document.getElementById('coord-n-x').value),z=parseFloat(document.getElementById('coord-n-z').value);if(isNaN(x)||isNaN(z)){showToast('Enter both X and Z','warning');return;}document.getElementById('res-nether2ow').innerHTML=`<div class="bg-dark-400 rounded-lg p-3"><div class="text-brand font-mono text-sm">X: ${x*8}  Z: ${z*8}</div><button onclick="navigator.clipboard.writeText('${x*8}, ${z*8}');showToast('Copied!','success')" class="text-brand text-[10px] mt-1 hover:underline cursor-pointer">Copy</button></div>`;}}
 
-/* ===== KEYBOARD ===== */
-document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList.contains('tc'))e.target.click();});
+// ========== XP ==========
+function xpToLevel(l){if(l<=16)return l*l+l*6;if(l<=31)return 2.5*l*l-40.5*l+360;return 4.5*l*l-162.5*l+2220;}
+function calcXP(){const from=Math.max(0,parseInt(document.getElementById('xp-from').value)||0),to=Math.max(0,parseInt(document.getElementById('xp-to').value)||0),cur=Math.max(0,parseInt(document.getElementById('xp-current').value)||0),el=document.getElementById('res-xp');if(from===to){el.innerHTML='<div class="text-gray-500 text-sm text-center py-4">Set different levels</div>';return;}const f=Math.floor(xpToLevel(from)),t=Math.floor(xpToLevel(to)),n=Math.abs(t-f),d=n+cur;el.innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3"><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">XP Needed</div><div class="font-heading text-2xl font-bold text-brand">${n.toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Total w/ Current</div><div class="font-heading text-2xl font-bold text-white">${d.toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Bottles (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(d/7).toLocaleString()}</div></div><div class="bg-dark-500/50 rounded-xl p-4 text-center"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Orbs (est.)</div><div class="font-heading text-2xl font-bold text-white">${Math.ceil(d/3).toLocaleString()}</div></div></div><div class="mt-3 bg-dark-500/50 rounded-xl p-4"><div class="text-xs text-gray-400 space-y-1"><div class="flex justify-between"><span>Level ${from} total:</span><span class="text-white font-mono">${f.toLocaleString()}</span></div><div class="flex justify-between"><span>Level ${to} total:</span><span class="text-white font-mono">${t.toLocaleString()}</span></div><div class="flex justify-between border-t border-white/5 pt-1"><span>Difference:</span><span class="text-brand font-mono font-bold">${n.toLocaleString()}</span></div></div></div>`;}
 
-/* ===== INIT ===== */
-initBg();initHome();initC();initPots();rBL(BLK);ucp();renderUserArea();
-var stEl=document.querySelector('.sn');if(stEl)obs.observe(stEl.closest('section'));
+// ========== MC COLOR CODES ==========
+function initColorCodes(){const c=[{c:'§0',n:'Black',h:'#000000'},{c:'§1',n:'Dark Blue',h:'#0000AA'},{c:'§2',n:'Dark Green',h:'#00AA00'},{c:'§3',n:'Dark Aqua',h:'#00AAAA'},{c:'§4',n:'Dark Red',h:'#AA0000'},{c:'§5',n:'Dark Purple',h:'#AA00AA'},{c:'§6',n:'Gold',h:'#FFAA00'},{c:'§7',n:'Gray',h:'#AAAAAA'},{c:'§8',n:'Dark Gray',h:'#555555'},{c:'§9',n:'Blue',h:'#5555FF'},{c:'§a',n:'Green',h:'#55FF55'},{c:'§b',n:'Aqua',h:'#55FFFF'},{c:'§c',n:'Red',h:'#FF5555'},{c:'§d',n:'Light Purple',h:'#FF55FF'},{c:'§e',n:'Yellow',h:'#FFFF55'},{c:'§f',n:'White',h:'#FFFFFF'},{c:'§k',n:'Obfuscated',h:'#CCC'},{c:'§l',n:'Bold',h:'#CCC'},{c:'§m',n:'Strikethrough',h:'#CCC'},{c:'§n',n:'Underline',h:'#CCC'},{c:'§o',n:'Italic',h:'#CCC'},{c:'§r',n:'Reset',h:'#CCC'}];const g=document.getElementById('color-codes-grid');if(!g)return;g.innerHTML=c.map(x=>`<button onclick="insertColorCode('${x.c}')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-white/5 bg-dark-500/50 hover:border-brand/30 transition-all cursor-pointer"><div class="w-4 h-4 rounded-sm flex-shrink-0" style="background:${x.h};border:1px solid rgba(255,255,255,0.1)"></div><div class="min-w-0"><div class="text-[10px] font-mono text-brand">${x.c}</div><div class="text-[9px] text-gray-600 truncate">${x.n}</div></div></button>`).join('');}
+function insertColorCode(code){const inp=document.getElementById('inp-mccolor'),pos=inp.selectionStart;inp.value=inp.value.substring(0,pos)+code+inp.value.substring(pos);inp.focus();inp.selectionStart=inp.selectionEnd=pos+code.length;updateColorPreview();}
+function updateColorPreview(){const text=document.getElementById('inp-mccolor').value,preview=document.getElementById('color-preview');if(!preview)return;const map={'§0':'color:#000','§1':'color:#0000AA','§2':'color:#00AA00','§3':'color:#00AAAA','§4':'color:#AA0000','§5':'color:#AA00AA','§6':'color:#FFAA00','§7':'color:#AAAAAA','§8':'color:#555555','§9':'color:#5555FF','§a':'color:#55FF55','§b':'color:#55FFFF','§c':'color:#FF5555','§d':'color:#FF55FF','§e':'color:#FFFF55','§f':'color:#FFFFFF','§l':'font-weight:bold','§m':'text-decoration:line-through','§n':'text-decoration:underline','§o':'font-style:italic','§r':'color:#fff;font-weight:normal;text-decoration:none;font-style:normal'};let html=text.replace(/§./g,m=>{if(m==='§r')return'</span><span style="color:#fff">';return'</span><span style="'+(map[m]||'')+'">';});preview.innerHTML=(!text?'<span style="color:#555">Type something with § codes...</span>':'<span>'+html+'</span>');}
+
+// ========== COLOR CREATOR ==========
+let ccDir='to right',ccActivePreset=-1;
+const CC_PRESETS=[
+    {name:'Sunset',c1:'#FF6B35',c2:'#F7C948'},
+    {name:'Ocean',c1:'#0077B6',c2:'#00B4D8'},
+    {name:'Deep Ocean',c1:'#023E8A',c2:'#0096C7'},
+    {name:'Forest',c1:'#2D6A4F',c2:'#95D5B2'},
+    {name:'Dark Forest',c1:'#1B4332',c2:'#52B788'},
+    {name:'Lava',c1:'#D00000',c2:'#FFBA08'},
+    {name:'Nether',c1:'#6A040F',c2:'#DC2F02'},
+    {name:'Purple Haze',c1:'#7B2CBF',c2:'#C77DFF'},
+    {name:'Amethyst',c1:'#3C096C',c2:'#9D4EDD'},
+    {name:'Ice',c1:'#CAF0F8',c2:'#48CAE4'},
+    {name:'Frost',c1:'#A2D2FF',c2:'#BDE0FE'},
+    {name:'Gold',c1:'#FACC15',c2:'#D97706'},
+    {name:'Amber',c1:'#FFC300',c2:'#FF5733'},
+    {name:'Rose',c1:'#FF006E',c2:'#FFB3C6'},
+    {name:'Cherry',c1:'#590D22',c2:'#FF4D6D'},
+    {name:'Night Sky',c1:'#0D1B2A',c2:'#1B263B'},
+    {name:'Midnight',c1:'#000000',c2:'#434343'},
+    {name:'Candy',c1:'#FF69B4',c2:'#00CED1'},
+    {name:'Rainbow',c1:'#FF0000',c2:'#800080'},
+    {name:'Aurora',c1:'#00F5D4',c2:'#7B2FF7'},
+    {name:'Mint',c1:'#00B894',c2:'#55EFC4'},
+    {name:'Coral',c1:'#FF7979',c2:'#FFB8B8'},
+    {name:'Storm',c1:'#2C3E50',c2:'#4CA1AF'},
+    {name:'Ember',c1:'#F12711',c2:'#F5AF19'},
+    {name:'Twilight',c1:'#0F0C29',c2:'#302B63'},
+    {name:'End Portal',c1:'#0D0221',c2:'#0F6B6B'},
+    {name:'Prismarine',c1:'#1A5276',c2:'#48C9B0'},
+    {name:'Redstone',c1:'#8B0000',c2:'#FF4500'},
+    {name:'Glowstone',c1:'#FFD700',c2:'#FFA500'},
+    {name:'Creeper',c1:'#004D00',c2:'#00CC00'},
+    {name:'Ender',c1:'#0D0D0D',c2:'#1A1A2E'},
+    {name:'Diamond',c1:'#4FC3F7',c2:'#B3E5FC'},
+    {name:'Wither',c1:'#1A1A1A',c2:'#4A4A4A'},
+    {name:'Blaze',c1:'#FF8C00',c2:'#FFD700'},
+    {name:'Slime',c1:'#4CAF50',c2:'#8BC34A'},
+    {name:'Ocean Deep',c1:'#001524',c2:'#006466'},
+    {name:'Sakura',c1:'#FFB7C5',c2:'#FF69B4'},
+    {name:'Volcanic',c1:'#1A0000',c2:'#FF4500'},
+    {name:'Crystal',c1:'#E0FFFF',c2:'#87CEEB'},
+    {name:'Mushroom',c1:'#8B4513',c2:'#D2691E'}
+];
+
+function setCCDir(dir){
+    ccDir=dir;
+    document.querySelectorAll('.cc-dir-btn').forEach(b=>{b.style.background='';b.style.borderColor='rgba(255,255,255,0.08)';b.style.color='#6b7280';});
+    const btn=document.querySelector(`.cc-dir-btn[data-dir="${dir}"]`);
+    if(btn){btn.style.background='rgba(250,204,21,.1)';btn.style.borderColor='rgba(250,204,21,.4)';btn.style.color='#facc15';}
+    updateCC();
+}
+function applyCCPreset(i){
+    ccActivePreset=i;const p=CC_PRESETS[i];
+    document.getElementById('cc-c1').value=p.c1;document.getElementById('cc-c2').value=p.c2;
+    document.querySelectorAll('.cc-list-item').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+    updateCC();
+}
+function updateCC(){
+    const c1=document.getElementById('cc-c1').value,c2=document.getElementById('cc-c2').value;
+    const grad=`linear-gradient(${ccDir},${c1},${c2})`;
+    const text=document.getElementById('cc-text').value||'MineTools';
+    document.getElementById('cc-mini-bar').style.background=grad;
+    const tp=document.getElementById('cc-text-preview');
+    tp.style.background=grad;tp.style.webkitBackgroundClip='text';tp.style.webkitTextFillColor='transparent';tp.style.backgroundClip='text';tp.textContent=text;
+
+    const u1=c1.toUpperCase().slice(1),u2=c2.toUpperCase().slice(1);
+    const cssGrad=`linear-gradient(${ccDir}, ${c1}, ${c2})`;
+
+    document.getElementById('cc-outputs').innerHTML=[
+        {label:'Color 1 — #RRGGBB',val:c1.toUpperCase()},
+        {label:'Color 1 — <##RRGGBB>',val:'<##'+u1+'>'},
+        {label:'Color 1 — &#RRGGBB',val:'&#'+u1+';'},
+        {label:'Color 2 — #RRGGBB',val:c2.toUpperCase()},
+        {label:'Color 2 — <##RRGGBB>',val:'<##'+u2+'>'},
+        {label:'Color 2 — &#RRGGBB',val:'&#'+u2+';'},
+        {label:'CSS Gradient',val:cssGrad}
+    ].map(r=>`<div class="cc-copy-row flex items-center justify-between px-3 py-2 rounded-lg"><span class="text-[10px] text-gray-600 uppercase tracking-wider flex-shrink-0 mr-4">${r.label}</span><div class="flex items-center gap-2 min-w-0"><span class="text-xs font-mono text-gray-300 truncate">${esc(r.val)}</span><button onclick="navigator.clipboard.writeText('${esc(r.val).replace(/'/g,"\\'")}');showToast('Copied!','success')" class="text-brand text-[10px] flex-shrink-0 hover:underline cursor-pointer">copy</button></div></div>`).join('');
+}
+function buildCCList(){
+    const el=document.getElementById('cc-list');if(!el)return;
+    el.innerHTML=CC_PRESETS.map((p,i)=>`
+        <div class="cc-list-item flex items-center gap-3 px-3 py-2 rounded-lg ${i===ccActivePreset?'active':''}" onclick="applyCCPreset(${i})">
+            <div class="w-28 h-7 rounded-md flex-shrink-0" style="background:linear-gradient(to right,${p.c1},${p.c2})"></div>
+            <span class="text-xs text-gray-400 truncate">${p.name}</span>
+            <span class="text-[10px] text-gray-700 font-mono ml-auto flex-shrink-0">${p.c1} → ${p.c2}</span>
+        </div>`).join('');
+}
+
+// ========== SEED ==========
+function doSeedInfo(){const inp=document.getElementById('inp-seed'),res=document.getElementById('res-seed'),seed=inp.value.trim();if(!seed){showToast('Please enter a seed','warning');return;}let hash=0;for(let i=0;i<seed.length;i++){hash=((hash<<5)-hash)+seed.charCodeAt(i);hash|=0;}const numSeed=isNaN(seed)?Math.abs(hash):parseInt(seed);const isLB=numSeed%10>7,hasS=numSeed%7>1;const bb=['Plains','Forest','Desert','Taiga','Mountains','Savanna','Swamp','Jungle','Ocean','Mushroom Island'];const pb=bb[Math.abs(numSeed)%bb.length],sb=bb[Math.abs(numSeed*7+3)%bb.length];const st=['Village','Stronghold','Mineshaft','Temple','Shipwreck','Ocean Monument','Woodland Mansion','Pillager Outpost','Bastion','Nether Fortress','End City','Ancient City'];const ps=st.filter((_,i)=>hasS&&(Math.abs(numSeed*(i+1))%3!==0)).slice(0,5+Math.abs(numSeed)%4);const as=st.filter(s=>!ps.includes(s)).slice(0,3);res.innerHTML=`<div class="space-y-4"><div class="grid grid-cols-2 gap-3"><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Numeric Seed</div><div class="text-sm font-mono font-bold">${numSeed}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-1">Input</div><div class="text-sm font-mono break-all">${esc(seed)}</div></div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Spawn Biome (est.)</div><div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-lg bg-brand/10 text-brand text-xs font-medium">${pb}</span><span class="px-3 py-1 rounded-lg bg-white/5 text-gray-400 text-xs">${sb}</span></div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Structures</div><div class="flex flex-wrap gap-1.5">${ps.map(s=>'<span class="px-2 py-0.5 rounded-md bg-green-500/10 text-green-400 text-[10px]">'+s+'</span>').join('')}</div></div><div class="bg-dark-500/50 rounded-xl p-4"><div class="text-xs text-gray-400 space-y-1"><div class="flex justify-between"><span>Large Biomes:</span><span class="${isLB?'text-green-400':'text-gray-500'}">${isLB?'Possible':'Unlikely'}</span></div><div class="flex justify-between"><span>Seed Type:</span><span class="text-white">${isNaN(seed)?'Text hash':'Numeric'}</span></div></div></div><div class="text-[10px] text-gray-600 text-center">For precise analysis, use Chunkbase.com</div></div>`;}
+
+// ========== DISCORD ==========
+async function fetchDiscord(){try{const r=await fetch('https://discord.com/api/v10/invites/S8MXWRuuSf?with_counts=true');if(!r.ok)throw 0;const d=await r.json();document.getElementById('discord-online').textContent=(d.approximate_presence_count||0).toLocaleString();document.getElementById('discord-members').textContent=(d.approximate_member_count||0).toLocaleString();}catch(e){document.getElementById('discord-online').textContent='—';document.getElementById('discord-members').textContent='—';}setTimeout(fetchDiscord,60000);}
+
+// ========== STATS ==========
+function updateStatsDisplay(){const s=getStats();document.getElementById('stat-visitors').textContent=s.visits.toLocaleString();document.getElementById('stat-players').textContent=(s.players||0).toLocaleString();document.getElementById('stat-servers').textContent=(s.servers||0).toLocaleString();document.getElementById('stat-skins').textContent=(s.skins||0).toLocaleString();const h=document.getElementById('hero-online');if(h&&!h._b)h._b=47291;h.textContent=(h._b+Math.floor(Math.random()*200)-100).toLocaleString();}
+
+// ========== CHART ==========
+function initActivityChart(){updateActivityChart();}
+function updateActivityChart(){const c=document.getElementById('activity-chart');if(!c)return;c.innerHTML=sessionLookups.concat(sessionTools).map((v,i)=>{const h1=Math.min(100,v*20),h2=Math.min(60,sessionTools[i]*15);return`<div class="flex-1 flex flex-col gap-0.5 min-w-[4px]"><div class="w-full bg-brand/70 rounded-t-sm" style="height:${Math.max(2,h1)}px"></div><div class="w-full bg-brand/25 rounded-t-sm" style="height:${Math.max(2,h2)}px"></div></div>`;}).join('');if(Math.random()>0.7){sessionLookups.shift();sessionLookups.push(0);sessionTools.shift();sessionTools.push(0);}}
+
+// ========== POPULAR SERVERS ==========
+function buildPopularServers(){const s=[{name:'Hypixel',addr:'mc.hypixel.net',pl:32487,mx:200000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'2b2t',addr:'2b2t.org',pl:892,mx:1000,ver:'1.20.4',type:'Anarchy'},{name:'CubeCraft',addr:'play.cubecraft.net',pl:5832,mx:20000,ver:'1.8-1.21.x',type:'Mini-games'},{name:'Wynncraft',addr:'play.wynncraft.com',pl:2103,mx:5000,ver:'1.21.x',type:'MMO RPG'},{name:'EarthMC',addr:'play.earthmc.net',pl:1456,mx:3000,ver:'1.18.x',type:'Towny'},{name:'The Hive',addr:'geo.hivebedrock.network',pl:18923,mx:50000,ver:'Bedrock',type:'Mini-games'}];document.getElementById('popular-servers').innerHTML=s.map(x=>{const p=Math.round((x.pl/x.mx)*100);return`<div class="scroll-anim card-glow result-card rounded-2xl p-6 cursor-pointer" onclick="switchTool('server');document.getElementById('inp-server').value='${x.addr}';doServerLookup();document.getElementById('tools').scrollIntoView({behavior:'smooth'})"><div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center font-heading text-brand font-bold text-sm">${x.name.charAt(0)}</div><div><h4 class="font-heading text-sm font-bold">${x.name}</h4><p class="text-[10px] text-gray-600 font-mono">${x.addr}</p></div></div><span class="text-[10px] px-2 py-0.5 rounded-md bg-brand/10 text-brand font-medium">${x.type}</span></div><div class="flex items-end justify-between mb-2"><span class="font-heading text-xl font-bold">${x.pl.toLocaleString()}</span><span class="text-xs text-gray-600">/ ${x.mx.toLocaleString()}</span></div><div class="w-full h-1.5 bg-dark-400 rounded-full overflow-hidden mb-3"><div class="h-full bg-gradient-to-r from-brand-dark to-brand rounded-full" style="width:${p}%"></div></div><div class="flex items-center justify-between text-[10px] text-gray-600"><span>${x.ver}</span><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 live-dot"></span>Online</span></div></div>`;}).join('');setTimeout(()=>{const obs=new IntersectionObserver(e=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*80);obs.unobserve(el.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});document.querySelectorAll('#popular-servers .scroll-anim').forEach(el=>obs.observe(el));},100);}
+function buildFooterTools(){document.getElementById('footer-tools').innerHTML=TOOLS.slice(0,6).map(t=>`<li><a href="#" onclick="switchTool('${t.id}');document.getElementById('tools').scrollIntoView({behavior:'smooth'});return false" class="text-sm text-gray-500 hover:text-brand transition-colors">${t.name}</a></li>`).join('');}
+
+// ========== SEARCH ==========
+function setSearchTab(tab){searchTab=tab;const tp=document.getElementById('tab-player'),ts=document.getElementById('tab-server');tp.className=tab==='player'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 border-r border-white/10 transition-all duration-300 whitespace-nowrap cursor-pointer';ts.className=tab==='server'?'tab-active px-5 py-4 text-xs font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap cursor-pointer':'px-5 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500 transition-all duration-300 whitespace-nowrap cursor-pointer';document.getElementById('search-input').placeholder=tab==='player'?'Enter a Minecraft username...':'Enter a server address...';}
+function quickSearch(q){const isServer=/\.(net|org|com|gg|io|me|co|xyz|us|eu)/i.test(q)||['hypixel','2b2t','cubecraft','wynncraft','earthmc','hive'].some(s=>q.toLowerCase().includes(s));setSearchTab(isServer?'server':'player');document.getElementById('search-input').value=q;doSearch();}
+function doSearch(){const q=document.getElementById('search-input').value.trim();if(!q){showToast('Enter a search query','warning');return;}if(searchTab==='player'){switchTool('player');document.getElementById('inp-player').value=q;setTimeout(doPlayerLookup,100);}else{switchTool('server');document.getElementById('inp-server').value=q;setTimeout(doServerLookup,100);}document.getElementById('tools').scrollIntoView({behavior:'smooth'});}
+
+// ========== SCROLL ==========
+function initScrollAnimations(){const obs=new IntersectionObserver(e=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*80);obs.unobserve(el.target);}});},{threshold:0.2,rootMargin:'0px 0px -10% 0px'});document.querySelectorAll('.scroll-anim').forEach(el=>obs.observe(el));}
+
+// ========== TOAST ==========
+function showToast(msg,type='info'){const c=document.getElementById('toast-container'),t=document.createElement('div');const co={success:'border-green-500/30 bg-green-500/10',error:'border-red-500/30 bg-red-500/10',warning:'border-brand/30 bg-brand/10',info:'border-white/10 bg-white/5'};const ic={success:'<svg class="w-4 h-4 text-green-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg class="w-4 h-4 text-red-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',warning:'<svg class="w-4 h-4 text-brand flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',info:'<svg class="w-4 h-4 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'};t.className='toast flex items-center gap-3 px-4 py-3 rounded-xl border '+co[type]+' backdrop-blur-xl min-w-[280px] max-w-[400px]';t.innerHTML=ic[type]+'<span class="text-sm text-white">'+esc(msg)+'</span>';c.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id&&id!=='#'){e.preventDefault();const el=document.querySelector(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}});});
 </script>
 </body>
 </html>
