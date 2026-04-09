@@ -1,0 +1,77 @@
+/* Base Reset & Fonts */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #050505;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #facc15; border-radius: 3px; }
+
+/* --- NEW BACKGROUND CONFIGURATION --- */
+.grid-bg {
+    background-color: #050505;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(250, 204, 21, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(250, 204, 21, 0.03) 0px, transparent 50%),
+        linear-gradient(to right, rgba(250, 204, 21, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(250, 204, 21, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    position: relative;
+}
+
+/* Mouse Glow Effect Layer */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(250, 204, 21, 0.06) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Animations */
+@keyframes fadeInUpBlur {
+    0% { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.anim-in { animation: fadeInUpBlur .8s cubic-bezier(.2,.8,.2,1) both; }
+.d1{animation-delay:.1s} .d2{animation-delay:.2s} .d3{animation-delay:.3s} .d4{animation-delay:.4s}
+
+/* Utility Classes */
+.text-gradient {
+    background: linear-gradient(to right, #facc15, #fde047, #facc15);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #facc15, #eab308);
+    color: #000;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.4);
+    transform: scale(1.03);
+}
+
+.result-card {
+    background: linear-gradient(135deg, rgba(26,26,26,0.8), rgba(17,17,17,0.9));
+    border: 1px solid rgba(250,204,21,0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* ... keep other styles like .card-glow and .pulse-glow from index.html here ... */
